@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServlet;
 import javax.sql.DataSource;
@@ -110,13 +111,7 @@ public class MemberDAO {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, name);
 			rs = pstmt.executeQuery();
-			
-			if(rs == null) {
-				System.out.println("No Result");
-			} else {
-				System.out.println("Result Ok");
-			}
-			
+						
 			while(rs.next()) {
 				
 				JSONObject json = new JSONObject();
@@ -190,4 +185,80 @@ public class MemberDAO {
 			db.close(pstmt, conn);
 		}
 	}
+	
+	/* DB에 이름이 있을시 드롭다운으로 리스트를 띄워준다 */
+	public ArrayList<String> getNameList(String name)  {
+		//List<MemberDTO> nameLst = null;
+		ArrayList<String> list = new ArrayList<String>();
+		//MemberDTO mdto = null;
+		System.out.println("Name : "+name);
+		try {
+			conn = db.connect();
+			String query = "select distinct mem_nm from tb_member where mem_nm like ?";
+			String data;
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "%"+name+"%");
+			rs = pstmt.executeQuery();
+			
+			if(rs == null) {
+				System.out.println("NULL");
+			} else {
+				System.out.println("Not NULL");
+			}
+						
+			while(rs.next()) {
+				/*JSONObject json = new JSONObject();
+				json.put("name", rs.getString("mem_nm"));
+				jarray.add(json);*/
+				data = rs.getString("mem_nm");
+				list.add(data);
+			}
+			
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			db.close(pstmt, conn);
+		}
+		return list;
+		
+	}
+	
+	/* 이름(name)을 이용하여 나머지필드(phone,email,site)를 불러와서 자동채워준다 (동명이인 예외처리해야함) */ 
+	public JSONArray fillListByName(String name)
+	{
+				
+		String query = "select * from tb_member where mem_nm=?";
+		JSONArray jarray = new JSONArray();
+						
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, name);
+			rs = pstmt.executeQuery();
+						
+			while(rs.next()) {
+				
+				JSONObject json = new JSONObject();
+				json.put("phone", rs.getString("mem_pn"));
+				json.put("email", rs.getString("mem_em"));
+				json.put("site", rs.getString("mem_site"));
+				jarray.add(json);
+				//System.out.println("pn : "+pn+"em : "+em+"site : "+site);
+			}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return jarray;
+	}
+	
+	
 }

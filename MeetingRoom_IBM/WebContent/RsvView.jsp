@@ -21,7 +21,7 @@
 	 <form id="frm">
 				<div class="search-container">
 					<div class="ui-widget">
-						Name :<input type="text" id="term" name="term" class="search" /><br>
+						Name :<input type="text" id="term" name="term" class="search"  /><br>
 						Phone:<input type="text" id="phone" name="phone"><br>
 	       				Email:<input type="text" id="email" name="email"><br>
 	      			 	Site :<input type="text" id="site" name="site"><br>

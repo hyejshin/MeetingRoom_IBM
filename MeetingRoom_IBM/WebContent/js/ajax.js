@@ -1,13 +1,41 @@
-function btn(value)
-{
-	var param = $("input[type=radio][id=rd]:checked").val();
-	//alert(value);
-	callAjax(value);
+
+/* 이름을 입력하면 자동으로 나머지 필드(폰번호,이메일,사이트)가 자동으로 입력되게 하는 Ajax */
+function AutoFillElements(value)
+{	
+	 $.ajax({
+	        type: "post",
+	        url : "auto_fill.do",
+	        dataType : 'json',
+	        data: {
+	        	id : value
+	        },
+	       
+	        success : function(data) {
+	        	$('#phone').empty();
+	        	$('#email').empty();
+	        	$('#site').empty();
+	         	
+	        	for(var i=0; i<data.result.length; i++) {
+	        		$('input[name="phone"]').val(data.result[i].phone);
+	        		$('input[name="email"]').val(data.result[i].email);
+	        		$('input[name="site"]').val(data.result[i].site);
+	        		/*$('#phone').value=data.result[i].phone;  
+	        		$('#email').value=data.result[i].email;
+	        		$('#site').value=data.result[i].site;*/
+				}
+	        	        	
+	        },
+	        error : function() {
+	        	console.log("error");
+	        }
+	});
 }
 
+/* 글자를 하나만 입력해도 DB를 검색하여 유사한 단어를 드롭박스에 나타내주는 Ajax */
 $(document).ready(function() {
 	$(function() {
-		$("#term").autocomplete({
+		$("#term").autocomplete(
+				{
 			source : function(request, response) {
 				$.ajax({
 					url : "test_auto.do",
@@ -18,21 +46,24 @@ $(document).ready(function() {
 					},
 					dataType : "json",
 					success : function(data) {
-						response(data);
 						//alert(data);
+						response(data);
+						
 					},
 					
-			        select: function( event, ui ) {
-			            // 만약 검색리스트에서 선택하였을때 선택한 데이터에 의한 이벤트발생
-			        	alert("asdasd");
-			        }
+					
 				});
-			}
+			},
+				select : function(event,ui) {
+					AutoFillElements(ui.item.value);
+					
+				}
 		});
 	});
 });
 
 
+/* 이름(라디오버튼)에 따라 정보를 뿌려주는 Ajax */
 function callAjax(value){
 	    
 	  $.ajax({
@@ -66,63 +97,3 @@ function callAjax(value){
 	
 }
 
-/*var dtlist = document.getElementById('dtlist');
-var input = document.getElementById('term');
-
-$(function() {
-    $( "#term" ).autocomplete({
-      
-      source: function( request, response ){
-    $.ajax({
-        type: 'post',
-        url: "test_auto.do",
-        dataType: "json",
-        //request.term = $("#tags").val(),
-        data: { id : request.term },
-        success : function(data){
-        	 Third Method 
-        	$('#dtlist').empty();
-        	
-        	for(var i=0; i<data.result.length; i++) {
-        		
-        		$('#dtlist').append("<option value="+data.result[i].name+">");
-        		
-        							 
-  			  }
-        	
-           First Method 
-          //alert(data.result);
-          /*response(
-            $.map(data, function(item) {
-                        return { label: item.data,
-                        		 value: item.data 
-                        }
-           })//map
-          );//response
-          //var jsonOptions = JSON.parse(requet.term);
-          
-          			//Second Method 
-          data.forEach(function(item) {
-        	  var option = document.createElement('option');
-        	  option.value = item.name;
-        	  dtlist.appendChild(option);
-          });
-          for(var i=0;i<data.result.length;i++) {
-        	  var option = document.createElement('option');
-        	  option.value = data.result[i].name;
-        	  dtlist.appendChild(option);
-          }
-    	
-        }//success
-    });//
-    },
-    //source
-      
-    //조회를 위한 최소글자수
-        minLength: 1,
-        select: function( event, ui ) {
-            // 만약 검색리스트에서 선택하였을때 선택한 데이터에 의한 이벤트발생
-        	
-        }
-    }); //autocomplete
-  });//function()*/
