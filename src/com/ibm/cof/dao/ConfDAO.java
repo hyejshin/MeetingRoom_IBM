@@ -28,7 +28,7 @@ public class ConfDAO {
 
 	}
 
-	/* °ü¸®ÀÚ´Â È¸ÀÇ½ÇÀÇ ÀÌ¸§,¾î´À ÇÁ·ÎÁ§Æ® ¼Ò¼Ó,»óÅÂµîÀ» Ãß°¡ÇÒ ¼ö ÀÖ´Ù. */
+	/* ê´€ë¦¬ìëŠ” íšŒì˜ì‹¤ì˜ ì´ë¦„,ì–´ëŠ í”„ë¡œì íŠ¸ ì†Œì†,ìƒíƒœë“±ì„ ì¶”ê°€í•  ìˆ˜ ìˆë‹¤. */
 	public void insert(ConfDTO cdto) {
 		String query = "insert into tb_conference(confrn_nm,confrn_site,confrn_stat)"
 				+ " values(?,?,?)";
@@ -52,7 +52,7 @@ public class ConfDAO {
 		}
 	}
 
-	/* °ü¸®ÀÚ´Â È¸ÀÇ½ÇÀÇ »óÅÂ¸¦ ¼öÁ¤ÇÒ ¼ö ÀÖ´Ù. */
+	/* ê´€ë¦¬ìëŠ” íšŒì˜ì‹¤ì˜ ìƒíƒœë¥¼ ìˆ˜ì •í•  ìˆ˜ ìˆë‹¤. */
 	public void updateState(String state, int confrn_seq) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -78,7 +78,7 @@ public class ConfDAO {
 		}
 	}
 
-	/* °ü¸®ÀÚ´Â È¸ÀÇ½ÇÀÇ ÀÌ¸§,¾î´À ÇÁ·ÎÁ§Æ® ¼Ò¼Ó,»óÅÂµîÀ» »èÁ¦ÇÒ ¼ö ÀÖ´Ù. */
+	/* ê´€ë¦¬ìëŠ” íšŒì˜ì‹¤ì˜ ì´ë¦„,ì–´ëŠ í”„ë¡œì íŠ¸ ì†Œì†,ìƒíƒœë“±ì„ ì‚­ì œí•  ìˆ˜ ìˆë‹¤. */
 	public void delete(int confrn_seq) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
