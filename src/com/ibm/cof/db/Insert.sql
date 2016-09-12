@@ -1,17 +1,22 @@
-
-
 insert into tb_conference (CONFRN_NM, CONFRN_SITE, CONFRN_STAT) 
-               values ('ÄÚÈ¸ÀÇ½Ç2','ÄÚ¿şÀÌ','Y');
+               values ('ì½”íšŒì˜ì‹¤2','ì½”ì›¨ì´','Y');
 insert into tb_conference (CONFRN_NM, CONFRN_SITE, CONFRN_STAT) 
-               values ('ÄÚÈ¸ÀÇ½Ç3','ÄÚ¿şÀÌ','Y');
+               values ('ì½”íšŒì˜ì‹¤3','ì½”ì›¨ì´','Y');
 insert into tb_conference (CONFRN_NM, CONFRN_SITE, CONFRN_STAT) 
-               values ('ÄÚÈ¸ÀÇ½Ç4','ÄÚ¿şÀÌ','Y');
+               values ('ì½”íšŒì˜ì‹¤4','ì½”ì›¨ì´','Y');
                
 insert into tb_conference (CONFRN_NM, CONFRN_SITE, CONFRN_STAT) 
-               values ('¾ÆÈ¸ÀÇ½Ç1','¾Æ¸ğ·¹ÆÛ½ÃÇÈ','Y');
+               values ('ì•„íšŒì˜ì‹¤1','ì•„ëª¨ë ˆí¼ì‹œí”½','Y');
 insert into tb_conference (CONFRN_NM, CONFRN_SITE, CONFRN_STAT) 
-               values ('¾ÆÈ¸ÀÇ½Ç2','¾Æ¸ğ·¹ÆÛ½ÃÇÈ','Y');
+               values ('ì•„íšŒì˜ì‹¤2','ì•„ëª¨ë ˆí¼ì‹œí”½','Y');
 insert into tb_conference (CONFRN_NM, CONFRN_SITE, CONFRN_STAT) 
-               values ('¾ÆÈ¸ÀÇ½Ç3','¾Æ¸ğ·¹ÆÛ½ÃÇÈ','Y');
+               values ('ì•„íšŒì˜ì‹¤3','ì•„ëª¨ë ˆí¼ì‹œí”½','Y');
 insert into tb_conference (CONFRN_NM, CONFRN_SITE, CONFRN_STAT) 
-               values ('¾ÆÈ¸ÀÇ½Ç4','¾Æ¸ğ·¹ÆÛ½ÃÇÈ','Y');
+               values ('ì•„íšŒì˜ì‹¤4','ì•„ëª¨ë ˆí¼ì‹œí”½','Y');
+               
+
+
+insert into tb_reservation (rsv_site, rsv_confer_nm, rsv_date, rsv_start_time, rsv_end_time,
+rsv_title, rsv_mem_nm, rsv_mem_pn, rsv_mem_em, rsv_del_pw, rsv_reg_date) 
+values ('ì•„ëª¨ë ˆí¼ì‹œí”½', 'íšŒì˜ì‹¤1', '2016-09-12', '1400', '1600', 'important meeting',
+'ì‹ í˜œì •', '01072712808', 'shinsy11@naver.com', '1234', '2016-09-12');

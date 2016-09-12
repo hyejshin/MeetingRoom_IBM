@@ -2,6 +2,10 @@ package com.ibm.cof.dto;
 
 public class ConfDTO {
 	private int Confrn_Seq;
+	private String Confrn_Nm;
+	private String Confrn_Site;
+	private String Confrn_Stat;
+	
 	public int getConfrn_Seq() {
 		return Confrn_Seq;
 	}
@@ -27,8 +31,5 @@ public class ConfDTO {
 	public void setConfrn_Stat(String confrn_Stat) {
 		Confrn_Stat = confrn_Stat;
 	}
-	private String Confrn_Nm;
-	private String Confrn_Site;
-	private String Confrn_Stat;
 	
 }
