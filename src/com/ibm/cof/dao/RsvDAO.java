@@ -20,12 +20,8 @@ public class RsvDAO {
     Statement st = null;
     ResultSet rs = null;
     
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public RsvDAO() {
-        super();
-        // TODO Auto-generated constructor stub
+
     }
 
     /* 사용자가 자신이 원하는 회의실을 예약할 때 사용자가 입력한 모든 정보가 입력된다. */ 
@@ -184,6 +180,89 @@ public class RsvDAO {
 
 		return bool;
 	}
+	
+	/* 현재날짜 이후로 예약 현황을 가져온다 날짜,시간 오름차순 정렬*/
+	public ArrayList<RsvDTO> selectAll()
+	{
+		ArrayList<RsvDTO> dtos = new ArrayList<RsvDTO>();
+		RsvDTO dto = null;
+		String title, site, confer_nm, date, start, end, name, phone;
+		String query = "select rsv_title, rsv_site, rsv_confer_nm, rsv_date, rsv_start_time, rsv_end_time, "
+				+ "rsv_mem_nm, rsv_mem_pn from tb_reservation "
+				+ "where rsv_date >= DATE_FORMAT(NOW(),'%Y-%m-%d') order by rsv_date, rsv_start_time";
+		
+		try {
+			conn = db.connect();			
+			st = conn.createStatement();
+            rs = st.executeQuery(query); 
+			
+			while(rs.next()) {
+				title = rs.getString("rsv_title");
+				site = rs.getString("rsv_site");
+				confer_nm = rs.getString("rsv_confer_nm");
+				date = rs.getString("rsv_date");
+				start = rs.getString("rsv_start_time");
+				end = rs.getString("rsv_end_time");
+				name = rs.getString("rsv_mem_nm");
+				phone = rs.getString("rsv_mem_pn");
+					
+				dto = new RsvDTO(title, site, confer_nm, date, start, end, name, phone);
+				dtos.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, st, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return dtos;
+	}
+	
+	/* 조건(프로젝트, 회의제목, 예약자)에 따라 현재날짜 이후로 예약 현황을 가져온다*/
+	public ArrayList<RsvDTO> selectByCondition(String option, String context)
+	{
+		ArrayList<RsvDTO> dtos =new ArrayList<RsvDTO>();
+		RsvDTO dto = null;
+		String title, site, confer_nm, date, start, end, name, phone;
+		String query = "select rsv_title, rsv_site, rsv_confer_nm, rsv_date, rsv_start_time, rsv_end_time, "
+				+ "rsv_mem_nm, rsv_mem_pn from tb_reservation "
+				+ "where " + option + " like ? and "
+				+ "rsv_date >= DATE_FORMAT(NOW(),'%Y-%m-%d') order by rsv_date, rsv_start_time";
+		
+		try {
+			conn = db.connect();			
+			pstmt = conn.prepareStatement(query);
+            pstmt.setString(1,"%"+context+"%");
+            rs = pstmt.executeQuery();
+            
+			while(rs.next()) {
+				title = rs.getString("rsv_title");
+				site = rs.getString("rsv_site");
+				confer_nm = rs.getString("rsv_confer_nm");
+				date = rs.getString("rsv_date");
+				start = rs.getString("rsv_start_time");
+				end = rs.getString("rsv_end_time");
+				name = rs.getString("rsv_mem_nm");
+				phone = rs.getString("rsv_mem_pn");
+					
+				dto = new RsvDTO(title, site, confer_nm, date, start, end, name, phone);
+				dtos.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return dtos;
+	}
+	
 }
 	
 		

@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ page import="com.ibm.cof.dto.RsvDTO" %>
+<%@ page import="java.util.ArrayList" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -42,36 +44,47 @@
 	</div>
 	</nav>
 
-	<form method="post" name="myForm">
+	<form method="post" name="myForm" action="SearchRsv.do">
 		<div class="container">
 		
 			<div class="col-md-1 col-sm-1 col-xs-0">
 			</div>
 			
 			<div class="col-md-2 col-sm-2 col-xs-3">
-			<select class="form-control" id="sel1" name="site">
+			<select class="form-control" id="option" name="option">
 				<option value="all">전체</option>
-				<option value="site">프로젝트</option>
-				<option value="title">회의제목</option>
-				<option value="name">예약자</option>
+				<option value="rsv_site">프로젝트</option>
+				<option value="rsv_title">회의제목</option>
+				<option value="rsv_mem_nm">예약자</option>
 			</select>
 			</div>
 			
 			<div class="col-md-6 col-sm-6 col-xs-7">
-				<input type="text" class="form-control" id="context">
+				<input type="text" class="form-control" name="context">
 			</div>
 			
 			<div class="col-md-2 col-sm-2 col-xs-2">
-			<button type="button" class="btn btn-info">
-				<span class="glyphicon glyphicon-search"></span> 검색
-			</button>
-			</div>
+			<button type="submit" class="btn btn-info">검색<span class='glyphicon glyphicon-search'></span></button>
 		</div>
 
 	</form>
 
+	<%
+		ArrayList<RsvDTO> dtos = (ArrayList)request.getAttribute("list");
+	%>
 	<table class="table" style="margin-top:30px;">
-		<tr><td>제목</td><td>회의실</td><td>날짜</td><td>시간</td><td>예약자</td><td>전화번호</td></tr>
+		<tr><td>제목</td><td>프로젝트</td><td>회의실</td><td>날짜</td><td>시간</td><td>예약자</td><td>전화번호</td></tr>
+		<%if(dtos != null){
+			for(int i=0; i<dtos.size(); i++){
+				RsvDTO dto = dtos.get(i);
+				String startTime = dto.getRsv_Start_Time();
+				String endTime = dto.getRsv_End_Time();
+				String time = startTime.substring(0,2) + ":" + startTime.substring(2,4) + "~";
+				time += endTime.substring(0,2) + ":" + endTime.substring(2,4);
+			%>
+		<tr><td><%=dto.getRsv_Title()%></td><td><%=dto.getRsv_Site()%></td><td><%=dto.getRsv_Confer_Nm()%></td>
+		<td><%=dto.getRsv_Date()%></td><td><%=time%></td><td><%=dto.getRsv_Mem_Nm()%></td><td><%=dto.getRsv_Mem_Pn()%></td></tr>
+		<%}}%>
 	</table>
 </body>
 </html>

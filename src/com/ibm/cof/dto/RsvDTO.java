@@ -13,6 +13,20 @@ public class RsvDTO {
 	private String Rsv_Mem_Em;
 	private String Rsv_Del_Pw;
 	
+	public RsvDTO() { };
+	
+	public RsvDTO(String title, String site, String confer_nm, String date, String start, String end, 
+			String name, String phone){
+		Rsv_Title = title;
+		Rsv_Site = site;
+		Rsv_Confer_Nm = confer_nm;
+		Rsv_Date = date;
+		Rsv_Start_Time = start;
+		Rsv_End_Time = end;
+		Rsv_Mem_Nm = name;
+		Rsv_Mem_Pn = phone;
+	}
+	
 	public String getRsv_Date() {
 		return Rsv_Date;
 	}
