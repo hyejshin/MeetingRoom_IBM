@@ -1,6 +1,7 @@
 package com.ibm.cof.controller.MemberController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,16 +14,16 @@ import com.ibm.cof.dao.MemberDAO;
 import com.ibm.cof.dto.MemberDTO;
 
 /**
- * Servlet implementation class InsertMember
+ * Servlet implementation class SearchMember
  */
-@WebServlet("/InsertMember.do")
-public class InsertMember extends HttpServlet {
+@WebServlet("/SearchMember.do")
+public class SearchMember extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InsertMember() {
+    public SearchMember() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,18 +47,21 @@ public class InsertMember extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
-		String name = request.getParameter("name");
-		String phone = request.getParameter("phone");
-		String email = request.getParameter("email");
-		String site = request.getParameter("site");
-		String page = request.getParameter("page");
-						
-		MemberDAO mdao = new MemberDAO();
-		MemberDTO mdto = new MemberDTO(name, phone, email, site);
+		String option = request.getParameter("option");
+		String context = request.getParameter("context");
 		
-		mdao.insert(mdto);
-        
-        RequestDispatcher rd = request.getRequestDispatcher(page);
+		MemberDAO dao = new MemberDAO();
+		ArrayList<MemberDTO> dtos = null;
+		
+		if(option.equals("all")) {
+			dtos = dao.selectAll();
+		}else{
+			dtos = dao.selectByCondition(option, context);
+		}
+		
+		request.setAttribute("list", dtos);
+		
+        RequestDispatcher rd = request.getRequestDispatcher("AdminMember.jsp");
         rd.forward(request, response);
     }
 }

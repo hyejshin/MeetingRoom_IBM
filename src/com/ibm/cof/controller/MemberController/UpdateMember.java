@@ -9,17 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ibm.cof.dao.MemberDAO;
+import com.ibm.cof.dto.MemberDTO;
+
 /**
  * Servlet implementation class ModifyMember
  */
-@WebServlet("/ModifyMember.do")
-public class ModifyMember extends HttpServlet {
+@WebServlet("/UpdateMember.do")
+public class UpdateMember extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ModifyMember() {
+    public UpdateMember() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -44,9 +47,18 @@ public class ModifyMember extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		
+		int seq = Integer.parseInt(request.getParameter("seq"));
+		String name = request.getParameter("name");
+		String phone = request.getParameter("phone");
+		String email = request.getParameter("email");
+		String site = request.getParameter("site");
+						
+		MemberDAO mdao = new MemberDAO();
+		MemberDTO mdto = new MemberDTO(name, phone, email, site);
 		
-        // 다음 페이지로 이동
-        RequestDispatcher rd = request.getRequestDispatcher("");
+		mdao.updateMemberState(mdto, seq);
+        
+        RequestDispatcher rd = request.getRequestDispatcher("AdminMember.jsp");
         rd.forward(request, response);
     }
 }

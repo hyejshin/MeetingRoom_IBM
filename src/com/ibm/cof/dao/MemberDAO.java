@@ -7,22 +7,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServlet;
-import javax.sql.DataSource;
-
 import com.ibm.cof.dto.MemberDTO;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+
 public class MemberDAO {
-	private DataSource dataSource =null;
 	DBCon db = new DBCon();
     Connection conn = null;
     PreparedStatement pstmt = null;
     Statement st = null;
     ResultSet rs = null;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public MemberDAO() {
     
     }
@@ -35,10 +32,10 @@ public class MemberDAO {
 		try {
 			conn = db.connect();				
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, mdto.getMember_Name());
-			pstmt.setString(2, mdto.getMember_Pn());
-			pstmt.setString(3, mdto.getMember_Em());
-			pstmt.setString(4, mdto.getMember_Site());
+			pstmt.setString(1, mdto.getMem_Nm());
+			pstmt.setString(2, mdto.getMem_Pn());
+			pstmt.setString(3, mdto.getMem_Em());
+			pstmt.setString(4, mdto.getMem_Site());
 			
 			pstmt.executeUpdate();
 					
@@ -55,12 +52,13 @@ public class MemberDAO {
 	}
 	
 	/* 회원의 모든 정보를 가져올 수 있음 */
-	public ArrayList<MemberDTO> selectList()
+	public ArrayList<MemberDTO> selectAll()
 	{
 		ArrayList<MemberDTO> dtos = new ArrayList<MemberDTO>();
 		String query = "select * from tb_member";
 		MemberDTO dto =null;
-		String nm,pn,em,site;
+		String name, phone, email, site;
+		int seq;
 		
 		try {
 			conn = db.connect();
@@ -68,12 +66,48 @@ public class MemberDAO {
 			rs = st.executeQuery(query);
 			
 			while(rs.next()) {
-				nm = rs.getString("mem_nm");
-				pn = rs.getString("mem_pn");
-				em = rs.getString("mem_em");
+				seq = rs.getInt("mem_seq");
+				name = rs.getString("mem_nm");
+				phone = rs.getString("mem_pn");
+				email = rs.getString("mem_em");
 				site = rs.getString("mem_site");
 				
-				dto = new MemberDTO(nm,pn,em,site);
+				dto = new MemberDTO(seq, name, phone, email, site);
+				dtos.add(dto);
+			}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return dtos;
+	}
+	
+	/* 검색 조건(이름, 프로젝트)에 따라 회원 정보를 가져올 수 있음 */
+	public ArrayList<MemberDTO> selectByCondition(String option, String context)
+	{
+		ArrayList<MemberDTO> dtos = new ArrayList<MemberDTO>();
+		String query = "select * from tb_member where " + option + " = '" + context + "'";
+		MemberDTO dto =null;
+		String name, phone, email, site;
+		
+		try {
+			conn = db.connect();
+			st = conn.createStatement();
+			rs = st.executeQuery(query);
+			
+			while(rs.next()) {
+				name = rs.getString("mem_nm");
+				phone = rs.getString("mem_pn");
+				email = rs.getString("mem_em");
+				site = rs.getString("mem_site");
+				
+				dto = new MemberDTO(name, phone, email, site);
 				dtos.add(dto);
 			}
 					
@@ -100,10 +134,10 @@ public class MemberDAO {
 					+ " where mem_seq=?";
 			conn = db.connect();
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, mdto.getMember_Name());
-			pstmt.setString(2, mdto.getMember_Pn());
-			pstmt.setString(3, mdto.getMember_Em());
-			pstmt.setString(4, mdto.getMember_Site());
+			pstmt.setString(1, mdto.getMem_Nm());
+			pstmt.setString(2, mdto.getMem_Pn());
+			pstmt.setString(3, mdto.getMem_Em());
+			pstmt.setString(4, mdto.getMem_Site());
 			pstmt.setInt(5, mem_seq);
 
 			pstmt.executeUpdate();
@@ -139,5 +173,80 @@ public class MemberDAO {
 		} finally {
 			db.close(pstmt, conn);
 		}
+	}
+	
+	
+	public JSONArray selectBySeq(String seq)
+	{
+		//Map mlist = new Map<MemberDTO>();
+		
+		String query = "select * from tb_member where mem_seq=?";
+		//JSONObject json = new JSONObject();
+		JSONArray jarray = new JSONArray();
+		String name, phone, email, site;
+				
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, seq);
+			rs = pstmt.executeQuery();
+						
+			while(rs.next()) {
+				
+				JSONObject json = new JSONObject();
+				json.put("name", rs.getString("mem_nm"));
+				json.put("phone", rs.getString("mem_pn"));
+				json.put("email", rs.getString("mem_em"));
+				json.put("site", rs.getString("mem_site"));
+				jarray.add(json);
+			}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return jarray;
+	}
+	
+	public JSONArray selectListByName(String name)
+	{
+		//Map mlist = new Map<MemberDTO>();
+		
+		String query = "select * from tb_member where mem_nm=?";
+		//JSONObject json = new JSONObject();
+		JSONArray jarray = new JSONArray();
+		String pn,em,site;
+				
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, name);
+			rs = pstmt.executeQuery();
+						
+			while(rs.next()) {
+				
+				JSONObject json = new JSONObject();
+				json.put("phone", rs.getString("mem_pn"));
+				json.put("email", rs.getString("mem_em"));
+				json.put("site", rs.getString("mem_site"));
+				jarray.add(json);
+				//System.out.println("pn : "+pn+"em : "+em+"site : "+site);
+			}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return jarray;
 	}
 }

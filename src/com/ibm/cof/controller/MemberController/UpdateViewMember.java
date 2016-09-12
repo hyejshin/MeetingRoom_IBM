@@ -9,20 +9,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.ibm.cof.dao.MemberDAO;
-import com.ibm.cof.dto.MemberDTO;
 
 /**
- * Servlet implementation class InsertMember
+ * Servlet implementation class UpdateViewMember
  */
-@WebServlet("/InsertMember.do")
-public class InsertMember extends HttpServlet {
+@WebServlet("/UpdateViewMember.do")
+public class UpdateViewMember extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InsertMember() {
+    public UpdateViewMember() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,18 +48,20 @@ public class InsertMember extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
-		String name = request.getParameter("name");
-		String phone = request.getParameter("phone");
-		String email = request.getParameter("email");
-		String site = request.getParameter("site");
-		String page = request.getParameter("page");
-						
-		MemberDAO mdao = new MemberDAO();
-		MemberDTO mdto = new MemberDTO(name, phone, email, site);
+		String seq = request.getParameter("seq");
 		
-		mdao.insert(mdto);
-        
-        RequestDispatcher rd = request.getRequestDispatcher(page);
-        rd.forward(request, response);
+		JSONArray json = new JSONArray();
+		MemberDAO mdao = new MemberDAO();
+		json = mdao.selectBySeq(seq);
+		
+		JSONObject obj = new JSONObject();
+		obj.put("result",json);
+		//System.out.println(obj);
+		
+		
+		response.setContentType("text/html;charset=UTF-8");
+		response.getWriter().print(obj);
+		response.setCharacterEncoding("UTF-8");
     }
+	
 }
