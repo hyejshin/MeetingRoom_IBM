@@ -67,7 +67,7 @@
 		<!-- 사이트 선택 -->
 		<div class="row" style="padding-bottom:25px;">
 			<div class="col-md-6 col-sm-9 col-xs-12">
-				<select class="form-control" id="sel1" name="site">
+				<select class="form-control" id="site" name="site">
 					<option value="">선택하세요</option>
 					<option value="아모레퍼시픽">아모레</option>
 					<option value="코웨이">코웨이</option>
@@ -84,8 +84,8 @@
 				<ul class="nav nav-pills">
 				  <li id="conf1"><a href="#" onClick="changeConf(1, '회의실1');">회의실1</a></li>
 				  <li id="conf2"><a href="#" onClick="changeConf(2, '회의실2');">회의실2</a></li>
-				  <li id="conf3"실3"><a href="#" onClick="changeConf(3, '회의실3');">회의실3</a></li>
-				  <li id="conf4"회의실4"><a href="#" onClick="changeConf(4, '회의실4');">회의실4</a></li>
+				  <li id="conf3"><a href="#" onClick="changeConf(3, '회의실3');">회의실3</a></li>
+				  <li id="conf4"><a href="#" onClick="changeConf(4, '회의실4');">회의실4</a></li>
 				</ul>
 				
 				<%@ include file="calendar/calendar.jsp" %>
@@ -93,8 +93,8 @@
 			
 			<!-- 회의실tab & 예약현황 -->
 			<div class="col-md-6 col-sm-9 col-xs-12">
-			<!--
-			<table class="table">
+			
+			<table class="table table-condensed">
 				<tr><td>시간</td><td>회의제목</td><td>예약자</td><td></td><td></td></tr>
 				<tr><td>09:00 - 09:30</td><td></td><td></td><td></td><td></td></tr>
 				<tr><td>09:30 - 10:00</td><td></td><td></td><td></td><td></td></tr>
@@ -112,8 +112,8 @@
 				<tr><td>16:30 - 17:00</td><td></td><td></td><td></td><td></td></tr>
 				<tr><td>17:00 - 17:30</td><td></td><td></td><td></td><td></td></tr>
 				<tr><td>17:30 - 18:00</td><td></td><td></td><td></td><td></td></tr>
-			</table>  -->
-			
+			</table>
+			<!--
 			<table class="table">
 				<tr><td>시간</td><td>회의제목</td><td>예약자</td><td></td><td>
 				<tr><td>09:00 - 10:00</td><td></td><td></td><td></td><td>
@@ -126,7 +126,7 @@
 				<tr><td>17:00 - 18:00</td><td></td><td></td><td></td><td>
 			</table>
 			</div>
-
+			  -->
 		</div>
 
 		<!-- 입력창 -->

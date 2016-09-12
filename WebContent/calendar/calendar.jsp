@@ -5,7 +5,7 @@
 
 <style>
 .example {
-	font-size: 16px;
+	font-size: 17px;
 }
 
 .yui3-button {
@@ -49,7 +49,8 @@
 	    // the date to today's date.
 	    var calendar = new Y.Calendar({
 	      contentBox: "#mycalendar",
-	      width:'340px',
+	      width:'400px',
+	      height: '350px',
 	      showPrevMonth: true,
 	      showNextMonth: true,
 	      date: new Date()}).render();
