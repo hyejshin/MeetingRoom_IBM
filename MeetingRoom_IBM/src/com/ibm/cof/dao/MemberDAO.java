@@ -35,17 +35,19 @@ public class MemberDAO {
     }
 
     /* 회의실 예약과 동시에 회원가입이 이루어짐 */
-	public void insert(MemberDTO mdto) {
+	public void insert(String name,String phone,String email,String site) {
 	
 		String query = "insert into tb_member(mem_nm,mem_pn,mem_em,mem_site,mem_reg_date)"
 				+ " values(?,?,?,?,now())";
+		
+		
 		try {
 			conn = db.connect();				
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, mdto.getMember_Name());
-			pstmt.setString(2, mdto.getMember_Pn());
-			pstmt.setString(3, mdto.getMember_Em());
-			pstmt.setString(4, mdto.getMember_Site());
+			pstmt.setString(1, name);
+			pstmt.setString(2, phone);
+			pstmt.setString(3, email);
+			pstmt.setString(4, site);
 			
 			pstmt.executeUpdate();
 					
@@ -165,6 +167,7 @@ public class MemberDAO {
 	}
 
 	/* 회원이 퇴직 또는 어떠한 사정에 의해 더이상 사이트의 소속이 아니게 될 경우 관리자는 회원을 삭제할 수 있다. */
+	
 	public void delete(int mem_seq) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -227,8 +230,7 @@ public class MemberDAO {
 	
 	/* 이름(name)을 이용하여 나머지필드(phone,email,site)를 불러와서 자동채워준다 (동명이인 예외처리해야함) */ 
 	public JSONArray fillListByName(String name)
-	{
-				
+	{				
 		String query = "select * from tb_member where mem_nm=?";
 		JSONArray jarray = new JSONArray();
 						
@@ -260,5 +262,34 @@ public class MemberDAO {
 		return jarray;
 	}
 	
+	/* 회원등록시 이미 등록되어 있는 계정이 있으면 false 반환 */
+	public Boolean isCheckID(String mem_pn) {
+		
+		Boolean bool = false;
+		try {
+			conn = db.connect();
+			
+			String query = "select * from tb_member where mem_pn=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, mem_pn);
+			rs = pstmt.executeQuery();
+
+			if (rs.next())
+				bool = true;
+			else
+				bool = false;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+		return bool;
+	}
 	
 }

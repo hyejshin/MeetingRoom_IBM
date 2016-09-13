@@ -1,3 +1,8 @@
+function btn(value)
+{
+	//alert(value);
+	//callAjax(value);
+}
 
 /* 이름을 입력하면 자동으로 나머지 필드(폰번호,이메일,사이트)가 자동으로 입력되게 하는 Ajax */
 function AutoFillElements(value)
@@ -13,12 +18,11 @@ function AutoFillElements(value)
 	        success : function(data) {
 	        	$('#phone').empty();
 	        	$('#email').empty();
-	        	$('#site').empty();
-	         	
+	        		         	
 	        	for(var i=0; i<data.result.length; i++) {
 	        		$('input[name="phone"]').val(data.result[i].phone);
 	        		$('input[name="email"]').val(data.result[i].email);
-	        		$('input[name="site"]').val(data.result[i].site);
+	        		
 	        		/*$('#phone').value=data.result[i].phone;  
 	        		$('#email').value=data.result[i].email;
 	        		$('#site').value=data.result[i].site;*/
@@ -38,6 +42,7 @@ $(document).ready(function() {
 				{
 			source : function(request, response) {
 				$.ajax({
+					
 					url : "test_auto.do",
 					type : "POST",
 					minLength: 1,
@@ -46,7 +51,7 @@ $(document).ready(function() {
 					},
 					dataType : "json",
 					success : function(data) {
-						//alert(data);
+											
 						response(data);
 						
 					},
@@ -57,7 +62,10 @@ $(document).ready(function() {
 				select : function(event,ui) {
 					AutoFillElements(ui.item.value);
 					
-				}
+				},
+				focus: function( event, ui ) {
+					return false; 
+				}					
 		});
 	});
 });
@@ -69,7 +77,7 @@ function callAjax(value){
 	  $.ajax({
 	        type: "post",
 	        url : "test.do",
-	        // dataType : 'json',
+	        dataType : 'json',
 	        data: {
 	        	id : value
 	        },
