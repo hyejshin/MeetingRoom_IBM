@@ -44,7 +44,7 @@
 		<li class="active"><a href="AdminRsv.jsp">예약관리</a></li>
 		<li><a href="AdminRsvHist.jsp">예약내역</a></li>
 		<li><a href="AdminProject.jsp">프로젝트관리</a></li>
-		<li><a href="AdminMember.jsp">회원관리</a></li>
+		<li><a href="SearchMember.do?option=all">회원관리</a></li>
 	</ul>
 	Admin reserve
 </body>

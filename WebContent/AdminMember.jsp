@@ -14,7 +14,9 @@
 <script	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <script>
-	function fill(idx){
+	function fillMemInfo(idx){
+		fillSite("#siteU");
+		
 		$.ajax({
 	        type: "post",
 	        url : "UpdateViewMember.do",
@@ -34,7 +36,27 @@
       				$('input[name="name"]').val(data.result[i].name);
       				$('input[name="phone"]').val(data.result[i].phone);
       				$('input[name="email"]').val(data.result[i].email);
-      				$('input[name="site"]').val(data.result[i].site);
+      				$("#siteU").val(data.result[i].site).attr("selected", "selected");
+      			  }
+	        },
+	        error : function() {
+	        	console.log("error");
+	        }
+ 	});
+	}
+	function fillSite(id){
+		$.ajax({
+	        type: "post",
+	        url : "SelectProject.do",
+	        dataType : 'json',
+	        data: { },
+	       
+	        success : function(data) {
+	        	$(id).empty();
+	        	
+	        	$(id).append("<option value=''>선택하세요</option>");
+      			for(var i=0; i<data.result.length; i++) {
+      				$(id).append("<option value='"+data.result[i].project+"'>"+data.result[i].project+"</option>");
       			  }
 	        },
 	        error : function() {
@@ -75,18 +97,17 @@
 		<li><a href="AdminRsv.jsp">예약관리</a></li>
 		<li><a href="AdminRsvHist.jsp">예약내역</a></li>
 		<li><a href="AdminProject.jsp">프로젝트관리</a></li>
-		<li class="active"><a href="AdminMember.jsp">회원관리</a></li>
+		<li class="active"><a href="SearchMember.do?option=all">회원관리</a></li>
 	</ul>
 	<br>
 	<br>
-
 
 	<div class="container">
 	
 		<!-- 회원등록 -->
 		<div style="margin-bottom:20px;">
-		<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#register">
-		회원등록▽<span class="glyphicon glyphicon-user-add"></span></button></div>
+		<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#register"
+		onclick="fillSite('#siteR');"> 회원등록▽<span class="glyphicon glyphicon-user-add"></span></button></div>
 		
 		<div id="register" class="collapse" style="margin-bottom: 40px;">
 			<form method="post" name="registerForm" action="InsertMember.do">
@@ -101,11 +122,8 @@
 					<label for="email">이메일:</label> <input type="email"
 						class="form-control" name="email" placeholder="Enter email">
 
-					<label for="site">소속 회사:</label> <select class="form-control" name="site">
+					<label for="site">소속 회사:</label> <select class="form-control" name="site" id="siteR">
 						<option value="">선택하세요</option>
-						<option value="아모레퍼시픽">아모레</option>
-						<option value="코웨이">코웨이</option>
-						<option value="고려해운">고려해운</option>
 					</select>
 					
 					<button type="submit" class="btn btn-primary" style="margin-left:20px;">등록</button>
@@ -128,12 +146,8 @@
 					<label for="email">이메일:</label> <input type="email"
 						class="form-control" name="email" id="email">
 
-					<label for="site">소속 회사:</label> <select class="form-control"
-						id="site" name="site">
+					<label for="site">소속 회사:</label> <select class="form-control" name="site" id="siteU">
 						<option value="">선택하세요</option>
-						<option value="아모레퍼시픽">아모레</option>
-						<option value="코웨이">코웨이</option>
-						<option value="고려해운">고려해운</option>
 					</select>
 					
 					<button type="submit" class="btn btn-primary" style="margin-left:20px;">수정</button>
@@ -190,8 +204,9 @@
 				<td><%=dto.getMem_Pn()%></td>
 				<td><%=dto.getMem_Em()%></td>
 				<td><%=dto.getMem_Site()%></td>
-				<td><a href="#" data-toggle="collapse" data-target="#update" onclick="fill(<%=dto.getMem_Seq()%>);">수정</a>|
-				<a href="DeleteMember.do?seq=<%=dto.getMem_Seq()%>">삭제</a></td>
+				<td><a href="#" data-toggle="collapse" data-target="#update" 
+					onclick="fillMemInfo(<%=dto.getMem_Seq()%>);">수정</a>|
+					<a href="DeleteMember.do?seq=<%=dto.getMem_Seq()%>">삭제</a></td>
 			</tr>
 			<%}}%>
 		</table>
