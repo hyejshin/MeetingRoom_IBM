@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import com.ibm.cof.dao.ConfDAO;
+
 /**
  * Servlet implementation class SelectBySite
  */
@@ -44,10 +49,20 @@ public class SelectBySite extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
+		String projname = request.getParameter("proj");
+
+		JSONArray json = new JSONArray();
+	    ConfDAO rdao = new ConfDAO(); 
+	    
+		json = rdao.selectListByName(projname);
 		
+		JSONObject obj = new JSONObject();
 		
-        // 다음 페이지로 이동
-        RequestDispatcher rd = request.getRequestDispatcher("");
-        rd.forward(request, response);
+		obj.put("result",json);
+		//System.out.println("obj is: "+obj);
+		
+		response.setContentType("text/html;charset=UTF-8");
+		response.getWriter().print(obj);
+		response.setCharacterEncoding("UTF-8");
     }
 }

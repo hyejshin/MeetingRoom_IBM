@@ -87,8 +87,8 @@ public class ProjectDAO {
 			
 			while (rs.next()) {
 
-				int p_proj_Seq = rs.getInt("PROJ_SEQ");
-				String p_proj_Nm = rs.getString("PROJ_NM");
+				int p_proj_Seq = rs.getInt("proj_seq");
+				String p_proj_Nm = rs.getString("proj_nm");
 				ProjectDTO dto = new ProjectDTO(p_proj_Seq, p_proj_Nm);
 
 				projList.add(dto);

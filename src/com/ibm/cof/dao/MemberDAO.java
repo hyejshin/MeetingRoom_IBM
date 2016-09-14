@@ -220,7 +220,6 @@ public class MemberDAO {
 		String query = "select * from tb_member where mem_nm=?";
 		//JSONObject json = new JSONObject();
 		JSONArray jarray = new JSONArray();
-		String pn,em,site;
 				
 		try {
 			conn = db.connect();
@@ -235,7 +234,6 @@ public class MemberDAO {
 				json.put("email", rs.getString("mem_em"));
 				json.put("site", rs.getString("mem_site"));
 				jarray.add(json);
-				//System.out.println("pn : "+pn+"em : "+em+"site : "+site);
 			}
 					
 		} catch (Exception e) {

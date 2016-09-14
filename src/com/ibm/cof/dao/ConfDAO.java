@@ -10,6 +10,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServlet;
 import javax.sql.DataSource;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.ibm.cof.dto.ConfDTO;
 
 public class ConfDAO {
@@ -98,5 +101,42 @@ public class ConfDAO {
 		} finally {
 			db.close(pstmt, conn);
 		}
+	}
+	
+	// 프로젝트별 회의실 목록을 가져온다
+	public JSONArray selectListByName(String sitename)
+	{
+		 String query = "select confrn_nm, confrn_stat from tb_conference where confrn_site = ? order by confrn_nm"; 
+		 
+		JSONArray jarray = new JSONArray();
+		String conf_name, conf_stat;
+				
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, sitename);
+			rs = pstmt.executeQuery();
+						
+			while(rs.next()) {
+				
+				JSONObject json = new JSONObject();
+
+				conf_name =  rs.getString("confrn_nm");
+				conf_stat =  rs.getString("confrn_stat"); 
+				json.put("confname",conf_name);
+				json.put("stat",conf_stat);
+				jarray.add(json);
+			}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return jarray;
 	}
 }

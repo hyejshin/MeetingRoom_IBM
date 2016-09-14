@@ -1,0 +1,43 @@
+@CHARSET "UTF-8";
+
+	button{
+		margin-top: 20px;
+		margin-left: 18px;
+		width: 100px;
+	}
+	#conference {
+		position: relative; 
+		width: 100%;
+		height: 20px;
+		margin-bottom: 5px;
+		background-color: white;
+	}
+	.conf {
+		position: absolute;
+		text-align: center;
+	}
+	#timeDiv {
+		position: relative; 
+		text-align: center;
+		width: 70px;
+	}
+	.time {
+		position: absolute;
+		width: 70px;
+		left: 0px;
+	}
+	#schedule {
+		position: relative; 
+		width: 100%;
+		height: 400px;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 30px;
+		border-color: black;
+		background-color: #cceeff;
+	}
+	.meeting {
+		position: absolute;
+		text-align: center;
+		background-color: #66ccff;	
+	}

@@ -1,4 +1,5 @@
-<!-- http://yuilibrary.com/yui/docs/calendar/calendar-simple.html -->
+<!-- http://yuilibrary.com/yui/docs/calendar/calendar-simple.html
+http://yuilibrary.com/yui/docs/calendar/ -->
 
 
 <script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
@@ -40,6 +41,7 @@
 	</div>
 
 	<script type="text/javascript">
+    	
 		YUI().use('calendar', 'datatype-date', 'cssbutton',  function(Y) {
 
 	    // Create a new instance of calendar, placing it in
@@ -47,13 +49,23 @@
 	    // the flags for showing previous and next month's
 	    // dates in available empty cells to true, and setting
 	    // the date to today's date.
+	    
+	    //Setting the date to today's date.  
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth(); //January is 1
+		var yyyy = today.getFullYear();
+	
 	    var calendar = new Y.Calendar({
 	      contentBox: "#mycalendar",
 	      width:'400px',
 	      height: '350px',
 	      showPrevMonth: true,
 	      showNextMonth: true,
+	      ///minimumDate: new Date(yyyy, mm, dd), //현재 날짜 이전은 선택 불가
 	      date: new Date()}).render();
+	    
+	    
 	
 	    // Get a reference to Y.DataType.Date
 	    var dtdate = Y.DataType.Date;
@@ -72,6 +84,7 @@
 	      // 선택 날짜 출력해주기
 	      //Y.one("#selecteddate").setHTML(dtdate.format(newDate));
 	      document.myForm.date.value = dtdate.format(newDate);
+	      displaySchedule(dtdate.format(newDate));
 	    });
 	
 	    // When the 'Show Previous Month' link is clicked,
