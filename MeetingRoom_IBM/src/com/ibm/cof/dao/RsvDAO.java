@@ -19,9 +19,9 @@ public class RsvDAO {
 	@Resource(name="jdbc/ibm")
 	DBCon db = new DBCon();
     Connection conn = null;
-    PreparedStatement pstmt = null;
+    PreparedStatement pstmt,pstmt1 = null;
     Statement st = null;
-    ResultSet rs = null;
+    ResultSet rs,rs1 = null;
     
     /**
      * @see HttpServlet#HttpServlet()
@@ -223,34 +223,64 @@ public class RsvDAO {
 		return bool;
 	}
 	
-	public JSONArray selectListByCondition(String confer_nm,String date)
+	public JSONArray selectListByCondition(String site,String date)
 	{
 		//Map mlist = new Map<MemberDTO>();
 		
-		String query = "select * from tb_reservation where rsv_confer_nm=? and rsv_date=? ";
-		System.out.println("ID1 : "+confer_nm+" ID2 : "+date);
+		// 예약테이블에서 예약정보를 가져오는 Query 
+		String query = "select rsv_start_time,rsv_end_time,"
+				+ "rsv_confer_nm,"
+				+ "(select count(confrn_nm) from tb_conference where confrn_site=?)" 
+				+ "from tb_reservation "
+				+ "where rsv_date=? ";
+		
+		// 회의실테이블에서 회의실 수를 가져오는 Query
+		/*String query1 = "select count(confrn_nm) "
+				+ "from tb_conference where confrn_site=?"; */
+						
 		//JSONObject json = new JSONObject();
-		JSONArray jarray = new JSONArray();
+		JSONArray jarray = new JSONArray(); // 예약정보를 저장하는 JSONArray
+		//JSONArray jarray1 = new JSONArray(); // 회의실정보를 저장하는 JSONArray
 						
 		try {
 			conn = db.connect();
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, confer_nm);
+			/* 예약정보를 JSONArray로 받도록 하는 커넥션 */
+			pstmt = conn.prepareStatement(query); 
+			pstmt.setString(1, site);
 			pstmt.setString(2, date);
 			rs = pstmt.executeQuery();
-						
+			
 			while(rs.next()) {
-				
 				JSONObject json = new JSONObject();
 				//json.put("room", rs.getString("rsv_confer_nm"));
 				json.put("start_time", rs.getString("rsv_start_time"));
 				json.put("end_time", rs.getString("rsv_end_time"));
-				json.put("name", rs.getString("rsv_mem_nm"));
-				json.put("title", rs.getString("rsv_title"));
+				json.put("confer_nm",rs.getString("rsv_confer_nm"));
+				json.put("room_count", rs.getInt(4));	
+			
+				
+				//json.put("name", rs.getString("rsv_mem_nm"));
+				//json.put("title", rs.getString("rsv_title"));
 				jarray.add(json);
 				//System.out.println("pn : "+pn+"em : "+em+"site : "+site);
 			}
-					
+			
+			/* 회의실정보를 JSONArray로 받도록 하는 커넥션 */
+			/*pstmt1 = conn.prepareStatement(query1); 
+			pstmt1.setString(1, site);
+			//pstmt1.setString(2, date);
+			rs1 = pstmt1.executeQuery();*/
+			
+			/*while(rs1.next()) {
+				JSONObject json1 = new JSONObject();
+				//json.put("room", rs.getString("rsv_confer_nm"));
+				json1.put("count", rs1.getInt("count(confer_nm)"));	
+				//json.put("name", rs.getString("rsv_mem_nm"));
+				//json.put("title", rs.getString("rsv_title"));
+				jarray.add(json1);
+				//System.out.println("pn : "+pn+"em : "+em+"site : "+site);
+			}*/
+							
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
