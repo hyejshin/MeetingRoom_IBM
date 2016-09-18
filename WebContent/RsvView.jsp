@@ -52,13 +52,13 @@
 		<!-- 사이트 선택 -->
 		<div class="row" style="padding-bottom:25px;">
 			<div class="col-md-6 col-sm-9 col-xs-12">
-				<select class="form-control" id="site" name="site">
+				<select class="form-control" id="site" name="site" onchange="displayConf(this.value);">
 				<option value="">선택하세요</option>
 				<%ArrayList<ProjectDTO> dtos = (ArrayList) request.getAttribute("proj");
 					if (dtos != null) {
 						for (int i = 0; i < dtos.size(); i++) {
 							ProjectDTO dto = dtos.get(i);%>
-					<option value="<%=dto.getProj_Nm()%>" onclick="displayConf(value)"><%=dto.getProj_Nm()%></option>
+					<option value="<%=dto.getProj_Nm()%>"><%=dto.getProj_Nm()%></option>
 				<%}}%>
 				</select>
 			</div>
@@ -84,41 +84,57 @@
 		</div>
 		
 		
-		<!-- 입력창 -->
-		<div id="input">
+		<!-- 회의실 예약 입력창 -->
+		<div>
 		<div class="row">
 			<div class="col-md-4">
-				이름<input type="text" class="form-control" id="name"> 
+				이름<input type="text" class="form-control" id="name" name="name"> 
 			</div>
 			<div class="col-md-4">
-				전화번호<input type="text" class="form-control" id="phone">
+				전화번호<input type="text" class="form-control" id="phone" name="phone">
 			</div>
 			<div class="col-md-4">
-				이메일<input type="text" class="form-control" id="email">
+				이메일<input type="text" class="form-control" id="email" name="email">
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-4">
-				날짜<input type="text" class="form-control" id="date"> 
+				날짜<input type="text" class="form-control" id="date" name="date"> 
 			</div>
 			<div class="col-md-4">
-				시작시간<input type="text" class="form-control" id="start_time"> 
+				시작시간<input type="text" class="form-control" id="start_time" name="start_time"> 
 			</div>
 			<div class="col-md-4">
-				끝시간<input type="text" class="form-control" id="end_time">
+				끝시간<input type="text" class="form-control" id="end_time" name="end_time">
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-4">
-				회의제목<input type="text" class="form-control" id="title"> 
+				회의실<input type="text" class="form-control" id="confer_nm" name="confer_nm"> 
 			</div>
 			<div class="col-md-4">
-				비밀번호<input type="text" class="form-control" id="password">
+				회의제목<input type="text" class="form-control" id="title" name="title"> 
 			</div>
-			<button type="button" class="btn btn-primary">예약</button>
+			<div class="col-md-4">
+				비밀번호<input type="password" class="form-control" id="password" name="password">
+			</div>
+			
+			<!-- 예약 버튼 -->
+			<div id="register">
+				<button type="button" class="btn btn-primary">예약</button>
+			</div>
+			
+			<!-- 수정 및 삭제 -->
+			<div id="registerInfo">
+				<button type="button" class="btn btn-primary">수정</button>
+				<button type="button" class="btn btn-primary">삭제</button>
+			</div>
 		</div>
 	</div>
 	
+	
+		
+	</div>
 	</div>
 	
 	</form> 

@@ -41,3 +41,8 @@
 		text-align: center;
 		background-color: #66ccff;	
 	}
+	.empty {
+		position: absolute;
+		text-align: center;
+		background-color: #cceeff;	
+	}

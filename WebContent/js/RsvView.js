@@ -84,18 +84,34 @@
 				var confNumber = data.confers.length;
 				var width = (document.getElementById('schedule').offsetWidth - 70)/confNumber;
 				var left = 70;
-				var top, height, j=0;
+				var top, height, j=0, bottom;
 				
 				$('#meetings').empty();
 				for (var i = 0; i < data.confers.length; i++) {
-					while(data.meetings[j].confer_nm == data.confers[i].confname){
+					bottom = 0;
+					
+					while (j < data.meetings.length && data.meetings[j].confer_nm == data.confers[i].confname) {
 						top = (timeToMin(data.meetings[j].start) - 540) / 30 * 20;
 						height = (timeToMin(data.meetings[j].end) - timeToMin(data.meetings[j].start)) / 30 * 20;
-						$('#meetings').append("<div class='meeting'"
+						
+						// 예약되어있지 않는 공간
+						$('#meetings').append("<div id='empty' class='empty'"
+								+ "style='top:"+bottom+"px; left:"+left+"px; width:"+width+"px; height:"+(top-bottom)+"px;'"
+								+ "onClick='reserve("+(bottom/20*30+540)+", "+(top/20*30+540)+");'></div>");
+						
+						bottom = top + height;
+						
+						// 예약된 공간
+						$('#meetings').append("<div id='reserved' class='meeting'"
 								+ "style='top:"+top+"px; left:"+left+"px; width:"+width+"px; height:"+height+"px;'"
 								+ "onClick='reserveInfo("+data.meetings[j].seq+");'>"+data.meetings[j].title+"</div>");
 						j++;
 					}
+					
+					// 예약되어있지 않는 공간
+					$('#meetings').append("<div id='empty' class='empty'"
+							+ "style='top:"+bottom+"px; left:"+left+"px; width:"+width+"px; height:"+(400-bottom)+"px;'"
+							+ "onClick='reserve("+(bottom/20*30+540)+", "+(360/20*30+540)+");'></div>");
 					left += width;
 				}
 					
@@ -108,10 +124,73 @@
 	
 	// 예약되어 있는 시간표를 클릭시 상세 정보를 보여준다.
 	function reserveInfo(seq){
-		alert(seq);
+		$("#register").hide();
+        $("#registerInfo").show();
+        
+        $.ajax({
+	        type: "post",
+	        url : "SelectRsvInfo.do",
+	        dataType : 'json',
+	        data: {
+	        	seq : seq
+	        },
+	       
+	        success : function(data) {
+	        	$('#name').empty();
+	        	$('#phone').empty();
+	        	$('#email').empty();
+	        	$('#date').empty();
+	        	$('#start_time').empty();
+	        	$('#end_time').empty();
+	        	$('#confer_nm').empty();
+	        	$('#title').empty();
+	        	
+      			for(var i=0; i<data.result.length; i++) {
+      				$('input[name="name"]').val(data.result[i].name);
+      				$('input[name="phone"]').val(data.result[i].phone);
+      				$('input[name="email"]').val(data.result[i].email);
+      				$('input[name="date"]').val(data.result[i].date);
+      				$('input[name="start_time"]').val(data.result[i].start_time);
+      				$('input[name="end_time"]').val(data.result[i].end_time);
+      				$('input[name="confer_nm"]').val(data.result[i].confer_nm);
+      				$('input[name="title"]').val(data.result[i].title);
+      			  }
+	        },
+	        error : function() {
+	        	console.log("error");
+	        }
+ 	});
 	}
 	
 	// 빈 회의 시간표를 클릭시 예약 할 수 있도록 해준다.
-	function reserve(){
-		alert("reserve");
+	function reserve(start, end){
+		//alert(minToTime(start) + " - " + minToTime(end));
+		$("#registerInfo").hide();
+        $("#register").show();
+        
+        $('#name').empty();
+    	$('#phone').empty();
+    	$('#email').empty();
+    	$('#date').empty();
+    	$('#start_time').empty();
+    	$('#end_time').empty();
+    	$('#confer_nm').empty();
+    	$('#title').empty();
+    	$('#password').empty();
+    	
+    	$('input[name="name"]').val("");
+		$('input[name="phone"]').val("");
+		$('input[name="email"]').val("");
+		$('input[name="date"]').val("");
+		$('input[name="start_time"]').val("");
+		$('input[name="end_time"]').val("");
+		$('input[name="confer_nm"]').val("");
+		$('input[name="title"]').val("");
+		$('input[name="password"]').val("");
 	}
+	
+
+	$(document).ready(function(){
+		$("#registerInfo").hide();
+
+	});

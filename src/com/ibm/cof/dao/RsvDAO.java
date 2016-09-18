@@ -14,6 +14,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
+
 import com.ibm.cof.dto.RsvDTO;
 
 public class RsvDAO {
@@ -297,6 +298,43 @@ public class RsvDAO {
 				
 				jarray.add(json);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return jarray;
+	}
+	
+	public JSONArray selectBySeq(String seq)
+	{
+		String query = "select * from tb_reservation where rsv_seq=?";
+		JSONArray jarray = new JSONArray();
+				
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, seq);
+			rs = pstmt.executeQuery();
+						
+			while(rs.next()) {
+				JSONObject json = new JSONObject();
+				json.put("name", rs.getString("rsv_mem_nm"));
+				json.put("phone", rs.getString("rsv_mem_pn"));
+				json.put("email", rs.getString("rsv_mem_em"));
+				json.put("date", rs.getString("rsv_date"));
+				json.put("start_time", rs.getString("rsv_start_time"));
+				json.put("end_time", rs.getString("rsv_end_time"));
+				json.put("confer_nm", rs.getString("rsv_confer_nm"));
+				json.put("title", rs.getString("rsv_title"));
+				json.put("password", rs.getString("rsv_del_pw"));
+				jarray.add(json);
+			}
+					
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
