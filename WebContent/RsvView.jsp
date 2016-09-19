@@ -107,10 +107,16 @@
 							날짜<input type="text" class="form-control" id="date" name="date">
 						</div>
 						<div class="col-md-4">
-							시작시간<input type="text" class="form-control" id="start_time" name="start_time">
+							시작시간
+							<select class="form-control" name="start_time" id="start_time">
+								<option value="">선택하세요</option>
+							</select>
 						</div>
 						<div class="col-md-4">
-							끝시간<input type="text" class="form-control" id="end_time" name="end_time">
+							끝시간
+							<select class="form-control" name="end_time" id="end_time">
+								<option value="">선택하세요</option>
+							</select>
 						</div>
 					</div>
 					<div class="row">

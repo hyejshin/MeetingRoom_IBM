@@ -86,7 +86,7 @@ public class Reservation extends HttpServlet {
 				name, phone, email, del_pw);*/
 		
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("RsvView.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("home.do");
 		dispatcher.forward(request, response);
 	}
 }

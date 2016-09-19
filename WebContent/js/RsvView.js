@@ -1,4 +1,6 @@
-// 분을 시간 문자열로 변환해 준다
+var conference = [];
+
+// 분을 시간 문자열로 변환해 준다 540 -> 09:00
 	function minToTime(time){
 		var hr = time/60 - time/60%1;
 		var min = time%60;
@@ -19,6 +21,22 @@
 		var hr = parseInt(time.substring(0,2));
 		var min = parseInt(time.substring(2,4));
 		return hr*60 + min; 
+	}
+	
+	//분을 디비에 저장하는 시간 문자열로 변경 540 -> 0900
+	function minToStr(time){
+		var hr = time/60 - time/60%1;
+		var min = time%60;
+		var str = "";
+		if(hr<10)
+			str += "0"+hr;
+		else
+			str += hr;
+		if(min<10)
+			str += "0"+min;
+		else
+			str += min;
+		return str;
 	}
 	
 	// 프로젝트별 회의실 목록을 보여준다.
@@ -90,14 +108,16 @@
 				for (var i = 0; i < data.confers.length; i++) {
 					bottom = 0;
 					
+					conference.push(data.confers[i].confname);
+					
 					while (j < data.meetings.length && data.meetings[j].confer_nm == data.confers[i].confname) {
 						top = (timeToMin(data.meetings[j].start) - 540) / 30 * 20;
 						height = (timeToMin(data.meetings[j].end) - timeToMin(data.meetings[j].start)) / 30 * 20;
-						
+
 						// 예약되어있지 않는 공간
 						$('#meetings').append("<div id='empty' class='empty'"
 								+ "style='top:"+bottom+"px; left:"+left+"px; width:"+width+"px; height:"+(top-bottom)+"px;'"
-								+ "onClick='reserve("+(bottom/20*30+540)+", "+(top/20*30+540)+");'></div>");
+								+ "onClick='reserve("+i+", "+(bottom/20*30+540)+", "+(top/20*30+540)+");'></div>");
 						
 						bottom = top + height;
 						
@@ -111,7 +131,7 @@
 					// 예약되어있지 않는 공간
 					$('#meetings').append("<div id='empty' class='empty'"
 							+ "style='top:"+bottom+"px; left:"+left+"px; width:"+width+"px; height:"+(400-bottom)+"px;'"
-							+ "onClick='reserve("+(bottom/20*30+540)+", "+(360/20*30+540)+");'></div>");
+							+ "onClick='reserve("+i+", "+(bottom/20*30+540)+", "+(360/20*30+540)+");'></div>");
 					left += width;
 				}
 					
@@ -163,17 +183,16 @@
 	}
 	
 	// 빈 회의 시간표를 클릭시 예약 할 수 있도록 해준다.
-	function reserve(start, end){
+	function reserve(conf_idx, start, end){
 		//alert(minToTime(start) + " - " + minToTime(end));
 		$("#registerInfo").hide();
         $("#register").show();
         
+        timeSelectList(start, end)
+        
         $('#name').empty();
     	$('#phone').empty();
     	$('#email').empty();
-    	$('#date').empty();
-    	$('#start_time').empty();
-    	$('#end_time').empty();
     	$('#confer_nm').empty();
     	$('#title').empty();
     	$('#del_pw').empty();
@@ -181,15 +200,26 @@
     	$('input[name="name"]').val("");
 		$('input[name="phone"]').val("");
 		$('input[name="email"]').val("");
-		$('input[name="date"]').val("");
-		$('input[name="start_time"]').val("");
-		$('input[name="end_time"]').val("");
-		$('input[name="confer_nm"]').val("");
+		$('input[name="confer_nm"]').val(conference[conf_idx]);
 		$('input[name="title"]').val("");
 		$('input[name="del_pw"]').val("");
 	}
 	
-
+	function timeSelectList(start, end){
+		$('#start_time').empty();
+		for(var i=start; i<end; i+=30) {
+			$('#start_time').append("<option value='"+minToStr(i)+"'>"+minToTime(i)+"</option>");
+		  }
+		$("#start_time").val(minToStr(start)).attr("selected", "selected");
+		
+		$('#end_time').empty();
+		for(var i=start+30; i<=end; i+=30) {
+			$('#end_time').append("<option value='"+minToStr(i)+"'>"+minToTime(i)+"</option>");
+		  }
+		$("#end_time").val(minToStr(end)).attr("selected", "selected");
+	}
+	
+	
 	$(document).ready(function(){
 		$("#registerInfo").hide();
 
