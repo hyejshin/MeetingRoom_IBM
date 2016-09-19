@@ -247,4 +247,107 @@ public class MemberDAO {
 		}
 		return jarray;
 	}
+	
+	
+	 public Boolean isCheckID(String mem_pn) {
+
+	      Boolean bool = false;
+	      try {
+	         conn = db.connect();
+
+	         String query = "select * from tb_member where mem_pn=?";
+	         pstmt = conn.prepareStatement(query);
+	         pstmt.setString(1, mem_pn);
+	         rs = pstmt.executeQuery();
+
+	         if (rs.next())
+	            bool = true;
+	         else
+	            bool = false;
+
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            db.close(rs, pstmt, conn);
+	         } catch (Exception e2) {
+	            e2.printStackTrace();
+	         }
+	      }
+
+	      return bool;
+	   }
+
+	   public ArrayList<String> getNameList(String phone) {
+	      // List<MemberDTO> nameLst = null;
+	      ArrayList<String> list = new ArrayList<String>();
+	      // MemberDTO mdto = null;
+	      System.out.println("Phone : " + phone);
+	      try {
+	         conn = db.connect();
+	         String query = "select distinct mem_pn from tb_member where mem_pn like ?";
+	         String data;
+	         pstmt = conn.prepareStatement(query);
+	         pstmt.setString(1, "%" + phone + "%");
+	         rs = pstmt.executeQuery();
+
+	         if (rs == null) {
+	            System.out.println("NULL");
+	         } else {
+	            System.out.println("Not NULL");
+	         }
+
+	         while (rs.next()) {
+	            /*
+	             * JSONObject json = new JSONObject(); json.put("name",
+	             * rs.getString("mem_nm")); jarray.add(json);
+	             */
+	            data = rs.getString("mem_pn");
+	            list.add(data);
+	         }
+
+	      } catch (SQLException se) {
+	         se.printStackTrace();
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         db.close(pstmt, conn);
+	      }
+	      return list;
+
+	   }
+
+	   public JSONArray fillListByName(String phone) {
+	      String query = "select * from tb_member where mem_pn=?";
+	      JSONArray jarray = new JSONArray();
+
+	      try {
+	         conn = db.connect();
+	         pstmt = conn.prepareStatement(query);
+	         pstmt.setString(1, phone);
+	         rs = pstmt.executeQuery();
+
+	         while (rs.next()) {
+
+	            JSONObject json = new JSONObject();
+	            json.put("name", rs.getString("mem_nm"));
+	            json.put("email", rs.getString("mem_em"));
+	            json.put("site", rs.getString("mem_site"));
+	            jarray.add(json);
+	            // System.out.println("pn : "+pn+"em : "+em+"site : "+site);
+	         }
+
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            db.close(rs, pstmt, conn);
+	         } catch (Exception e2) {
+	            e2.printStackTrace();
+	         }
+	      }
+	      return jarray;
+	   }
+
+
 }

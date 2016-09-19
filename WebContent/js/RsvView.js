@@ -176,7 +176,7 @@
     	$('#end_time').empty();
     	$('#confer_nm').empty();
     	$('#title').empty();
-    	$('#password').empty();
+    	$('#del_pw').empty();
     	
     	$('input[name="name"]').val("");
 		$('input[name="phone"]').val("");
@@ -186,7 +186,7 @@
 		$('input[name="end_time"]').val("");
 		$('input[name="confer_nm"]').val("");
 		$('input[name="title"]').val("");
-		$('input[name="password"]').val("");
+		$('input[name="del_pw"]').val("");
 	}
 	
 

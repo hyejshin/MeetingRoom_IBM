@@ -10,8 +10,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="js/ajax_auto.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 
 <script src="js/RsvView.js"></script>
 <link rel="stylesheet" type="text/css" href="css/RsvView.css">
@@ -47,7 +51,7 @@
 	</div>
 	</nav>
 
-	<form method="post" name="myForm">
+	<form method="post" name="myForm" action="Reservation.do">
 	<div class="container">
 		<!-- 사이트 선택 -->
 		<div class="row" style="padding-bottom:25px;">
@@ -64,78 +68,80 @@
 			</div>
 		</div>
 
-		<div class="row">
+			<div class="row">
 
-		<!-- 달력 -->
-		<div class="col-md-5 col-sm-6 col-xs-12" style="margin-top:20px;">
-			<%@ include file="calendar/calendar.jsp" %>
+				<!-- 달력 -->
+				<div class="col-md-5 col-sm-6 col-xs-12" style="margin-top: 20px;">
+					<%@ include file="calendar/calendar.jsp"%>
+				</div>
+
+				<!-- 회의실tab & 예약현황 -->
+				<div class="col-md-7 col-sm-6 col-xs-12">
+
+					<!-- 회의실탭 -->
+					<div id="conference"></div>
+
+					<div id="schedule">
+						<div id="timeDiv"></div>
+						<div id="meetings"></div>
+					</div>
+				</div>
+
+
+				<!-- 회의실 예약 입력창 -->
+				<div class="search-container">
+
+					<div class="row">
+						<div class="col-md-4">
+							전화번호<input type="text" class="form-control" id="phone" name="phone">
+						</div>
+						<div class="col-md-4">
+							이름<input type="text" class="form-control" id="name" name="name">
+						</div>
+						<div class="col-md-4">
+							이메일<input type="text" class="form-control" id="email" name="email">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							날짜<input type="text" class="form-control" id="date" name="date">
+						</div>
+						<div class="col-md-4">
+							시작시간<input type="text" class="form-control" id="start_time" name="start_time">
+						</div>
+						<div class="col-md-4">
+							끝시간<input type="text" class="form-control" id="end_time" name="end_time">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							회의실<input type="text" class="form-control" id="confer_nm" name="confer_nm">
+						</div>
+						<div class="col-md-4">
+							회의제목<input type="text" class="form-control" id="title" name="title">
+						</div>
+						<div class="col-md-4">
+							비밀번호<input type="password" class="form-control" id="del_pw"	name="del_pw">
+						</div>
+
+						<!-- 예약 버튼 -->
+						<div id="register">
+							<button type="submit" class="btn btn-primary">예약</button>
+						</div>
+
+						<!-- 수정 및 삭제 -->
+						<div id="registerInfo">
+							<button type="button" class="btn btn-primary">수정</button>
+							<button type="button" class="btn btn-primary">삭제</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+
+
 		</div>
-		
-		<!-- 회의실tab & 예약현황 -->
-		<div class="col-md-7 col-sm-6 col-xs-12">
-		
-			<!-- 회의실탭 -->
-			<div id="conference"></div>
-			
-			<div id="schedule">
-				<div id="timeDiv"></div>
-				<div id="meetings"></div>
-			</div>
-		</div>
-		
-		
-		<!-- 회의실 예약 입력창 -->
-		<div>
-		<div class="row">
-			<div class="col-md-4">
-				이름<input type="text" class="form-control" id="name" name="name"> 
-			</div>
-			<div class="col-md-4">
-				전화번호<input type="text" class="form-control" id="phone" name="phone">
-			</div>
-			<div class="col-md-4">
-				이메일<input type="text" class="form-control" id="email" name="email">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4">
-				날짜<input type="text" class="form-control" id="date" name="date"> 
-			</div>
-			<div class="col-md-4">
-				시작시간<input type="text" class="form-control" id="start_time" name="start_time"> 
-			</div>
-			<div class="col-md-4">
-				끝시간<input type="text" class="form-control" id="end_time" name="end_time">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4">
-				회의실<input type="text" class="form-control" id="confer_nm" name="confer_nm"> 
-			</div>
-			<div class="col-md-4">
-				회의제목<input type="text" class="form-control" id="title" name="title"> 
-			</div>
-			<div class="col-md-4">
-				비밀번호<input type="password" class="form-control" id="password" name="password">
-			</div>
-			
-			<!-- 예약 버튼 -->
-			<div id="register">
-				<button type="button" class="btn btn-primary">예약</button>
-			</div>
-			
-			<!-- 수정 및 삭제 -->
-			<div id="registerInfo">
-				<button type="button" class="btn btn-primary">수정</button>
-				<button type="button" class="btn btn-primary">삭제</button>
-			</div>
-		</div>
-	</div>
-	
-	
-		
-	</div>
-	</div>
 	
 	</form> 
 
