@@ -105,6 +105,8 @@ var conference = [];
 				var top, height, j=0, bottom;
 				
 				$('#meetings').empty();
+				conference = [];
+				
 				for (var i = 0; i < data.confers.length; i++) {
 					bottom = 0;
 					
@@ -160,8 +162,6 @@ var conference = [];
 	        	$('#phone').empty();
 	        	$('#email').empty();
 	        	$('#date').empty();
-	        	$('#start_time').empty();
-	        	$('#end_time').empty();
 	        	$('#confer_nm').empty();
 	        	$('#title').empty();
 	        	
@@ -170,11 +170,11 @@ var conference = [];
       				$('input[name="phone"]').val(data.result[i].phone);
       				$('input[name="email"]').val(data.result[i].email);
       				$('input[name="date"]').val(data.result[i].date);
-      				$('input[name="start_time"]').val(data.result[i].start_time);
-      				$('input[name="end_time"]').val(data.result[i].end_time);
       				$('input[name="confer_nm"]').val(data.result[i].confer_nm);
       				$('input[name="title"]').val(data.result[i].title);
       			  }
+      			
+      			timeSelectListAll(data.result[0].start_time, data.result[0].end_time);
 	        },
 	        error : function() {
 	        	console.log("error");
@@ -217,6 +217,21 @@ var conference = [];
 			$('#end_time').append("<option value='"+minToStr(i)+"'>"+minToTime(i)+"</option>");
 		  }
 		$("#end_time").val(minToStr(end)).attr("selected", "selected");
+	}
+	
+	function timeSelectListAll(start, end){
+		
+		$('#start_time').empty();
+		for(var i=540; i<1080; i+=30) {
+			$('#start_time').append("<option value='"+minToStr(i)+"'>"+minToTime(i)+"</option>");
+		  }
+		$("#start_time").val(start).attr("selected", "selected");
+		
+		$('#end_time').empty();
+		for(var i=570; i<=1080; i+=30) {
+			$('#end_time').append("<option value='"+minToStr(i)+"'>"+minToTime(i)+"</option>");
+		  }
+		$("#end_time").val(end).attr("selected", "selected");
 	}
 	
 	
