@@ -52,8 +52,15 @@
 	        data: { },
 	       
 	        success : function(data) {
-	        	$(id).empty();
+	        	$('#seq').empty();
+	        	$('#name').empty();
+	        	$('#phone').empty();
+	        	$('#email').empty();
+	        	$('input[name="name"]').val("");
+  				$('input[name="phone"]').val("");
+  				$('input[name="email"]').val("");
 	        	
+	        	$(id).empty();
 	        	$(id).append("<option value=''>선택하세요</option>");
       			for(var i=0; i<data.result.length; i++) {
       				$(id).append("<option value='"+data.result[i].project+"'>"+data.result[i].project+"</option>");
