@@ -10,19 +10,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.ibm.cof.dao.ConfDAO;
 
 /**
  * Servlet implementation class InsertConf
  */
-@WebServlet("/InsertConf.do")
-public class InsertConf extends HttpServlet {
+@WebServlet("/UpdateViewConf.do")
+public class UpdateViewConf extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public InsertConf() {
+	public UpdateViewConf() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -46,17 +49,21 @@ public class InsertConf extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		HttpSession session = request.getSession();
-		String project = (String)session.getAttribute("project");
+		System.out.println("se");
 		
-		String name = request.getParameter("name");
-		String state = request.getParameter("state");
-
+		int seq = Integer.parseInt(request.getParameter("seq"));
+		
+		JSONArray json = new JSONArray();
 		ConfDAO cdao = new ConfDAO();
-		cdao.insert(name,project,state);
-
-
-		RequestDispatcher rd = request.getRequestDispatcher("SelectConf.do");
-		rd.forward(request, response);
+		json = cdao.selectBySeq(seq);
+		
+		JSONObject obj = new JSONObject();
+		obj.put("result",json);
+		System.out.println(obj);
+		
+		
+		response.setContentType("text/html;charset=UTF-8");
+		response.getWriter().print(obj);
+		response.setCharacterEncoding("UTF-8");
 	}
 }

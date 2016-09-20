@@ -15,14 +15,14 @@ import com.ibm.cof.dao.ConfDAO;
 /**
  * Servlet implementation class InsertConf
  */
-@WebServlet("/InsertConf.do")
-public class InsertConf extends HttpServlet {
+@WebServlet("/UpdateConf.do")
+public class UpdateConf extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public InsertConf() {
+	public UpdateConf() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -46,17 +46,15 @@ public class InsertConf extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		HttpSession session = request.getSession();
-		String project = (String)session.getAttribute("project");
-		
+		int seq = Integer.parseInt(request.getParameter("seq"));
 		String name = request.getParameter("name");
-		String state = request.getParameter("state");
-
+		String stat = request.getParameter("state");
+		
 		ConfDAO cdao = new ConfDAO();
-		cdao.insert(name,project,state);
-
-
-		RequestDispatcher rd = request.getRequestDispatcher("SelectConf.do");
-		rd.forward(request, response);
+		//ConfDTO cdto = new ConfDTO(name,stat);
+		cdao.updateState(seq, name, stat);
+        
+        RequestDispatcher rd = request.getRequestDispatcher("SelectConf.do");
+        rd.forward(request, response);
 	}
 }

@@ -1,6 +1,7 @@
 package com.ibm.cof.controller.ConfController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,21 +12,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ibm.cof.dao.ConfDAO;
+import com.ibm.cof.dto.ConfDTO;
 
 /**
- * Servlet implementation class InsertConf
+ * Servlet implementation class SelectConf
  */
-@WebServlet("/InsertConf.do")
-public class InsertConf extends HttpServlet {
+@WebServlet("/SelectConf.do")
+public class SelectConf extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public InsertConf() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public SelectConf() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -49,14 +51,14 @@ public class InsertConf extends HttpServlet {
 		HttpSession session = request.getSession();
 		String project = (String)session.getAttribute("project");
 		
-		String name = request.getParameter("name");
-		String state = request.getParameter("state");
-
+		ArrayList<ConfDTO> cdtos = new ArrayList<ConfDTO>();
+		
 		ConfDAO cdao = new ConfDAO();
-		cdao.insert(name,project,state);
+		cdtos = cdao.printRoom(project);
+		
+		request.setAttribute("list", cdtos);
 
-
-		RequestDispatcher rd = request.getRequestDispatcher("SelectConf.do");
+		RequestDispatcher rd = request.getRequestDispatcher("AdminConference.jsp");
 		rd.forward(request, response);
 	}
 }

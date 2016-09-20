@@ -21,7 +21,7 @@
 		<li><a href="AdminRsv.jsp">예약관리</a></li>
 		<li class="active"><a href="AdminRsvHist.jsp">예약내역</a></li>
 		<li><a href="SearchMember.do?option=all">회원관리</a></li>
-		<li><a href="AdminConference.jsp">회의실관리</a></li>
+		<li><a href="SelectConf.do">회의실관리</a></li>
 	</ul>
 	
 	Admin history

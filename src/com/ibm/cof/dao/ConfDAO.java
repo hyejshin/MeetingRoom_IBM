@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServlet;
@@ -32,15 +33,15 @@ public class ConfDAO {
 	}
 
 	/* 관리자는 회의실의 이름,어느 프로젝트 소속,상태등을 추가할 수 있다. */
-	public void insert(ConfDTO cdto) {
+	public void insert(String name,String site,String stat) {
 		String query = "insert into tb_conference(confrn_nm,confrn_site,confrn_stat)"
 				+ " values(?,?,?)";
 		try {
 			conn = db.connect();
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, cdto.getConfrn_Nm());
-			pstmt.setString(2, cdto.getConfrn_Site());
-			pstmt.setString(3, cdto.getConfrn_Stat());
+			pstmt.setString(1, name);
+			pstmt.setString(2, site);
+			pstmt.setString(3, stat);
 
 			pstmt.executeUpdate();
 
@@ -56,17 +57,18 @@ public class ConfDAO {
 	}
 
 	/* 관리자는 회의실의 상태를 수정할 수 있다. */
-	public void updateState(String state, int confrn_seq) {
+	public void updateState(int seq, String name, String stat) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		DBCon db = new DBCon();
 
 		try {
-			String query = "update tb_conference set confrn_stat=? where confrn_seq=?";
+			String query = "update tb_conference set confrn_nm=? , confrn_stat=? where confrn_seq=?";
 			conn = db.connect();
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, state);
-			pstmt.setInt(2, confrn_seq);
+			pstmt.setString(1, name);
+			pstmt.setString(2, stat);
+			pstmt.setInt(3, seq);
 
 			pstmt.executeUpdate();
 
@@ -125,6 +127,74 @@ public class ConfDAO {
 				conf_stat =  rs.getString("confrn_stat"); 
 				json.put("confname",conf_name);
 				json.put("stat",conf_stat);
+				jarray.add(json);
+			}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return jarray;
+	}
+	
+	/* 현재 등록되어있는 회의실을 뿌려준다. */
+	public ArrayList<ConfDTO> printRoom(String proj) {
+		ArrayList<ConfDTO> cdtos = new ArrayList<ConfDTO>();
+		ConfDTO cdto = null;
+		String query = "select * from tb_conference where confrn_site=?";
+		String confer_nm,confer_stat,confer_site=null;
+		int seq=0;
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, proj);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				seq = rs.getInt("confrn_seq");
+				confer_nm = rs.getString("confrn_nm");
+				confer_site = rs.getString("confrn_site");
+				confer_stat = rs.getString("confrn_stat");
+				cdto = new ConfDTO(seq,confer_nm,confer_site,confer_stat);
+				cdtos.add(cdto);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return cdtos;
+	}
+	
+	/* seq에 해당하는 회의실정보를 가져와서 회의실 수정탭에 채워진다. */
+	public JSONArray selectBySeq(int seq)
+	{
+		String query = "select * from tb_conference where confrn_seq=?";
+		JSONArray jarray = new JSONArray();
+		String name, stat;
+				
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, seq);
+			rs = pstmt.executeQuery();
+						
+			while(rs.next()) {
+				
+				JSONObject json = new JSONObject();
+				json.put("seq", rs.getString("confrn_seq"));
+				json.put("name", rs.getString("confrn_nm"));
+				json.put("stat", rs.getString("confrn_stat"));
 				jarray.add(json);
 			}
 					

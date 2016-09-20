@@ -52,3 +52,11 @@ CREATE TABLE tb_project (
   proj_nm varchar(20) NOT NULL,
   PRIMARY KEY (PROJ_SEQ)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE tb_admin (
+  admin_seq int(11) NOT NULL AUTO_INCREMENT,
+  admin_proj varchar(45) NOT NULL,
+  admin_id varchar(45) NOT NULL,
+  admin_pw varchar(45) NOT NULL,
+   PRIMARY KEY (`ADMIN_SEQ`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
