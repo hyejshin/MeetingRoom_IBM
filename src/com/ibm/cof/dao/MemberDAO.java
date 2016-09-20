@@ -124,7 +124,6 @@ public class MemberDAO {
 		return dtos;
 	}
 	
-	/* 추후에 관리자 기능이 추가될 경우 회원수정이 있을 수도 있다고 생각하여 넣음.. 안써도 무방 */
 	public void updateMemberState(MemberDTO mdto, int mem_seq) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -140,6 +139,34 @@ public class MemberDAO {
 			pstmt.setString(3, mdto.getMem_Em());
 			pstmt.setString(4, mdto.getMem_Site());
 			pstmt.setInt(5, mem_seq);
+
+			pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateMemberPhone(MemberDTO mdto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		DBCon db = new DBCon();
+
+		try {
+			String query = "update tb_member set mem_nm=?,mem_em=?,mem_site=?"
+					+ " where mem_pn=?";
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, mdto.getMem_Nm());
+			pstmt.setString(2, mdto.getMem_Em());
+			pstmt.setString(3, mdto.getMem_Site());
+			pstmt.setString(4, mdto.getMem_Pn());
 
 			pstmt.executeUpdate();
 

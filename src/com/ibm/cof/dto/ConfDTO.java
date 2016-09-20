@@ -6,10 +6,18 @@ public class ConfDTO {
 	private String Confrn_Site;
 	private String Confrn_Stat;
 	
+	public ConfDTO(int confrn_Seq, String confrn_Nm, String confrn_Site,
+			String confrn_Stat) {
+		super();
+		Confrn_Seq = confrn_Seq;
+		Confrn_Nm = confrn_Nm;
+		Confrn_Site = confrn_Site;
+		Confrn_Stat = confrn_Stat;
+	}
+	
 	public int getConfrn_Seq() {
 		return Confrn_Seq;
 	}
-	
 	public void setConfrn_Seq(int confrn_Seq) {
 		Confrn_Seq = confrn_Seq;
 	}

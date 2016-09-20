@@ -59,33 +59,44 @@ public class Reservation extends HttpServlet {
 		String end_time = request.getParameter("end_time");
 		String title = request.getParameter("title");
 		String del_pw = request.getParameter("del_pw");
+		
+		String message;
 
 
 		RsvDAO rdao = new RsvDAO();
 		RsvDTO rdto = new RsvDTO(date, start_time, end_time, title, site,
 		confer_nm, name, phone, email, del_pw);
 		 
+		/*
 		System.out.println("===========InsertMember.java============");
 		System.out.println("name:" + name);
 		System.out.println("phone:" + phone);
 		System.out.println("email: "+email);
 		System.out.println("site"+ site);
 		System.out.println("confer_nm"+confer_nm);
+		*/
 
 		
-		MemberDAO mdao = new MemberDAO(); 
+		MemberDAO mdao = new MemberDAO();
+		MemberDTO mdto = new MemberDTO(name, phone, email, site);
 		if (mdao.isCheckID(phone) == false) {
-			MemberDTO mdto = new MemberDTO(name, phone, email, site);	
 			mdao.insert(mdto);
+		} else {
+			mdao.updateMemberPhone(mdto);
 		}
-
-		// 회의실 예약
-		rdao.insert(rdto);
-		// 회의실 예약 내역 추가
-		/*rdao.insertHist(date, start_time, end_time, title, site, confer_nm,
-				name, phone, email, del_pw);*/
 		
-		
+		if(rdao.CheckRsvPssible(confer_nm, start_time, end_time, site, date)){
+			// 회의실 예약
+			System.out.println("예약햇음");
+			rdao.insert(rdto);
+			// 회의실 예약 내역 추가
+			/*rdao.insertHist(date, start_time, end_time, title, site, confer_nm,
+					name, phone, email, del_pw);*/
+		}else{
+			message = "선택하시 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.";
+			request.setAttribute("errorMessage", message);
+		}
+				
 		RequestDispatcher dispatcher = request.getRequestDispatcher("home.do");
 		dispatcher.forward(request, response);
 	}

@@ -52,13 +52,15 @@ public class SearchRsv extends HttpServlet {
 		
 		RsvDAO dao = new RsvDAO();
 		ArrayList<RsvDTO> dtos = null;
-		
-		if(option.equals("all")) {
+			
+		/*if(option.equals("all")) {
 			dtos = dao.selectAll();
 		}else{
 			dtos = dao.selectByCondition(option, context);
-		}
+		}*/
 		
+		dtos = dao.selectByCondition(option, context);
+
 		request.setAttribute("list", dtos);
 		
         RequestDispatcher rd = request.getRequestDispatcher("Search.jsp");
