@@ -164,6 +164,7 @@ var conference = [];
 	        	$('#date').empty();
 	        	$('#confer_nm').empty();
 	        	$('#title').empty();
+	        	$('#rsv_seq').empty();
 	        	
       			for(var i=0; i<data.result.length; i++) {
       				$('input[name="name"]').val(data.result[i].name);
@@ -172,6 +173,7 @@ var conference = [];
       				$('input[name="date"]').val(data.result[i].date);
       				$('input[name="confer_nm"]').val(data.result[i].confer_nm);
       				$('input[name="title"]').val(data.result[i].title);
+      				$('input[name="rsv_seq"]').val(""+seq);
       			  }
       			
       			timeSelectListAll(data.result[0].start_time, data.result[0].end_time);

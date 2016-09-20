@@ -16,7 +16,16 @@
 
 	<!-- navigation bar -->
 	<%@ include file="header.jsp"%>	
-	<h3>프로젝트 관리</h3>
-	Admin project
+	<h3>&nbsp;&nbsp;${project} 관리자 페이지</h3>
+	
+	<ul class="nav nav-pills">
+	<li><a href="AdminRsv.jsp">예약관리</a></li>
+	<li><a href="AdminRsvHist.jsp">예약내역</a></li>
+	<li><a href="SearchMember.do?option=all">회원관리</a></li>
+	<li class="active"><a href="AdminConference.jsp">회의실관리</a></li>
+</ul>	
+	
+	
+	Admin conference
 </body>
 </html>

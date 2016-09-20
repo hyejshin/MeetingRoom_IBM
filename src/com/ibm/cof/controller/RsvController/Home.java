@@ -9,7 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.ibm.cof.dao.AdminDAO;
 import com.ibm.cof.dao.ProjectDAO;
 import com.ibm.cof.dto.ProjectDTO;
 
@@ -17,13 +19,13 @@ import com.ibm.cof.dto.ProjectDTO;
  * Servlet implementation class SelectByCondition
  */
 @WebServlet("/home.do")
-public class SelectByCondition extends HttpServlet {
+public class Home extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SelectByCondition() {
+    public Home() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,12 +48,30 @@ public class SelectByCondition extends HttpServlet {
 	
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		HttpSession session=request.getSession();
 		
-		ProjectDAO pdao = new ProjectDAO();
-		ArrayList<ProjectDTO> proj = pdao.Projlist(); 
-        request.setAttribute("proj", proj); 
+		String key = request.getParameter("key");
+		String nextPage = "RsvView.jsp";
+		AdminDAO adao = new AdminDAO();
+		String project = adao.selectProjectName(key);
+		
+		// session이 없으면 관리자 로그인 페이지로 이동
+		if(session.getAttribute("admin") == null){
+			if(key == null || project.equals("")){
+		        nextPage = "AdminLogin.jsp";
+			}else{
+				System.out.println(project);
+				session.setAttribute("admin", "no");
+		        session.setAttribute("project", project);
+			}
+		}else if(session.getAttribute("project").equals("master")){
+			ProjectDAO pdao = new ProjectDAO();
+			ArrayList<ProjectDTO> proj = pdao.Projlist(); 
+	        request.setAttribute("proj", proj);
+		}
+		
 
-        RequestDispatcher rd = request.getRequestDispatcher("RsvView.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(nextPage);
         rd.forward(request, response);
     }
 }

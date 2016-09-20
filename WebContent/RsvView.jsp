@@ -32,22 +32,28 @@
 		<!-- 사이트 선택 -->
 		<div class="row" style="padding-bottom:25px;">
 			<div class="col-md-6 col-sm-9 col-xs-12">
+			<%if(session.getAttribute("project").equals("master")){ %>
 				<select class="form-control" id="site" name="site" onchange="displayConf(this.value);">
 				<option value="">선택하세요</option>
 				<%ArrayList<ProjectDTO> dtos = (ArrayList) request.getAttribute("proj");
 					if (dtos != null) {
 						for (int i = 0; i < dtos.size(); i++) {
 							ProjectDTO dto = dtos.get(i);%>
-					<option value="<%=dto.getProj_Nm()%>"><%=dto.getProj_Nm()%></option>
-				<%}}%>
+					<option value="<%=dto.getProj_Nm()%>"><%=dto.getProj_Nm()%></option> <%}%>
 				</select>
+				<%}}else{
+					String project = (String)session.getAttribute("project");%>
+					<h2>${project} 회의실</h2>
+					<input type="hidden" id="site" name="site" value=${project}>
+					<script>displayConf('<%=project%>');</script>
+				<%}%>
 			</div>
 		</div>
 
 			<div class="row">
 
 				<!-- 달력 -->
-				<div class="col-md-5 col-sm-6 col-xs-12" style="margin-top: 20px;">
+				<div class="col-md-5 col-sm-6 col-xs-12" style="margin-top:5px;">
 					<%@ include file="calendar/calendar.jsp"%>
 				</div>
 
@@ -62,7 +68,6 @@
 						<div id="meetings"></div>
 					</div>
 				</div>
-
 
 				<!-- 회의실 예약 입력창 -->
 				<div class="search-container">
@@ -116,7 +121,7 @@
 							<button type="button" class="btn btn-primary">삭제</button>
 						</div>
 					</div>
-
+					<br><input type="text" id="rsv_seq" name="rsv_seq">
 				</div>
 			</div>
 

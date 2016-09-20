@@ -77,23 +77,27 @@
 
 	<!-- navigation bar -->
 	<%@ include file="header.jsp"%>	
-
+	<h3>&nbsp;&nbsp;${project} 관리자 페이지</h3>
+	
 	<ul class="nav nav-pills">
 		<li><a href="AdminRsv.jsp">예약관리</a></li>
 		<li><a href="AdminRsvHist.jsp">예약내역</a></li>
-		<li><a href="AdminProject.jsp">프로젝트관리</a></li>
 		<li class="active"><a href="SearchMember.do?option=all">회원관리</a></li>
+		<li><a href="AdminConference.jsp">회의실관리</a></li>
 	</ul>
+	
 	<br>
 	<br>
 
 	<div class="container">
 	
 		<!-- 회원등록 -->
+		<!-- 
 		<div style="margin-bottom:20px;">
 		<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#register"
 		onclick="fillSite('#siteR');"> 회원등록▽<span class="glyphicon glyphicon-user-add"></span></button></div>
-		
+		 -->
+		 
 		<div id="register" class="collapse" style="margin-bottom: 40px;">
 			<form method="post" name="registerForm" action="InsertMember.do">
 			<input type="hidden" name="page" value="AdminMember.jsp">
@@ -115,7 +119,7 @@
 				</div>
 			</form>
 		</div>
-
+		
 		<!-- 회원 정보 수정 -->
 		<div id="update" class="collapse" style="margin-bottom: 40px;">
 			<h3>회원 정보 수정</h3><br>
@@ -149,8 +153,8 @@
 				<div class="col-md-2 col-sm-2 col-xs-3">
 					<select class="form-control" id="option" name="option">
 						<option value="all">전체</option>
-						<option value="mem_site">프로젝트</option>
 						<option value="mem_nm">이름</option>
+						<option value="mem_pn">번호</option>
 					</select>
 				</div>
 

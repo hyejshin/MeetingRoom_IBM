@@ -51,26 +51,26 @@ public class MemberDAO {
 			
 	}
 	
-	/* 회원의 모든 정보를 가져올 수 있음 */
-	public ArrayList<MemberDTO> selectAll()
+	/* 해당 프로젝트 회원의 모든 정보를 가져올 수 있음 */
+	public ArrayList<MemberDTO> selectAll(String site)
 	{
 		ArrayList<MemberDTO> dtos = new ArrayList<MemberDTO>();
-		String query = "select * from tb_member";
+		String query = "select * from tb_member where mem_site=?";
 		MemberDTO dto =null;
-		String name, phone, email, site;
+		String name, phone, email;
 		int seq;
 		
 		try {
-			conn = db.connect();
-			st = conn.createStatement();
-			rs = st.executeQuery(query);
+			conn = db.connect();				
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, site);			
+			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				seq = rs.getInt("mem_seq");
 				name = rs.getString("mem_nm");
 				phone = rs.getString("mem_pn");
 				email = rs.getString("mem_em");
-				site = rs.getString("mem_site");
 				
 				dto = new MemberDTO(seq, name, phone, email, site);
 				dtos.add(dto);
@@ -88,18 +88,19 @@ public class MemberDAO {
 		return dtos;
 	}
 	
-	/* 검색 조건(이름, 프로젝트)에 따라 회원 정보를 가져올 수 있음 */
-	public ArrayList<MemberDTO> selectByCondition(String option, String context)
+	/* 검색 조건(이름, 프로젝트)에 따라 해당 프로젝트 회원 정보를 가져올 수 있음 */
+	public ArrayList<MemberDTO> selectByCondition(String site, String option, String context)
 	{
 		ArrayList<MemberDTO> dtos = new ArrayList<MemberDTO>();
-		String query = "select * from tb_member where " + option + " = '" + context + "'";
+		String query = "select * from tb_member where " + option + " = '" + context + "' and mem_site=?";
 		MemberDTO dto =null;
-		String name, phone, email, site;
+		String name, phone, email;
 		
 		try {
-			conn = db.connect();
-			st = conn.createStatement();
-			rs = st.executeQuery(query);
+			conn = db.connect();				
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, site);			
+			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				name = rs.getString("mem_nm");
