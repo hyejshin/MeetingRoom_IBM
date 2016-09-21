@@ -16,6 +16,6 @@ PW <input type="password" name="pw" id="pw">
 </form>
 
 </table>
-${message}
+${loginMessage}
 </body>
 </html>

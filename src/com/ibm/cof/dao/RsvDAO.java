@@ -449,7 +449,7 @@ public class RsvDAO {
 	}
 
 
-	public boolean CheckRsvSeq(String rsv_seq, String confer_nm, String start_time, String end_time, String site,
+	public boolean CheckRsvSeq(int rsv_seq, String confer_nm, String start_time, String end_time, String site,
 			String date) {
 		Boolean bool = true;
 
@@ -461,7 +461,7 @@ public class RsvDAO {
 			pstmt.setString(1, site);
 			pstmt.setString(2, date);
 			pstmt.setString(3, confer_nm);
-			pstmt.setString(4, rsv_seq);
+			pstmt.setInt(4, rsv_seq);
 			rs = pstmt.executeQuery();
 
 			while (rs.next() == true) {

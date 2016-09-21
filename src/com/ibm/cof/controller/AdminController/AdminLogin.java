@@ -72,7 +72,7 @@ public class AdminLogin extends HttpServlet {
 		}
 
 
-		request.setAttribute("message", message);
+		request.setAttribute("loginMessage", message);
         RequestDispatcher rd = request.getRequestDispatcher(nextPage);
         rd.forward(request, response);
     }

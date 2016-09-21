@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ibm.cof.dao.MemberDAO;
 import com.ibm.cof.dao.RsvDAO;
@@ -48,6 +49,7 @@ public class ModifyRsv extends HttpServlet {
 
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		HttpSession session=request.getSession();
 
 		Integer seq = Integer.parseInt(request.getParameter("rsv_seq"));
 		String phone = request.getParameter("phone");
@@ -88,12 +90,28 @@ public class ModifyRsv extends HttpServlet {
 			System.out.println("modifyError!");
 		}*/
 		
-		key_pw = rdao.getPassword(seq);
-		if(key_pw.equals(del_pw)) {
-			rdao.update(rdto);
-			System.out.println("업데이트 완료");
+		
+
+		//겹치는 일정 존재 여부 확인
+		if(rdao.CheckRsvSeq(seq,confer_nm,start_time,end_time,site,date)) {
+			key_pw = rdao.getPassword(seq);
+			
+			//관리자는 모든 예약 수정 가능
+			if(session.getAttribute("admin") == "yes" && session.getAttribute("project") != "master"){
+				rdao.update(rdto);
+				System.out.println("업데이트 완료");
+			}
+			else if(key_pw.equals(del_pw)) { //비밀번호 일치여부 확인
+				rdao.update(rdto);
+				System.out.println("업데이트 완료");
+			}
+			else{
+				message = "비밀번호가 일치하지 않습니다.";
+				request.setAttribute("message", message);
+				System.out.println(message);
+			}
 		}else{
-			message = "비밀번호가 일치하지 않습니다.";
+			message = "시간이 겹쳐서 예약이 불가합니다.";
 			request.setAttribute("message", message);
 			System.out.println(message);
 		}
