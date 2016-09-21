@@ -64,9 +64,8 @@ public class RsvDAO {
 	public void update(RsvDTO rdto) {
 		String query = "update tb_reservation set rsv_confer_nm=?, rsv_date=?, "
 				+ "rsv_start_time=?, rsv_end_time=?, rsv_title=?,"
-				+ "rsv_mem_nm=?, rsv_mem_pn=?, rsv_mem_em=?, where rsv_seq=? ";
-
-		try {			
+				+ "rsv_site=?, rsv_mem_nm=?,rsv_mem_pn=?,rsv_mem_em=?" + " where rsv_seq=?";
+		try {
 			conn = db.connect();
 			pstmt = conn.prepareStatement(query);
 
@@ -75,13 +74,63 @@ public class RsvDAO {
 			pstmt.setString(3, rdto.getRsv_Start_Time());
 			pstmt.setString(4, rdto.getRsv_End_Time());
 			pstmt.setString(5, rdto.getRsv_Title());
-			pstmt.setString(6, rdto.getRsv_Mem_Nm());
-			pstmt.setString(7, rdto.getRsv_Mem_Pn());
-			pstmt.setString(8, rdto.getRsv_Mem_Em());
-			pstmt.setString(9, rdto.getRsv_Seq());
+			pstmt.setString(6, rdto.getRsv_Site());
+			pstmt.setString(7, rdto.getRsv_Mem_Nm());
+			pstmt.setString(8, rdto.getRsv_Mem_Pn());
+			pstmt.setString(9, rdto.getRsv_Mem_Em());
+			pstmt.setInt(10, rdto.getRsv_Seq());
 
 			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	
+	
+	public void update2(RsvDTO rdto) {
+		PreparedStatement pstmt2 =null;
 
+		try {
+			conn = db.connect();
+
+			String sql2 = "select rsv_seq, rsv_del_pw from tb_reservation where rsv_seq = ? and rsv_del_pw=?";
+			pstmt2 = conn.prepareStatement(sql2);
+			pstmt2.setInt(1, rdto.getRsv_Seq());
+			pstmt2.setString(2, rdto.getRsv_Del_Pw());
+
+			String query = "update tb_reservation set rsv_confer_nm=?, rsv_date=?, "
+					+ "rsv_start_time=?, rsv_end_time=?, rsv_title=?,"
+					+ "rsv_site=?, rsv_mem_nm=?,rsv_mem_pn=?,rsv_mem_em=?" + " where rsv_seq=? and rsv_del_pw=?";
+
+
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, rdto.getRsv_Confer_Nm());
+			pstmt.setString(2, rdto.getRsv_Date());
+			pstmt.setString(3, rdto.getRsv_Start_Time());
+			pstmt.setString(4, rdto.getRsv_End_Time());
+			pstmt.setString(5, rdto.getRsv_Title());
+			pstmt.setString(6, rdto.getRsv_Site());
+			pstmt.setString(7, rdto.getRsv_Mem_Nm());
+			pstmt.setString(8, rdto.getRsv_Mem_Pn());
+			pstmt.setString(9, rdto.getRsv_Mem_Em());
+			pstmt.setInt(10, rdto.getRsv_Seq());
+			pstmt.setString(11, rdto.getRsv_Del_Pw());
+
+			rs = pstmt2.executeQuery();
+
+			if (rs.next()) {
+				System.out.println("pw_collect!");
+				pstmt.executeUpdate();
+			} else
+				System.out.println("del_pw Error!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -188,6 +237,56 @@ public class RsvDAO {
 		}
 
 		return bool;
+	}
+
+	public String getPassword(int seq){
+		String password = "";
+		String query = "select rsv_del_pw from tb_reservation where rsv_seq = ?";
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, seq);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				password = rs.getString("rsv_del_pw");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return password;
+	}
+
+	public JSONObject getPasswordJson(int seq) {
+		String query = "select rsv_del_pw from tb_reservation where rsv_seq = ?";
+		JSONObject json = new JSONObject();
+
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, seq);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				json.put("password", rs.getString("rsv_del_pw"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return json;
 	}
 
 	/* 현재날짜 이후로 예약 현황을 가져온다 날짜,시간 오름차순 정렬 */
@@ -349,6 +448,137 @@ public class RsvDAO {
 		return jarray;
 	}
 
+
+	public boolean CheckRsvSeq(String rsv_seq, String confer_nm, String start_time, String end_time, String site,
+			String date) {
+		Boolean bool = true;
+
+		String query = "select rsv_start_time,rsv_end_time from tb_reservation where rsv_site=? and rsv_date=? and rsv_confer_nm=?"
+				+ "and rsv_seq !=?" + "order by rsv_confer_nm, rsv_start_time";
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, site);
+			pstmt.setString(2, date);
+			pstmt.setString(3, confer_nm);
+			pstmt.setString(4, rsv_seq);
+			rs = pstmt.executeQuery();
+
+			while (rs.next() == true) {
+				int mystart_int = Integer.parseInt(start_time);
+				int myend_int = Integer.parseInt(end_time);
+				int youstart_int = Integer.parseInt(rs.getString(1));
+				int youend_int = Integer.parseInt(rs.getString(2));
+
+				System.out.println("mystart_int :" + mystart_int);
+				System.out.println("myend_int :" + myend_int);
+				System.out.println("youstart_int :" + youstart_int);
+				System.out.println("youend_int : " + youend_int);
+
+				if (mystart_int >= youstart_int) {
+					if (mystart_int >= youend_int)
+						bool = true;
+					else
+						bool = false;
+				} else if (mystart_int < youstart_int) {
+					if (myend_int > youstart_int)
+						bool = false;
+					else
+						bool = true;
+				}
+
+				System.out.println(bool);
+				if (bool == false)
+					return bool;
+
+				/*
+				 * if(mystart_int <= youstart_int && myend_int >= youend_int)
+				 * bool = false; //your time이 my time을 포함 else if(mystart_int >=
+				 * youstart_int && myend_int <= youend_int) bool = false; //my
+				 * time 시작이 your time 사이에 겹치는 경우 else if(mystart_int >=
+				 * youstart_int && mystart_int < youend_int) bool = false; //my
+				 * time 끝이 your time 사이에 겹치는 경우 else if(myend_int <= youend_int
+				 * && myend_int > youstart_int) bool = false;
+				 */
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+
+			}
+		}
+
+		return bool;
+	}
+
+	public boolean CheckRsv(String confer_nm, String start_time, String end_time, String site, String date) {
+		Boolean bool = true;
+
+		String query = "select rsv_start_time,rsv_end_time from tb_reservation where rsv_site=? and rsv_date=? and rsv_confer_nm=?"
+				+ "order by rsv_confer_nm, rsv_start_time";
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, site);
+			pstmt.setString(2, date);
+			pstmt.setString(3, confer_nm);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next() == true) {
+				int mystart_int = Integer.parseInt(start_time);
+				int myend_int = Integer.parseInt(end_time);
+				int youstart_int = Integer.parseInt(rs.getString(1));
+				int youend_int = Integer.parseInt(rs.getString(2));
+
+				System.out.println("mystart_int :" + mystart_int);
+				System.out.println("myend_int :" + myend_int);
+				System.out.println("youstart_int :" + youstart_int);
+				System.out.println("youend_int : " + youend_int);
+				/*
+				 * if(mystart_int <= youstart_int && myend_int >= youend_int)
+				 * bool = false; //your time이 my time을 포함 else if(mystart_int >=
+				 * youstart_int && myend_int <= youend_int) bool = false; //my
+				 * time 시작이 your time 사이에 겹치는 경우 else if(mystart_int >=
+				 * youstart_int && mystart_int < youend_int) bool = false; //my
+				 * time 끝이 your time 사이에 겹치는 경우 else if(myend_int <= youend_int
+				 * && myend_int > youstart_int) bool = false;
+				 */
+
+				if (mystart_int >= youstart_int) {
+					if (mystart_int >= youend_int)
+						bool = true;
+					else
+						bool = false;
+				} else if (mystart_int < youstart_int) {
+					if (myend_int > youstart_int)
+						bool = false;
+					else
+						bool = true;
+				}
+				System.out.println(bool);
+				if (bool == false)
+					return bool;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+
+			}
+		}
+
+		return bool;
+
+	}
+
 	public boolean CheckRsvPssible(String confer_nm, String start_time, String end_time, String site, String date) {
 		Boolean possible = true;
 		String query = "select rsv_start_time,rsv_end_time from tb_reservation where rsv_site=? and rsv_date=? and rsv_confer_nm=?"
@@ -364,7 +594,7 @@ public class RsvDAO {
 			int mystart = Integer.parseInt(start_time);
 			int myend = Integer.parseInt(end_time);
 			int yourstart, yourend;
-			
+
 			while (rs.next() == true) {
 				yourstart = Integer.parseInt(rs.getString(1));
 				yourend = Integer.parseInt(rs.getString(2));

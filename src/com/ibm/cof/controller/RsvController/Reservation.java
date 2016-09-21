@@ -67,14 +67,8 @@ public class Reservation extends HttpServlet {
 		RsvDTO rdto = new RsvDTO(date, start_time, end_time, title, site,
 		confer_nm, name, phone, email, del_pw);
 		 
-		/*
-		System.out.println("===========InsertMember.java============");
-		System.out.println("name:" + name);
-		System.out.println("phone:" + phone);
-		System.out.println("email: "+email);
-		System.out.println("site"+ site);
-		System.out.println("confer_nm"+confer_nm);
-		*/
+		
+		System.out.println("===========InsertReservation.java============");
 
 		
 		MemberDAO mdao = new MemberDAO();
@@ -85,7 +79,7 @@ public class Reservation extends HttpServlet {
 			mdao.updateMemberPhone(mdto);
 		}
 		
-		if(rdao.CheckRsvPssible(confer_nm, start_time, end_time, site, date)){
+		if(rdao.CheckRsv(confer_nm,start_time,end_time,site,date)){
 			// 회의실 예약
 			System.out.println("예약햇음");
 			rdao.insert(rdto);
@@ -94,7 +88,7 @@ public class Reservation extends HttpServlet {
 					name, phone, email, del_pw);*/
 		}else{
 			message = "선택하시 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.";
-			request.setAttribute("errorMessage", message);
+			request.setAttribute("message", message);
 		}
 				
 		RequestDispatcher dispatcher = request.getRequestDispatcher("home.do");

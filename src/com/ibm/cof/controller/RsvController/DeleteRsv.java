@@ -9,20 +9,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ibm.cof.dao.RsvDAO;
+
 /**
  * Servlet implementation class DeleteRsv
  */
 @WebServlet("/DeleteRsv.do")
 public class DeleteRsv extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DeleteRsv() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public DeleteRsv() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,10 +45,23 @@ public class DeleteRsv extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
+		Integer seq = Integer.parseInt(request.getParameter("rsv_seq"));
+		String del_pw =request.getParameter("del_pw");
+		String message = "";
+
+		RsvDAO rdao = new RsvDAO();
+		String password = rdao.getPassword(seq);
 		
-		
-        // ´ÙÀ½ ÆäÀÌÁö·Î ÀÌµ¿
-        RequestDispatcher rd = request.getRequestDispatcher("");
-        rd.forward(request, response);
-    }
+		if(password.equals(del_pw)) {
+			rdao.delete(seq);
+			System.out.println("ì‚­ì œì™„ë£Œ");
+		}else{
+			message = "ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.";
+			request.setAttribute("message", message);
+			System.out.println(message);
+		}
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("home.do");
+		dispatcher.forward(request, response);
+	}
 }

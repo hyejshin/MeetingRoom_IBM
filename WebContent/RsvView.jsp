@@ -22,6 +22,50 @@
 
 </head>
 
+<script language="javascript">
+	function Modify() {
+		document.myForm.action = "ModifyRsv.do";
+		document.myForm.submit();
+	}
+	
+	function Delete() {
+		//var seq = document.myForm.rsv_seq.value;
+		//var pw = document.myForm.del_pw.value;
+
+		document.myForm.action = "DeleteRsv.do";
+		document.myForm.submit();
+	}
+	
+	/*
+	function isPossible(seq, pw){
+		var possible = false;
+		$.ajax({
+			type : "post",
+			url : "PasswordCheck.do",
+			dataType : 'json',
+			data : {
+				seq : seq,
+				pw: pw
+			},
+			success : function(data) {
+				possible = data.result.valid;
+				return possible;
+			},
+			error : function() {
+				console.log("error");
+			}
+		});
+		
+		return possible;
+	}*/
+
+	<%String message = (String)request.getAttribute("message");
+	if(message != null){
+		%>alert('<%=message%>');<%
+	}%>
+	
+</script>
+
 <body>
 	
 	<!-- navigation bar -->
@@ -73,7 +117,7 @@
 				<div class="search-container">
 					<div class="row">
 						<div class="col-md-4">
-							날짜<input type="text" class="form-control" id="date" name="date">
+							날짜<input type="text" readonly class="form-control" id="date" name="date">
 						</div>
 						<div class="col-md-4">
 							시작시간
@@ -90,7 +134,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-4">
-							회의실<input type="text" class="form-control" id="confer_nm" name="confer_nm">
+							회의실<input type="text" readonly class="form-control" id="confer_nm" name="confer_nm">
 						</div>
 						<div class="col-md-4">
 							회의제목<input type="text" class="form-control" id="title" name="title">
@@ -117,8 +161,8 @@
 
 						<!-- 수정 및 삭제 -->
 						<div id="registerInfo">
-							<button type="button" class="btn btn-primary">수정</button>
-							<button type="button" class="btn btn-primary">삭제</button>
+							<button type="submit" class="btn btn-primary" onClick="Modify();">수정</button>
+							<button type="button" class="btn btn-primary" onClick="Delete();">삭제</button>
 						</div>
 					</div>
 					<br><input type="text" id="rsv_seq" name="rsv_seq">

@@ -1,7 +1,7 @@
 package com.ibm.cof.dto;
 
 public class RsvDTO {
-	private String Rsv_Seq;
+	private int Rsv_Seq;
 	private String Rsv_Date;
 	private String Rsv_Start_Time;
 	private String Rsv_End_Time;
@@ -28,7 +28,7 @@ public class RsvDTO {
 		Rsv_Mem_Pn = phone;
 	}
 
-	public RsvDTO(String seq, String date, String start_time, String end_time, String title, String site,
+	public RsvDTO(int seq, String date, String start_time, String end_time, String title, String site,
 			String confer_nm, String name, String phone, String email, String del_pw) {
 		Rsv_Seq =seq;
 		Rsv_Date=date;
@@ -59,11 +59,11 @@ public class RsvDTO {
 		Rsv_Del_Pw = rsv_Del_Pw;
 	}
 
-	public String getRsv_Seq() {
+	public int getRsv_Seq() {
 		return Rsv_Seq;
 	}
 
-	public void setRsv_Seq(String rsv_seq) {
+	public void setRsv_Seq(int rsv_seq) {
 		Rsv_Seq = rsv_seq;
 	}
 	
