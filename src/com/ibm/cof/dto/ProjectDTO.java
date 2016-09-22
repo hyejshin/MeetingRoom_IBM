@@ -6,9 +6,12 @@ public class ProjectDTO {
 	
 	public ProjectDTO() { }
 	
-	public ProjectDTO(int proj_Seq, String proj_Nm) {
-		super();
-		Proj_Seq = proj_Seq;
+	public ProjectDTO(String proj_Nm) {
+		Proj_Nm = proj_Nm;
+	}
+	
+	public ProjectDTO(int seq, String proj_Nm) {
+		Proj_Seq = seq;
 		Proj_Nm = proj_Nm;
 	}
 	

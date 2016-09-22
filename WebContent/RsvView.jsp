@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+   pageEncoding="UTF-8"%>
 <%@ page import="com.ibm.cof.dto.ConfDTO"%>
 <%@ page import="com.ibm.cof.dto.ProjectDTO"%>
 <%@ page import="java.util.ArrayList"%>
@@ -20,7 +21,42 @@
 <script src="js/RsvView.js"></script>
 <link rel="stylesheet" type="text/css" href="css/RsvView.css">
 
-</head>
+<!--Font Awesome (added because you use icons in your prepend/append)-->
+<link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+<!-- Inline CSS based on choices in "Settings" tab -->
+<style>
+.bootstrap-iso .formden_header h2,.bootstrap-iso .formden_header p,.bootstrap-iso form
+   {
+   font-family: Arial, Helvetica, sans-serif;
+   color: black
+}
+
+.bootstrap-iso form button,.bootstrap-iso form button:hover {
+   color: white !important;
+}
+
+.asteriskField {
+   color: red;
+}
+</style>
+
+<style>
+@CHARSET "UTF-8";
+
+.navbar-inverse {
+   background-color: black;
+   border-color: black;
+}
+
+body {
+   background: url(image/10.jpg) no-repeat center center fixed;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+}
+</style>
 
 <script language="javascript">
 	function Modify() {
@@ -65,16 +101,17 @@
 	}%>
 	
 </script>
+</head>
 
 <body>
-	
+
 	<!-- navigation bar -->
 	<%@ include file="header.jsp"%>	
 
-	<form method="post" name="myForm" action="Reservation.do">
-	<div class="container">
-		<!-- 사이트 선택 -->
-		<div class="row" style="padding-bottom:25px;">
+   <form method="post" name="myForm" action="Reservation.do">
+      <div class="container">
+         <!-- 사이트 선택 -->
+         <div class="row" style="padding-bottom:25px;">
 			<div class="col-md-6 col-sm-9 col-xs-12">
 			<%if(session.getAttribute("project").equals("master")){ %>
 				<select class="form-control" id="site" name="site" onchange="displayConf(this.value);">
@@ -94,67 +131,169 @@
 			</div>
 		</div>
 
-			<div class="row">
+         <div class="row">
+            <center>
+               <!-- 달력 -->
+               <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top: 15px;">
 
-				<!-- 달력 -->
-				<div class="col-md-5 col-sm-6 col-xs-12" style="margin-top:5px;">
-					<%@ include file="calendar/calendar.jsp"%>
-				</div>
+                  <div class="well well-lg col-md-12">
 
-				<!-- 회의실tab & 예약현황 -->
-				<div class="col-md-7 col-sm-6 col-xs-12">
+                     <%@ include file="calendar/calendar.jsp"%>
+                  </div>
+               </div>
+            </center>
 
-					<!-- 회의실탭 -->
-					<div id="conference"></div>
+            <!-- 회의실tab & 예약현황 -->
+            <div class="col-md-6 col-sm-6 col-xs-12">
+               <div>
+               	  <!-- 회의실탭 -->
+               	  <div class="col-md-6 col-sm-6 col-xs-12" id="conference"></div>
+               
+                  <div id="schedule" class="col-md-6 col-sm-6 col-xs-12">
+                     <div id="timeDiv"></div>
+                     <div id="meetings"></div>
+                  </div>
+               </div>
+            </div>
 
-					<div id="schedule">
-						<div id="timeDiv"></div>
-						<div id="meetings"></div>
-					</div>
-				</div>
+         </div>
 
-				<!-- 회의실 예약 입력창 -->
-				<div class="search-container">
-					<div class="row">
-						<div class="col-md-4">
-							날짜<input type="text" readonly class="form-control" id="date" name="date">
-						</div>
-						<div class="col-md-4">
-							시작시간
-							<select class="form-control" name="start_time" id="start_time">
-								<option value="">선택하세요</option>
-							</select>
-						</div>
-						<div class="col-md-4">
-							끝시간
-							<select class="form-control" name="end_time" id="end_time">
-								<option value="">선택하세요</option>
-							</select>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							회의실<input type="text" readonly class="form-control" id="confer_nm" name="confer_nm">
-						</div>
-						<div class="col-md-4">
-							회의제목<input type="text" class="form-control" id="title" name="title">
-						</div>
-						<div class="col-md-4">
-							비밀번호<input type="password" class="form-control" id="del_pw"	name="del_pw">
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							전화번호<input type="text" class="form-control" id="phone" name="phone">
-						</div>
-						<div class="col-md-4">
-							이름<input type="text" class="form-control" id="name" name="name">
-						</div>
-						<div class="col-md-4">
-							이메일<input type="text" class="form-control" id="email" name="email">
-						</div>
+         <div class="row">
+            <!-- 회의실 예약 입력창 -->
+            <div class="search-container">
+               <div class="row" id="resv_container">
+                  <div class="col-md-12"></div>
+                  <div>
+                     <div class="well well-lg col-md-12" role="register">
+                        <section class="register-form">
+                        <div class="row">
 
-						<!-- 예약 버튼 -->
+                           
+                        <div class="row">
+                           <div class="col-md-4">
+                              <div class="form-group ">
+                                 <label class="control-label " for="date"> 날짜 </label>
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" readonly class="form-control" id="date"
+                                       name="date">
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="form-group ">
+                                 <label class="control-label " for="start_time"> 시작시간
+                                 </label>
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-clock-o"> </i>
+                                    </div>
+
+                                    <select class="form-control" name="start_time"
+                                       id="start_time">
+                                       <option value="">선택하세요</option>
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="form-group ">
+                                 <label class="control-label " for="end_time"> 끝시간 </label>
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-clock-o"> </i>
+                                    </div>
+
+                                    <select class="form-control" name="end_time" id="end_time">
+                                       <option value="">선택하세요</option>
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-md-4">
+                              <div class="form-group ">
+                                 <label class="control-label " for="confer_nm"> 회의실 </label>
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-building"> </i>
+                                    </div>
+                                    <input type="text" readonly class="form-control" id="confer_nm"
+                                       name="confer_nm">
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="form-group ">
+                                 <label class="control-label " for="title"> 회의제목 </label>
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-commenting"> </i>
+                                    </div>
+                                    <input type="text" class="form-control" id="title"
+                                       name="title">
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="form-group ">
+                                 <label class="control-label " for="del_pw"> 비밀번호 </label>
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-lock"> </i>
+                                    </div>
+                                    <input type="password" class="form-control" id="del_pw"
+                                       name="del_pw" data-toggle="tooltip" data-trigger="manual"
+                                       data-title="Caps lock is on">
+                                 </div>
+                              </div>
+                           </div>
+                           
+                           <div class="col-md-4">
+                              <div class="form-group ">
+                                 <label class="control-label " for="title"> 전화번호 </label>
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-phone"> </i>
+                                    </div>
+                                    <input type="text" id="phone" class="form-control"
+                                       name="phone" value="4995">
+                                 </div>
+                              </div>
+
+                           </div>
+
+                           <div class="col-md-4">
+                              <div class="form-group ">
+                                 <label class="control-label " for="name"> 이름 </label>
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-smile-o"> </i>
+                                    </div>
+                                    <input class="form-control" id="name" name="name"
+                                       placeholder="ex)홍길동" type="text" />
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="col-md-4">
+                              <div class="form-group ">
+                                 <label class="control-label " for="email"> 이메일 </label>
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-envelope-o"></i>
+                                    </div>
+                                    <input type="text" class="form-control" id="email"
+                                       name="email">
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                        <!-- 예약 버튼 -->
 						<div id="register">
 							<button type="submit" class="btn btn-primary">예약</button>
 						</div>
@@ -164,17 +303,19 @@
 							<button type="submit" class="btn btn-primary" onClick="Modify();">수정</button>
 							<button type="button" class="btn btn-primary" onClick="Delete();">삭제</button>
 						</div>
-					</div>
-					<br><input type="text" id="rsv_seq" name="rsv_seq">
-				</div>
-			</div>
+                        </div>
+                        </section>
+                        
+                        <br><input type="text" id="rsv_seq" name="rsv_seq">
+                     </div>
+                  </div>
 
 
+               </div>
+            </div>
+         </div>
+   </form>
 
-		</div>
-	
-	</form> 
-
-<div style="margin-top:30px"></div>
+   <div style="margin-top: 30px"></div>
 </body>
 </html>

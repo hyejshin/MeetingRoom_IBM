@@ -9,9 +9,21 @@ public class AdminDTO {
 
 	public AdminDTO() { }
 
-	public AdminDTO(String admin_Proj, String admin_Pw) {
-		super();
+	public AdminDTO(int admin_Seq, String admin_Proj, String admin_Id, String admin_Pw) {
+		Admin_Seq = admin_Seq;
 		Admin_Proj = admin_Proj;
+		Admin_Id = admin_Id;
+		Admin_Pw = admin_Pw; 
+	}
+	
+	public AdminDTO(String admin_Proj, String admin_Pw) {
+		Admin_Proj = admin_Proj;
+		Admin_Pw = admin_Pw; 
+	}
+	
+	public AdminDTO(String admin_Proj, String admin_Id, String admin_Pw) {
+		Admin_Proj = admin_Proj;
+		Admin_Id = admin_Id;
 		Admin_Pw = admin_Pw; 
 	}
 

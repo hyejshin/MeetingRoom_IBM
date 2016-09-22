@@ -1,13 +1,15 @@
 package com.ibm.cof.controller.ProjectController;
 
 import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.RequestDispatcher;
+
+import com.ibm.cof.dao.AdminDAO;
+import com.ibm.cof.dto.AdminDTO;
 
 /**
  * Servlet implementation class InsertProject
@@ -43,10 +45,17 @@ public class InsertProject extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
+		String name = request.getParameter("name");  //project(site) name 
+		String id = request.getParameter("id"); //admin id
+		String pw = request.getParameter("passwd"); //admin password 
+
+		System.out.println("AdminÏóê insertÌï©ÎãàÎã§.");
+		AdminDAO adao = new AdminDAO();  
+		AdminDTO adto = new AdminDTO(name, id, pw); 
+
+		adao.insert(adto); 
 		
-		
-        // ¥Ÿ¿Ω ∆‰¿Ã¡ˆ∑Œ ¿Ãµø
-        RequestDispatcher rd = request.getRequestDispatcher("");
-        rd.forward(request, response);
-    }
+		RequestDispatcher rd = request.getRequestDispatcher("SelectProject.do");
+		rd.forward(request, response);
+	}
 }

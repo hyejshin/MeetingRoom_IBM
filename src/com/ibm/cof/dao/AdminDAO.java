@@ -31,7 +31,7 @@ public class AdminDAO {
 	/* 관리자 추가(MASTER 관리자 기능) */
 	public void insert(AdminDTO adto) {
 		String query = "insert into tb_admin(admin_proj, admin_id, admin_pw)"
-				+ " values(?,?)";
+				+ " values(?,?,?)";
 		try {
 			conn = db.connect();            
 			pstmt = conn.prepareStatement(query);
@@ -83,15 +83,15 @@ public class AdminDAO {
 			rs = pstmt.executeQuery();
 
 			//아이디 일치 : rs.next() = true
-					if(rs.next()){ 
-						if(rs.getString("admin_pw") != null && rs.getString("admin_pw").equals(pw)){
-							result = 1; //비밀번호 일치
-						}else{
-							result = 0; //비밀번호 불일치
-						}
-					}else{
-						result = -1; //아이디 불일치
-					}
+			if(rs.next()){ 
+				if(rs.getString("admin_pw") != null && rs.getString("admin_pw").equals(pw)){
+					result = 1; //비밀번호 일치
+				}else{
+					result = 0; //비밀번호 불일치
+				}
+			}else{
+				result = -1; //아이디 불일치
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,15 +109,50 @@ public class AdminDAO {
 	{
 		String query = "select * from tb_admin where admin_id=?";
 		String project = "";
-		
+
 		try {
 			conn = db.connect();            
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
-			
+
 			while(rs.next()) {
 				project = rs.getString("admin_proj");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return project;
+	}
+
+	public ArrayList<AdminDTO> selectAll(){
+		ArrayList<AdminDTO> dtos = new ArrayList<AdminDTO>();
+		String query = "select * from tb_admin";
+		
+		AdminDTO dto = null;
+		String project, id, pw;
+		int seq;
+		
+		try {
+			conn = db.connect();				
+			pstmt = conn.prepareStatement(query);			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				seq = rs.getInt("admin_seq");
+				project = rs.getString("admin_proj");
+				id = rs.getString("admin_id");
+				pw = rs.getString("admin_pw");
+				
+				dto = new AdminDTO(seq, project, id, pw);
+				dtos.add(dto);
 			}
 					
 		} catch (Exception e) {
@@ -129,6 +164,39 @@ public class AdminDAO {
 				e2.printStackTrace();
 			}
 		}
-		return project;
+		return dtos;
+	}
+	
+	public void ChangePw(AdminDTO admindto, String newPassword)
+	{
+		String query = "update tb_admin set admin_proj = ?, admin_pw = ? where admin_seq = ?";
+
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			System.out.println("디비연결오케잉");
+			pstmt.setString(1, admindto.getAdmin_Proj());
+			pstmt.setString(2, newPassword);
+			pstmt.setInt(3, admindto.getAdmin_Seq());
+			pstmt.executeUpdate();
+
+			System.out.println(newPassword);
+			System.out.println(admindto.getAdmin_Pw());
+
+			AdminDTO testDto = new AdminDTO();
+			testDto.setAdmin_Proj(admindto.getAdmin_Proj());
+			System.out.println(testDto.getAdmin_Pw());
+
+			// pstmt.close();
+			// conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
 	}
 }

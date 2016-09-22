@@ -52,6 +52,7 @@ public class Home extends HttpServlet {
 		
 		String key = request.getParameter("key");
 		String nextPage = "RsvView.jsp";
+		
 		AdminDAO adao = new AdminDAO();
 		String project = adao.selectProjectName(key);
 		
@@ -60,7 +61,7 @@ public class Home extends HttpServlet {
 			if(key == null || project.equals("")){
 		        nextPage = "AdminLogin.jsp";
 			}else{
-				System.out.println(project);
+				session.setMaxInactiveInterval(2*60*60);
 				session.setAttribute("admin", "no");
 		        session.setAttribute("project", project);
 			}

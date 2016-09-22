@@ -1,0 +1,180 @@
+@CHARSET "UTF-8";
+
+
+a {
+	/*하이퍼링크로 연결될 때 */
+	color: #334913;
+}
+
+well
+{
+	background: white; 
+} 
+
+.navbar-inverse {
+    background-color: black;
+    border-color: black;
+}
+#dialogoverlay {
+	display: none;
+	opacity: .8;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background: #FFF;
+	width: 100%;
+	z-index: 10;
+}
+
+#dialogbox {
+	display: none;
+	position: fixed;
+	background: #000;
+	border-radius: 7px;
+	width: 550px;
+	z-index: 10;
+}
+
+#dialogbox>div {
+	background: #FFF;
+	margin: 8px;
+}
+
+#dialogbox>div>#dialogboxhead {
+	background: #666;
+	font-size: 19px;
+	padding: 10px;
+	color: #CCC;
+}
+
+#dialogbox>div>#dialogboxbody {
+	background: #333;
+	padding: 20px;
+	color: #FFF;
+}
+
+#dialogbox>div>#dialogboxfoot {
+	background: #666;
+	padding: 10px;
+	text-align: right;
+}
+
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	outline: none;
+}
+
+.form-control {
+	position: relative;
+	font-size: 16px;
+	height: auto;
+	padding: 10px;
+	@
+	include
+	box-sizing(border-box);
+	&:
+	focus
+	{
+	z-index
+	:
+	2;
+}
+
+}
+body {
+	background: url(image/10.jpg) no-repeat center center
+		fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.login-form {
+	margin-top: 60px;
+}
+
+form[role=login] {
+	color: #5d5d5d;
+	background: #f2f2f2;
+	padding: 26px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+form[role=login] img {
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 35px;
+}
+
+form[role=login] input,form[role=login] button {
+	font-size: 18px;
+	margin: 16px 0;
+}
+
+form[role=login]>div {
+	text-align: center;
+}
+
+.form-links {
+	text-align: center;
+	margin-top: 1em;
+	margin-bottom: 50px;
+}
+
+.form-links a {
+	color: #fff;
+}
+
+.button {
+   border: 0px solid #000000;
+   background: #000000;
+   background: -webkit-gradient(linear, left top, left bottom, from(#060e14), to(#000000));
+   background: -webkit-linear-gradient(top, #060e14, #000000);
+   background: -moz-linear-gradient(top, #060e14, #000000);
+   background: -ms-linear-gradient(top, #060e14, #000000);
+   background: -o-linear-gradient(top, #060e14, #000000);
+   background-image: -ms-linear-gradient(top, #060e14 0%, #000000 100%);
+   padding: 10px 20px;
+   -webkit-border-radius: 6px;
+   -moz-border-radius: 6px;
+   border-radius: 6px;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   text-shadow: #ffffff 0 1px 0;
+   color: #eaeced;
+   font-size: 15px;
+   font-family: helvetica, serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.button:hover {
+   border: 0px solid #0a3c59;
+   text-shadow: #dce7ed 0 1px 0;
+   background: #403e40;
+   background: -webkit-gradient(linear, left top, left bottom, from(#3a3b3b), to(#403e40));
+   background: -webkit-linear-gradient(top, #3a3b3b, #403e40);
+   background: -moz-linear-gradient(top, #3a3b3b, #403e40);
+   background: -ms-linear-gradient(top, #3a3b3b, #403e40);
+   background: -o-linear-gradient(top, #3a3b3b, #403e40);
+   background-image: -ms-linear-gradient(top, #3a3b3b 0%, #403e40 100%);
+   color: #fff;
+   }
+.button:active {
+   text-shadow: #667680 0 1px 0;
+   border: 0px solid #000000;
+   background: #151717;
+   background: -webkit-gradient(linear, left top, left bottom, from(#1f1f1f), to(#403e40));
+   background: -webkit-linear-gradient(top, #1f1f1f, #151717);
+   background: -moz-linear-gradient(top, #1f1f1f, #151717);
+   background: -ms-linear-gradient(top, #1f1f1f, #151717);
+   background: -o-linear-gradient(top, #1f1f1f, #151717);
+   background-image: -ms-linear-gradient(top, #1f1f1f 0%, #151717 100%);
+   color: #fff;
+   }

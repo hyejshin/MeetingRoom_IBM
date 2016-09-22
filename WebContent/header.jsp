@@ -13,6 +13,7 @@
 			<a class="navbar-brand" href="#"
 				style="color: white; font-weight: bold">IBM 회의실 예약 시스템</a>
 		</div>
+		
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
 				<li><a href="home.do">예약/현황</a></li>
@@ -20,7 +21,7 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<%if(session.getAttribute("project").equals("master")){ %>
-				<li><a href="AdminProject.jsp"><span class="glyphicon glyphicon-user"></span>관리자</a></li>
+				<li><a href="SelectProject.do"><span class="glyphicon glyphicon-user"></span>관리자</a></li>
 				<%}else if(session.getAttribute("admin").equals("yes")){ %>
 				<li><a href="AdminRsv.jsp"><span class="glyphicon glyphicon-user"></span>관리자</a></li>
 				<%}%>

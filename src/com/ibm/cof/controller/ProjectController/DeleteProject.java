@@ -1,6 +1,7 @@
 package com.ibm.cof.controller.ProjectController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ibm.cof.dao.AdminDAO;
+import com.ibm.cof.dao.MemberDAO;
+import com.ibm.cof.dto.AdminDTO;
 
 /**
  * Servlet implementation class DeleteProject
@@ -43,10 +48,12 @@ public class DeleteProject extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
-		
-		
-        // 다음 페이지로 이동
-        RequestDispatcher rd = request.getRequestDispatcher("");
-        rd.forward(request, response);
-    }
+		System.out.println("delete1");
+		int seq = Integer.parseInt(request.getParameter("seq"));
+		AdminDAO adao = new AdminDAO();
+		adao.delete(seq);
+
+		RequestDispatcher rd = request.getRequestDispatcher("SelectProject.do");
+		rd.forward(request, response);
+	}
 }
