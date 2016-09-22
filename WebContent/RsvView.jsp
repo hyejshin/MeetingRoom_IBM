@@ -59,43 +59,34 @@ body {
 </style>
 
 <script language="javascript">
-	function Modify() {
-		document.myForm.action = "ModifyRsv.do";
-		document.myForm.submit();
+
+function Reservation() {
+	if(ValidationCheck() == false){	
+		return false;
 	}
 	
-	function Delete() {
-		//var seq = document.myForm.rsv_seq.value;
-		//var pw = document.myForm.del_pw.value;
+	document.myForm.action = "Reservation.do";
+	document.myForm.submit();
+}
 
-		document.myForm.action = "DeleteRsv.do";
-		document.myForm.submit();
+function Modify() {
+	if(ValidationCheck() == false){	
+		return false;
 	}
 	
-	/*
-	function isPossible(seq, pw){
-		var possible = false;
-		$.ajax({
-			type : "post",
-			url : "PasswordCheck.do",
-			dataType : 'json',
-			data : {
-				seq : seq,
-				pw: pw
-			},
-			success : function(data) {
-				possible = data.result.valid;
-				return possible;
-			},
-			error : function() {
-				console.log("error");
-			}
-		});
-		
-		return possible;
-	}*/
+	document.myForm.action = "ModifyRsv.do";
+	document.myForm.submit();
+}
 
-	<%String message = (String)request.getAttribute("message");
+function Delete() {
+	//var seq = document.myForm.rsv_seq.value;
+	//var pw = document.myForm.del_pw.value;
+
+	document.myForm.action = "DeleteRsv.do";
+	document.myForm.submit();
+}
+
+<%String message = (String)request.getAttribute("message");
 	if(message != null){
 		%>alert('<%=message%>');<%
 	}%>
@@ -295,12 +286,12 @@ body {
 
                         <!-- 예약 버튼 -->
 						<div id="register">
-							<button type="submit" class="btn btn-primary">예약</button>
+							<button type="button" class="btn btn-primary" onClick="Reservation();">예약</button>
 						</div>
 
 						<!-- 수정 및 삭제 -->
 						<div id="registerInfo">
-							<button type="submit" class="btn btn-primary" onClick="Modify();">수정</button>
+							<button type="button" class="btn btn-primary" onClick="Modify();">수정</button>
 							<button type="button" class="btn btn-primary" onClick="Delete();">삭제</button>
 						</div>
                         </div>

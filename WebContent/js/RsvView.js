@@ -1,5 +1,74 @@
 var conference = [];
 
+function ValidationCheck(){
+	theForm = document.myForm;
+	
+	if (theForm.date.value == "") {
+		alert("날짜를 선택하세요.");
+		theForm.date.focus();
+		return false;
+	}
+	else if (theForm.confer_nm.value == "") {
+		alert("회의실을 선택하세요.");
+		theForm.confer_nm.focus();
+		return false;
+	}
+	else if (theForm.start_time.value >= theForm.end_time.value) {
+		alert("유효하지 않은 시간입니다.");
+		return false;
+	}
+	else if (theForm.title.value == "") {
+		alert("회의제목을 입력하세요.");
+		theForm.title.focus();
+		return false;
+	}
+	else if (theForm.del_pw.value == "") {
+		alert("비밀번호를 입력하세요.");
+		theForm.del_pw.focus();
+		return false;
+	}
+	else if (theForm.phone.value == "") {
+		alert("전화번호를 입력하세요.");
+		theForm.phone.focus();
+		return false;
+	}
+	else if (theForm.name.value == "") {
+		alert("이름을 입력하세요.");
+		theForm.name.focus();
+		return false;
+	}
+	else if (theForm.email.value == "") {
+		alert("이메일을입력하세요.");
+		theForm.email.focus();
+		return false;
+	}
+	return true;
+}
+
+/*
+function isPossible(seq, pw){
+	var possible = false;
+	$.ajax({
+		type : "post",
+		url : "PasswordCheck.do",
+		dataType : 'json',
+		data : {
+			seq : seq,
+			pw: pw
+		},
+		success : function(data) {
+			possible = data.result.valid;
+			return possible;
+		},
+		error : function() {
+			console.log("error");
+		}
+	});
+	
+	return possible;
+}*/
+
+
 // 분을 시간 문자열로 변환해 준다 540 -> 09:00
 	function minToTime(time){
 		var hr = time/60 - time/60%1;
