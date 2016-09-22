@@ -116,11 +116,11 @@ body {
 			<%if(session.getAttribute("project").equals("master")){ %>
 				<select class="form-control" id="site" name="site" onchange="displayConf(this.value);">
 				<option value="">선택하세요</option>
-				<%ArrayList<ProjectDTO> dtos = (ArrayList) request.getAttribute("proj");
-					if (dtos != null) {
-						for (int i = 0; i < dtos.size(); i++) {
-							ProjectDTO dto = dtos.get(i);%>
-					<option value="<%=dto.getProj_Nm()%>"><%=dto.getProj_Nm()%></option> <%}%>
+				<%ArrayList<String> proj = (ArrayList) request.getAttribute("proj");
+					if (proj != null) {
+						for (int i = 0; i < proj.size(); i++) {
+							String name = proj.get(i);%>
+					<option value="<%=name%>"><%=name%></option> <%}%>
 				</select>
 				<%}}else{
 					String project = (String)session.getAttribute("project");%>

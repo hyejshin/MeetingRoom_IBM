@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 
 import com.ibm.cof.dto.AdminDTO;
 import com.ibm.cof.dto.MemberDTO;
+import com.ibm.cof.dto.ProjectDTO;
 
 
 public class AdminDAO {
@@ -134,15 +135,16 @@ public class AdminDAO {
 
 	public ArrayList<AdminDTO> selectAll(){
 		ArrayList<AdminDTO> dtos = new ArrayList<AdminDTO>();
-		String query = "select * from tb_admin";
+		String query = "select * from tb_admin where admin_proj != ?";
 		
 		AdminDTO dto = null;
 		String project, id, pw;
 		int seq;
 		
 		try {
-			conn = db.connect();				
-			pstmt = conn.prepareStatement(query);			
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "master");
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -167,28 +169,43 @@ public class AdminDAO {
 		return dtos;
 	}
 	
-	public void ChangePw(AdminDTO admindto, String newPassword)
+	public String selectPassword(String project){
+		String query = "select admin_pw from tb_admin where admin_proj=?";
+		String password = "";
+
+		try {
+			conn = db.connect();            
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, project);
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				password = rs.getString("admin_pw");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return password;
+	}
+	
+	public void changePassword(String project, String newPassword)
 	{
-		String query = "update tb_admin set admin_proj = ?, admin_pw = ? where admin_seq = ?";
+		String query = "update tb_admin set admin_pw=? where admin_proj=?";
 
 		try {
 			conn = db.connect();
 			pstmt = conn.prepareStatement(query);
-			System.out.println("디비연결오케잉");
-			pstmt.setString(1, admindto.getAdmin_Proj());
-			pstmt.setString(2, newPassword);
-			pstmt.setInt(3, admindto.getAdmin_Seq());
+			pstmt.setString(1, newPassword);
+			pstmt.setString(2, project);
 			pstmt.executeUpdate();
 
-			System.out.println(newPassword);
-			System.out.println(admindto.getAdmin_Pw());
-
-			AdminDTO testDto = new AdminDTO();
-			testDto.setAdmin_Proj(admindto.getAdmin_Proj());
-			System.out.println(testDto.getAdmin_Pw());
-
-			// pstmt.close();
-			// conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -198,5 +215,31 @@ public class AdminDAO {
 				e2.printStackTrace();
 			}
 		}
+	}
+	
+	public ArrayList<String> Projlist() {
+		ArrayList<String> projList = new ArrayList<String>(); 
+		String query = "select * from tb_admin where admin_proj != ?";
+		String project;
+		
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "master");
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				project = rs.getString("admin_proj");
+				projList.add(project);
+			}
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			db.close(pstmt, conn);
+		}
+		
+		return projList;
 	}
 }

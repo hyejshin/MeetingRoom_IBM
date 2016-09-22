@@ -1,7 +1,6 @@
-package com.ibm.cof.controller.RsvController;
+package com.ibm.cof.controller.AdminController;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,23 +11,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ibm.cof.dao.AdminDAO;
-import com.ibm.cof.dao.ProjectDAO;
-import com.ibm.cof.dto.ProjectDTO;
+import com.ibm.cof.dto.AdminDTO;
 
 /**
- * Servlet implementation class SelectByCondition
+ * Servlet implementation class ChangePassword
  */
-@WebServlet("/home.do")
-public class Home extends HttpServlet {
+@WebServlet("/ChangePassword.do")
+public class ChangePassword extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Home() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public ChangePassword() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -45,33 +43,30 @@ public class Home extends HttpServlet {
 		// TODO Auto-generated method stub
 		doProcess(request, response);
 	}
-	
+
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+
 		HttpSession session=request.getSession();
+		String project = (String)session.getAttribute("project");
 		
-		String key = request.getParameter("key");
-		String nextPage = "RsvView.jsp";
-		
+		String oldpassword = request.getParameter("oldpw");
+		String newpassword = request.getParameter("newpw");
+
 		AdminDAO adao = new AdminDAO();
-		String project = adao.selectProjectName(key);
-		
-		// session이 없으면 관리자 로그인 페이지로 이동
-		if(session.getAttribute("admin") == null){
-			if(key == null || project.equals("")){
-		        nextPage = "AdminLogin.jsp";
-			}else{
-				session.setMaxInactiveInterval(2*60*60);
-				session.setAttribute("admin", "no");
-		        session.setAttribute("project", project);
-			}
-		}else if(session.getAttribute("project").equals("master")){
-			ArrayList<String> proj = adao.Projlist(); 
-	        request.setAttribute("proj", proj);
+		String correctPW = adao.selectPassword(project);
+
+		String message = "";
+		if(correctPW.equals(oldpassword)){
+			adao.changePassword(project, newpassword);
+			message = "비밀번호가 성공적으로 변경되었습니다.";
+		}else{
+			message = "비밀번호가 일치하지 않습니다.";
 		}
 		
+		request.setAttribute("message", message);
+		RequestDispatcher rd = request.getRequestDispatcher("AdminSetting.jsp");
+		rd.forward(request, response);
+	}
 
-        RequestDispatcher rd = request.getRequestDispatcher(nextPage);
-        rd.forward(request, response);
-    }
 }

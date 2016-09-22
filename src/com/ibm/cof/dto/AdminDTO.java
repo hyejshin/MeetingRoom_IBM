@@ -16,11 +16,6 @@ public class AdminDTO {
 		Admin_Pw = admin_Pw; 
 	}
 	
-	public AdminDTO(String admin_Proj, String admin_Pw) {
-		Admin_Proj = admin_Proj;
-		Admin_Pw = admin_Pw; 
-	}
-	
 	public AdminDTO(String admin_Proj, String admin_Id, String admin_Pw) {
 		Admin_Proj = admin_Proj;
 		Admin_Id = admin_Id;
