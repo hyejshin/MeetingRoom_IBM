@@ -8,12 +8,9 @@
 <title>관리자페이지</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -39,8 +36,8 @@
 			
 			<form method="post" name="myForm" action="ChangePassword.do">
 			<div class="form-inline" style="margin-top:30px;">
-				기존 비밀번호 <input name="oldpw" id="oldpw" class="form-control">  
-				새 비밀번호 <input name="newpw" class="form-control" >
+				기존 비밀번호 <input name="oldpw" id="oldpw" type="password" class="form-control">  
+				새 비밀번호 <input name="newpw" type="password" class="form-control" >
 				<button type="submit" class="btn btn-info" style="margin-left:20px;"> 변경하기</button>
 			</div>
 			</form>

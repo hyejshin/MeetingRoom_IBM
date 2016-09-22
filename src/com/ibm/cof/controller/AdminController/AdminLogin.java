@@ -58,6 +58,7 @@ public class AdminLogin extends HttpServlet {
 		String project = adao.selectProjectName(id);
 		
 		if(result == 1) { //회원가입 성공
+			session.setMaxInactiveInterval(10*60*60);
 			session.setAttribute("admin", "yes");
 			session.setAttribute("project", project);
 			nextPage = "home.do";

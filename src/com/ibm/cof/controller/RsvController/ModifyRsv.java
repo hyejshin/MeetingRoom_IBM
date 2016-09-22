@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ibm.cof.dao.AdminDAO;
+import com.ibm.cof.dao.HistoryDAO;
 import com.ibm.cof.dao.MemberDAO;
 import com.ibm.cof.dao.RsvDAO;
+import com.ibm.cof.dto.HistoryDTO;
 import com.ibm.cof.dto.MemberDTO;
 import com.ibm.cof.dto.RsvDTO;
 
@@ -90,20 +93,33 @@ public class ModifyRsv extends HttpServlet {
 			System.out.println("modifyError!");
 		}*/
 		
-		
+		HistoryDAO hdao = new HistoryDAO();
+		HistoryDTO hdto = new HistoryDTO(date, start_time, end_time, title, site,
+				confer_nm, name, phone, email, del_pw, "수정");
 
+		AdminDAO adao = new AdminDAO();
+		
 		//겹치는 일정 존재 여부 확인
 		if(rdao.CheckRsvSeq(seq,confer_nm,start_time,end_time,site,date)) {
 			key_pw = rdao.getPassword(seq);
 			
 			//관리자는 모든 예약 수정 가능
 			if(session.getAttribute("admin") == "yes" && session.getAttribute("project") != "master"){
-				rdao.update(rdto);
-				System.out.println("업데이트 완료");
+				String project = (String)session.getAttribute("project");
+				String projPassword = adao.selectPassword(project);
+				
+				if(projPassword.equals(del_pw)){
+					rdao.update(rdto);
+					System.out.println("업데이트 완료");
+					
+					hdao.insert(hdto); // 회의실 예약 내역 추가
+				}
 			}
 			else if(key_pw.equals(del_pw)) { //비밀번호 일치여부 확인
 				rdao.update(rdto);
 				System.out.println("업데이트 완료");
+				
+				hdao.insert(hdto); // 회의실 예약 내역 추가
 			}
 			else{
 				message = "비밀번호가 일치하지 않습니다.";
@@ -111,7 +127,7 @@ public class ModifyRsv extends HttpServlet {
 				System.out.println(message);
 			}
 		}else{
-			message = "시간이 겹쳐서 예약이 불가합니다.";
+			message = "시간이 겹쳐서 수정이 불가합니다.";
 			request.setAttribute("message", message);
 			System.out.println(message);
 		}

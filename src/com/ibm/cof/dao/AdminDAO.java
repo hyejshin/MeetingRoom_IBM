@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.ibm.cof.dto.AdminDTO;
 import com.ibm.cof.dto.MemberDTO;
 import com.ibm.cof.dto.ProjectDTO;
@@ -241,5 +244,32 @@ public class AdminDAO {
 		}
 		
 		return projList;
+	}
+	
+	public JSONArray projList()	{
+		String query = "select * from tb_admin where admin_proj != 'master'";
+		JSONArray jarray = new JSONArray();
+				
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+						
+			while(rs.next()) {				
+				JSONObject json = new JSONObject();
+				json.put("project", rs.getString("admin_proj"));
+				jarray.add(json);
+			}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return jarray;
 	}
 }

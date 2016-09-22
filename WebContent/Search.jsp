@@ -41,7 +41,7 @@
 		</div>
 
 	</form>
-
+	<br><br>
 	<%
 		ArrayList<RsvDTO> dtos = (ArrayList)request.getAttribute("list");
 	%>

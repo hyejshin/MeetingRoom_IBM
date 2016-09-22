@@ -47,7 +47,7 @@
 	function fillSite(id){
 		$.ajax({
 	        type: "post",
-	        url : "SelectProject.do",
+	        url : "SelectProjectJson.do",
 	        dataType : 'json',
 	        data: { },
 	       

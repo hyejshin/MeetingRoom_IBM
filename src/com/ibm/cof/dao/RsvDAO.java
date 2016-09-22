@@ -5,14 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServlet;
+
+import java.util.ArrayList;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.ibm.cof.dto.HistoryDTO;
 import com.ibm.cof.dto.RsvDTO;
 
 public class RsvDAO {
@@ -206,6 +207,46 @@ public class RsvDAO {
 		return dtos;
 	}
 
+	
+	public RsvDTO selectBySeq(int seq) {
+		RsvDTO dto = null;
+		String date, start_time, end_time, title, site, confer_nm, name, phone, email, del_pw;
+		String query = "select * from tb_reservation where rsv_seq = ?";
+
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, seq);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				date = rs.getString("rsv_date");
+				start_time = rs.getString("rsv_start_time");
+				end_time = rs.getString("rsv_end_time");
+				title = rs.getString("rsv_title");
+				site = rs.getString("rsv_site");
+				confer_nm = rs.getString("rsv_confer_nm");
+				name = rs.getString("rsv_mem_nm");
+				phone = rs.getString("rsv_mem_pn");
+				email = rs.getString("rsv_mem_em");
+				del_pw = rs.getString("rsv_del_pw");
+
+				dto = new RsvDTO(date, start_time, end_time, title, site, confer_nm, name, phone, email, del_pw);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return dto;
+	}
+	
+	
+	
 	/*
 	 * 회의실 삭제시 사용자는 자신이 예약시 등록한 비밀번호를 입력하게된다. 그렇기 때문에 삭제시 자신이 설정한 비밀번호와 일치하여야
 	 * 삭제가 가능
@@ -454,7 +495,7 @@ public class RsvDAO {
 		Boolean bool = true;
 
 		String query = "select rsv_start_time,rsv_end_time from tb_reservation where rsv_site=? and rsv_date=? and rsv_confer_nm=?"
-				+ "and rsv_seq !=?" + "order by rsv_confer_nm, rsv_start_time";
+				+ "and rsv_seq !=?";
 		try {
 			conn = db.connect();
 			pstmt = conn.prepareStatement(query);
@@ -518,7 +559,7 @@ public class RsvDAO {
 	public boolean CheckRsv(String confer_nm, String start_time, String end_time, String site, String date) {
 		Boolean bool = true;
 
-		String query = "select rsv_start_time,rsv_end_time from tb_reservation where rsv_site=? and rsv_date=? and rsv_confer_nm=?"
+		String query = "select rsv_start_time,rsv_end_time, rsv_seq from tb_reservation where rsv_site=? and rsv_date=? and rsv_confer_nm=?"
 				+ "order by rsv_confer_nm, rsv_start_time";
 		try {
 			conn = db.connect();
@@ -534,6 +575,7 @@ public class RsvDAO {
 				int myend_int = Integer.parseInt(end_time);
 				int youstart_int = Integer.parseInt(rs.getString(1));
 				int youend_int = Integer.parseInt(rs.getString(2));
+				int seq = rs.getInt(3);
 
 				System.out.println("mystart_int :" + mystart_int);
 				System.out.println("myend_int :" + myend_int);
@@ -561,8 +603,10 @@ public class RsvDAO {
 						bool = true;
 				}
 				System.out.println(bool);
-				if (bool == false)
+				if (bool == false){
+					System.out.println(seq);
 					return bool;
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

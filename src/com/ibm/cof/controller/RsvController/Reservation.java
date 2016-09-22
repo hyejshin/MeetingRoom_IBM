@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ibm.cof.dao.HistoryDAO;
 import com.ibm.cof.dao.MemberDAO;
 import com.ibm.cof.dao.RsvDAO;
+import com.ibm.cof.dto.HistoryDTO;
 import com.ibm.cof.dto.MemberDTO;
 import com.ibm.cof.dto.RsvDTO;
 
@@ -78,16 +80,19 @@ public class Reservation extends HttpServlet {
 		} else {
 			mdao.updateMemberPhone(mdto);
 		}
-		
+		 System.out.println(rdao.CheckRsv(confer_nm,start_time,end_time,site,date));
 		if(rdao.CheckRsv(confer_nm,start_time,end_time,site,date)){
 			// 회의실 예약
 			System.out.println("예약햇음");
 			rdao.insert(rdto);
+			
 			// 회의실 예약 내역 추가
-			/*rdao.insertHist(date, start_time, end_time, title, site, confer_nm,
-					name, phone, email, del_pw);*/
+			HistoryDAO hdao = new HistoryDAO();
+			HistoryDTO hdto = new HistoryDTO(date, start_time, end_time, title, site,
+					confer_nm, name, phone, email, del_pw, "예약");
+			hdao.insert(hdto);
 		}else{
-			message = "선택하시 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.";
+			message = "선택하신 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.";
 			request.setAttribute("message", message);
 		}
 				

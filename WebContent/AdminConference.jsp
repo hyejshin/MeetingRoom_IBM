@@ -68,7 +68,7 @@
 			<input type="hidden" name="page" value="AdminMember.jsp">
 				<div class="form-inline">
 					<label for="name">회의실이름:</label> <input type="text"
-						class="form-control" name="name" placeholder="Input ConferenceRoom Name">
+						class="form-control" name="name" placeholder="회의실이름">
 
 					<label for="stat">회의실상태:</label>
 					<select class="form-control" name="stat">
