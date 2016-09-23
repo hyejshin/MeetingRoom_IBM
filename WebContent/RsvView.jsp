@@ -15,6 +15,7 @@
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<!-- 자동채우기 -->
 <script src="js/ajax_auto.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 
@@ -23,10 +24,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
    
-<!--Font Awesome (added because you use icons in your prepend/append)-->
+<!--이모티콘 Font Awesome (added because you use icons in your prepend/append)-->
 <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
 
-<!-- Inline CSS based on choices in "Settings" tab -->
 
 <style>
 .bootstrap-iso .formden_header h2,.bootstrap-iso .formden_header p,.bootstrap-iso form
@@ -225,7 +225,6 @@ function adminMonthValidation(){
 	if (document.myForm.date.value != "") {
 		getAdminMonth(projectnm);
 	}
-
 }
 
 <%String message = (String)request.getAttribute("message");
@@ -233,6 +232,7 @@ function adminMonthValidation(){
 		%>alert('<%=message%>');<%
 	}%>
 	
+
 </script>
 </head>
 
@@ -267,9 +267,9 @@ function adminMonthValidation(){
          <div class="row">
             <center>
                <!-- 달력 -->
-               <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top: 15px;">
+               <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:15px;">
 
-                  <div class="well well-lg col-md-12">
+                  <div class="well well-lg col-md-12" style="padding-left:13%;">
 
                      <%@ include file="calendar/calendar.jsp"%>
                   </div>
@@ -311,7 +311,7 @@ function adminMonthValidation(){
                                        <i class="fa fa-calendar"></i>
                                     </div>
                                     <input type="text" readonly class="form-control" id="date"
-                                       name="date" onPropertyChange="JavaScript:adminMonthValidation();">
+                                       name="date">
                                  </div>
                               </div>
                            </div>
@@ -393,7 +393,7 @@ function adminMonthValidation(){
                                        <i class="fa fa-phone"> </i>
                                     </div>
                                     <input type="text" id="phone" class="form-control"
-                                       name="phone" value="4995">
+                                       name="phone" value="0104995">
                                  </div>
                               </div>
 
@@ -439,7 +439,7 @@ function adminMonthValidation(){
                         </div>
                         </section>
                         
-                        <br><input type="text" id="rsv_seq" name="rsv_seq">
+                        <input type="hidden" id="rsv_seq" name="rsv_seq">
                      </div>
                   </div>
 

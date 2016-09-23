@@ -33,29 +33,6 @@
 		document.myForm.action = "DeleteRsv.do";
 		document.myForm.submit();
 	}
-	
-	/*
-	function isPossible(seq, pw){
-		var possible = false;
-		$.ajax({
-			type : "post",
-			url : "PasswordCheck.do",
-			dataType : 'json',
-			data : {
-				seq : seq,
-				pw: pw
-			},
-			success : function(data) {
-				possible = data.result.valid;
-				return possible;
-			},
-			error : function() {
-				console.log("error");
-			}
-		});
-		
-		return possible;
-	}*/
 
 	<%String message = (String)request.getAttribute("message");
 	if(message != null){

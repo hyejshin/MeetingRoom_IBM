@@ -50,10 +50,10 @@ public class InsertConf extends HttpServlet {
 		String project = (String)session.getAttribute("project");
 		
 		String name = request.getParameter("name");
-		String state = request.getParameter("state");
+		String stat = request.getParameter("stat");
 
 		ConfDAO cdao = new ConfDAO();
-		cdao.insert(name,project,state);
+		cdao.insert(name,project,stat);
 
 
 		RequestDispatcher rd = request.getRequestDispatcher("SelectConf.do");

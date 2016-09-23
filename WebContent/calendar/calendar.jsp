@@ -85,6 +85,7 @@ http://yuilibrary.com/yui/docs/calendar/ -->
 	      //Y.one("#selecteddate").setHTML(dtdate.format(newDate));
 	      document.myForm.date.value = dtdate.format(newDate);
 	      displaySchedule(dtdate.format(newDate));
+	      adminMonthValidation();
 	    });
 	
 	    // When the 'Show Previous Month' link is clicked,

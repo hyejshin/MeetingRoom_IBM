@@ -29,44 +29,52 @@
 	</ul>
 
 	<br>
-	<br>
-
-	<center>
-		<div class="container">
-			
-			<form method="post" name="myForm" action="ChangePassword.do">
-			<div class="form-inline" style="margin-top:30px;">
-				기존 비밀번호 <input name="oldpw" id="oldpw" type="password" class="form-control">  
-				새 비밀번호 <input name="newpw" type="password" class="form-control" >
-				<button type="submit" class="btn btn-info" style="margin-left:20px;"> 변경하기</button>
-			</div>
-			</form>
-			<br>${message}
-		</div>
-	</center>
 	
+	<center>
+      <div class="container">
+
+         <div style="margin-top: 1%; padding: 3%">
+            <div class="well well-sm col-md-11 col-sm-11 col-xs-12 col-centered"
+               style="border-radius: 10px;">
+               <form method="post" name="myForm" action="ChangePassword.do">
+                  <div class="form-inline" style="margin-top: 30px;">
+                     기존 비밀번호 <input name="oldpw" id="oldpw" type="password"
+                        class="form-control"> 
+                        
+                        새 비밀번호 <input name="newpw" type="password" class="form-control">
+                        <button type="submit" class="btn btn-info" style="margin-left: 20px;">변경하기</button>
+                  </div>
+               </form>
+               <br>${message}
+            </div>
+         </div>
+      </div>
+   </center>
 	
 	<!-- 예약 가능한 달 수 바꾸기   -->
-   <div class="container">
-      <div style="margin-top: 1%; padding: 3%">
-         <div class="well well-sm col-md-11 col-sm-11 col-xs-12 col-centered">
+	<center>
+      <div class="container">
 
-            <form method="post" name="myForm2" action="ChangeMonth.do">
+         <div style="margin-top: 1%; padding: 3%">
+            <div class="well well-sm col-md-11 col-sm-11 col-xs-12 col-centered"
+               style="border-radius: 10px;">
+               <form method="post" name="myForm2" action="ChangeMonth.do">
                <div class="form-inline" style="margin-top: 30px;">
-                  기존 예약 가능한 달 수: ${pmonth} &nbsp;&nbsp;
+                  기존 예약 가능한 달 수: ${pmonth}달&nbsp;&nbsp;
                   
                   새 예약 가능한 달 수 
                   <input name="newmonth" id="newmonth" class="form-control">
                   
-                  <button type="submit" class="button btn-info" style="margin-left: 20px;" onClick ="ValidationCheck()">
+                  <button type="submit" class="btn btn-info" style="margin-left: 20px;" onClick ="ValidationCheck()">
                   변경하기</button>
                </div>
             </form>
-
+            <br>
+            </div>
          </div>
       </div>
-   </div>
-   
+   </center>
+
 
 </body>
 </html>
