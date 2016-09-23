@@ -69,6 +69,72 @@ function isPossible(seq, pw){
 }*/
 
 
+/* 날짜 validation */
+function getAdminMonth(projectname){
+	   $.ajax({
+	        type: "post",
+	        url : "GetAdminMonth.do",
+	        dataType : 'json',
+	        data: {
+	           project : projectname
+	        },
+	       
+	        success : function(data) {      
+	           
+	           var adminmonth =0;
+	           var newdate; 
+	           var d = new Date();
+	           var date = leadingZeros(d.getFullYear(), 4) + '-' +
+	                     leadingZeros(d.getMonth() + 1, 2) + '-' +
+	                      leadingZeros(d.getDate(), 2);
+
+	           adminmonth = data.result[0].admin_month; //db에서 admin_month 가져옴 
+				
+	             if((d.getMonth()+adminmonth+1)>12) //이번달 + admin_month 가 12월을 초과하면 
+	             {
+	            newdate = leadingZeros((d.getFullYear()+1), 4) + '-' +
+	                       leadingZeros((d.getMonth()+adminmonth-12) + 1, 2) + '-' +
+	                          leadingZeros(d.getDate(), 2) + ' '; //유의해야할게 1월은 javascript에서 0으로 표시 ㅎ... 
+	             }
+	             else 
+	            {
+	               newdate = leadingZeros(d.getFullYear(), 4) + '-' +
+	                      leadingZeros((d.getMonth()+adminmonth) + 1, 2) + '-' +
+	                        leadingZeros(d.getDate(), 2) + ' ';
+	            }
+	           
+	           
+	            if (document.myForm.date.value > newdate) {
+	               alert("관리자가 지정한 날짜보다 초과하였습니다. 날짜를 다시 선택해주세요.");
+	               $('input[name="date"]').val("");    
+	            }
+	            else if(document.myForm.date.value < date){
+	               $('input[name="date"]').val("");
+	               alert("오늘보다 이전 날짜는 예약이 되지 않습니다. 날짜를 다시 선택해주세요.");
+	            }
+
+	        },
+	        error : function() {
+	           console.log("error");
+	        }
+	   });
+	   return adminmonth; 
+	}
+
+	/*adminMonthValidation()*/
+
+	function leadingZeros(n, digits) {
+	    var zero = '';
+	    n = n.toString();
+
+	    if (n.length < digits) {
+	        for (var i = 0; i < digits - n.length; i++)
+	            zero += '0';
+	    }
+	    return zero + n;
+	}
+	
+	
 // 분을 시간 문자열로 변환해 준다 540 -> 09:00
 	function minToTime(time){
 		var hr = time/60 - time/60%1;

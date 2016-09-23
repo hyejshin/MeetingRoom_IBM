@@ -21,10 +21,13 @@
 <script src="js/RsvView.js"></script>
 <link rel="stylesheet" type="text/css" href="css/RsvView.css">
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   
 <!--Font Awesome (added because you use icons in your prepend/append)-->
 <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
 
 <!-- Inline CSS based on choices in "Settings" tab -->
+
 <style>
 .bootstrap-iso .formden_header h2,.bootstrap-iso .formden_header p,.bootstrap-iso form
    {
@@ -39,24 +42,155 @@
 .asteriskField {
    color: red;
 }
-</style>
-
-<style>
-@CHARSET "UTF-8";
-
-.navbar-inverse {
-   background-color: black;
-   border-color: black;
-}
 
 body {
-   background: url(image/10.jpg) no-repeat center center fixed;
+   background: url(image/10.jpg) center fixed;
    -webkit-background-size: cover;
    -moz-background-size: cover;
    -o-background-size: cover;
    background-size: cover;
+   font-family: 'Noto Sans KR', sans-serif !important;
+}
+
+input {
+   /*사용자가 입력하는 내용은 나눔명조체*/
+   font-family: 'Noto Sans KR', sans-serif !important;
+}
+
+#conference {
+   position: relative;
+   width: 100%;
+   height: 20px;
+   margin-bottom: 5px;
+   background-color: rgba(255, 255, 255, 0); /*마지막0: 투명도 */
+}
+
+.conf {
+   position: absolute;
+   text-align: center;
+}
+
+#timeDiv {
+   /*border: 5px inset #48BAE4;*/
+   position: relative;
+   text-align: center;
+   border-radius: 10px; /*모서리 약간 둥글게*/
+   border-bottom-right-radius: 10px;
+   border-top-right-radius: 10px;
+   width: 70px;
+}
+
+.time {
+   position: absolute;
+   width: 70px;
+   left: 0px;
+}
+
+#schedule {
+   position: relative;
+   width: 100%;
+   height: 400px;
+   margin-left: auto;
+   margin-right: auto;
+   margin-bottom: 30px;
+   border: 1px;
+   background-color: #F9F9F9;
+   border-radius: 10px; /*모서리 약간 둥글게*/
+   border-bottom-right-radius: 10px;
+   border-top-right-radius: 10px;
+}
+
+.meeting {
+   position: absolute;
+   text-align: center;
+   background-color: #F8DEBD;
+   border: 1px inset #FF7182;
+}
+
+.empty {
+   position: absolute;
+   text-align: center;
+   background-color: #F9F9F9;
+   border-radius: 10px;
+}
+
+.line {
+   position: absolute;
+   height: 400px;
+   width: 1px;
+   border: 1px dotted #F8DEBD;
+}
+
+.line2 {
+   position: absolute;
+   left: 70px;
+   border: 1px dotted #F8DEBD;
+}
+
+textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
+   border-color: rgba(102, 102, 102, 0.7);
+   box-shadow: 0 1px 1px rgba(51, 51, 51, 0.3) inset, 0 0 8px
+      rgba(51, 51, 51, 0.9);
+   outline: 0 none;
+}
+
+.button {
+   border: 0px solid #000000;
+   background: #000000;
+   background: -webkit-gradient(linear, left top, left bottom, from(#060e14),
+      to(#000000));
+   background: -webkit-linear-gradient(top, #060e14, #000000);
+   background: -moz-linear-gradient(top, #060e14, #000000);
+   background: -ms-linear-gradient(top, #060e14, #000000);
+   background: -o-linear-gradient(top, #060e14, #000000);
+   background-image: -ms-linear-gradient(top, #060e14 0%, #000000 100%);
+   padding: 10px 20px;
+   -webkit-border-radius: 6px;
+   -moz-border-radius: 6px;
+   border-radius: 6px;
+   -webkit-box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0, inset
+      rgba(255, 255, 255, 0.4) 0 1px 0;
+   -moz-box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0, inset
+      rgba(255, 255, 255, 0.4) 0 1px 0;
+   box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0, inset
+      rgba(255, 255, 255, 0.4) 0 1px 0;
+   text-shadow: #ffffff 0 1px 0;
+   color: #eaeced;
+   font-size: 15px;
+   font-family: 'Noto Sans KR', sans-serif;
+   text-decoration: none;
+   vertical-align: middle;
+}
+
+.button:hover {
+   border: 0px solid #0a3c59;
+   text-shadow: #dce7ed 0 1px 0;
+   background: #403e40;
+   background: -webkit-gradient(linear, left top, left bottom, from(#3a3b3b),
+      to(#403e40));
+   background: -webkit-linear-gradient(top, #3a3b3b, #403e40);
+   background: -moz-linear-gradient(top, #3a3b3b, #403e40);
+   background: -ms-linear-gradient(top, #3a3b3b, #403e40);
+   background: -o-linear-gradient(top, #3a3b3b, #403e40);
+   background-image: -ms-linear-gradient(top, #3a3b3b 0%, #403e40 100%);
+   color: #fff;
+}
+
+.button:active {
+   text-shadow: #667680 0 1px 0;
+   border: 0px solid #000000;
+   background: #151717;
+   background: -webkit-gradient(linear, left top, left bottom, from(#1f1f1f),
+      to(#403e40));
+   background: -webkit-linear-gradient(top, #1f1f1f, #151717);
+   background: -moz-linear-gradient(top, #1f1f1f, #151717);
+   background: -ms-linear-gradient(top, #1f1f1f, #151717);
+   background: -o-linear-gradient(top, #1f1f1f, #151717);
+   background-image: -ms-linear-gradient(top, #1f1f1f 0%, #151717 100%);
+   color: #fff;
 }
 </style>
+
 
 <script language="javascript">
 
@@ -84,6 +218,14 @@ function Delete() {
 
 	document.myForm.action = "DeleteRsv.do";
 	document.myForm.submit();
+}
+
+function adminMonthValidation(){
+   var projectnm = "<%=(String)session.getAttribute("project")%>";
+	if (document.myForm.date.value != "") {
+		getAdminMonth(projectnm);
+	}
+
 }
 
 <%String message = (String)request.getAttribute("message");
@@ -169,7 +311,7 @@ function Delete() {
                                        <i class="fa fa-calendar"></i>
                                     </div>
                                     <input type="text" readonly class="form-control" id="date"
-                                       name="date">
+                                       name="date" onPropertyChange="JavaScript:adminMonthValidation();">
                                  </div>
                               </div>
                            </div>

@@ -6,16 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import javax.annotation.Resource;
-import javax.sql.DataSource;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.ibm.cof.dto.AdminDTO;
-import com.ibm.cof.dto.MemberDTO;
-import com.ibm.cof.dto.ProjectDTO;
+
 
 
 public class AdminDAO {
@@ -272,4 +269,89 @@ public class AdminDAO {
 		}
 		return jarray;
 	}
+
+	public void changeMonth(String project, int newmonth)
+	{
+		String query = "update tb_admin set admin_month=? where admin_proj=?";
+
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, newmonth);
+			pstmt.setString(2, project);
+			pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+
+	public int selectMonthbyName (String project)
+	{
+		String query = "select admin_month from tb_admin where admin_proj= ?";
+		int month=0 ;
+
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, project);
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				month = rs.getInt("admin_month");
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return month; 
+	}
+
+	//month로 바꾸기 
+	public JSONArray selectMonthbyName2 (String project)
+	{
+		String query = "select admin_month from tb_admin where admin_proj = ?"; 
+
+		JSONArray jarray = new JSONArray();
+		int month = 0 ; 
+
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, project);
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+
+				JSONObject json = new JSONObject();
+
+				month =  rs.getInt("admin_month");
+				json.put("admin_month",month);
+				jarray.add(json);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return jarray;
+	}
+
 }

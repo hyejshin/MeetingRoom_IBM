@@ -25,7 +25,7 @@
 		<li><a href="AdminRsvHist.jsp">예약내역</a></li>
 		<li><a href="SearchMember.do?option=all">회원관리</a></li>
 		<li><a href="SelectConf.do">회의실관리</a></li>
-		<li class="active"><a href="AdminSetting.jsp">설정</a></li>
+		<li class="active"><a href="AdminSetting.do">설정</a></li>
 	</ul>
 
 	<br>
@@ -44,6 +44,29 @@
 			<br>${message}
 		</div>
 	</center>
+	
+	
+	<!-- 예약 가능한 달 수 바꾸기   -->
+   <div class="container">
+      <div style="margin-top: 1%; padding: 3%">
+         <div class="well well-sm col-md-11 col-sm-11 col-xs-12 col-centered">
+
+            <form method="post" name="myForm2" action="ChangeMonth.do">
+               <div class="form-inline" style="margin-top: 30px;">
+                  기존 예약 가능한 달 수: ${pmonth} &nbsp;&nbsp;
+                  
+                  새 예약 가능한 달 수 
+                  <input name="newmonth" id="newmonth" class="form-control">
+                  
+                  <button type="submit" class="button btn-info" style="margin-left: 20px;" onClick ="ValidationCheck()">
+                  변경하기</button>
+               </div>
+            </form>
+
+         </div>
+      </div>
+   </div>
+   
 
 </body>
 </html>
