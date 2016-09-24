@@ -178,7 +178,7 @@ public class RsvDAO {
 		RsvDTO dto = null;
 		String site, confer_nm, date, start, end, title;
 		String query = "select rsv_site,rsv_confer_nm,rsv_date,rsv_start_time,rsv_end_time,rsv_title "
-				+ "from tb_reservation " + "where rsv_mem_pn = ?";
+				+ "from tb_reservation where rsv_mem_pn = ?";
 
 		try {
 			conn = db.connect();

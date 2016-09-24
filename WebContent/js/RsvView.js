@@ -71,59 +71,59 @@ function isPossible(seq, pw){
 
 /* 날짜 validation */
 function getAdminMonth(projectname){
-	   $.ajax({
-	        type: "post",
-	        url : "GetAdminMonth.do",
-	        dataType : 'json',
-	        data: {
-	           project : projectname
-	        },
-	       
-	        success : function(data) {      
-	           
-	           var adminmonth =0;
-	           var newdate; 
-	           var d = new Date();
-	           var date = leadingZeros(d.getFullYear(), 4) + '-' +
-	                     leadingZeros(d.getMonth() + 1, 2) + '-' +
-	                      leadingZeros(d.getDate(), 2);
+	$.ajax({
+		type: "post",
+		url : "GetAdminMonth.do",
+		dataType : 'json',
+		data: {
+			project : projectname
+		},
 
-	           adminmonth = data.result[0].admin_month; //db에서 admin_month 가져옴 
-				
-	             if((d.getMonth()+adminmonth+1)>12) //이번달 + admin_month 가 12월을 초과하면 
-	             {
-	            newdate = leadingZeros((d.getFullYear()+1), 4) + '-' +
-	                       leadingZeros((d.getMonth()+adminmonth-12) + 1, 2) + '-' +
-	                          leadingZeros(d.getDate(), 2) + ' '; //유의해야할게 1월은 javascript에서 0으로 표시 ㅎ... 
-	             }
-	             else 
-	            {
-	               newdate = leadingZeros(d.getFullYear(), 4) + '-' +
-	                      leadingZeros((d.getMonth()+adminmonth) + 1, 2) + '-' +
-	                        leadingZeros(d.getDate(), 2) + ' ';
-	            }
-	           
-	           
-	            if (document.myForm.date.value > newdate) {
-	               alert("관리자가 지정한 날짜보다 초과하였습니다. 날짜를 다시 선택해주세요.");
-	               $('input[name="date"]').val("");    
-	            }
-	            else if(document.myForm.date.value < date){
-	               $('input[name="date"]').val("");
-	               alert("오늘보다 이전 날짜는 예약이 되지 않습니다. 날짜를 다시 선택해주세요.");
-	            }
-	            
-	            else {
-	            	$('input[name="confer_nm"]').val("");
-	            }
+		success : function(data) {      
 
-	        },
-	        error : function() {
-	           console.log("error");
-	        }
-	   });
-	   return adminmonth; 
-	}
+			var adminmonth =0;
+			var newdate; 
+			var d = new Date();
+			var date = leadingZeros(d.getFullYear(), 4) + '-' +
+			leadingZeros(d.getMonth() + 1, 2) + '-' +
+			leadingZeros(d.getDate(), 2);
+
+			adminmonth = data.result[0].admin_month; //db에서 admin_month 가져옴 
+
+			if((d.getMonth()+adminmonth+1)>12) //이번달 + admin_month 가 12월을 초과하면 
+			{
+				newdate = leadingZeros((d.getFullYear()+1), 4) + '-' +
+				leadingZeros((d.getMonth()+adminmonth-12) + 1, 2) + '-' +
+				leadingZeros(d.getDate(), 2) + ' '; //유의해야할게 1월은 javascript에서 0으로 표시 ㅎ... 
+			}
+			else 
+			{
+				newdate = leadingZeros(d.getFullYear(), 4) + '-' +
+				leadingZeros((d.getMonth()+adminmonth) + 1, 2) + '-' +
+				leadingZeros(d.getDate(), 2) + ' ';
+			}
+
+
+			if (document.myForm.date.value > newdate) {
+				alert("관리자가 지정한 날짜보다 초과하였습니다. 날짜를 다시 선택해주세요.");
+				$('input[name="date"]').val("");    
+			}
+			else if(document.myForm.date.value < date){
+				$('input[name="date"]').val("");
+				alert("오늘보다 이전 날짜는 예약이 되지 않습니다. 날짜를 다시 선택해주세요.");
+			}
+
+			else {
+				$('input[name="confer_nm"]').val("");
+			}
+
+		},
+		error : function() {
+			console.log("error");
+		}
+	});
+	return adminmonth; 
+}
 
 	/*adminMonthValidation()*/
 	
@@ -255,28 +255,36 @@ function getAdminMonth(projectname){
 				   $('#meetings').empty();      
 
 				   conference = [];
+				   for (var i = 0; i < data.confers.length; i++) {
+					   conference.push(data.confers[i].confname);
+				   }
 
 				   for (var i = 0; i < 10; i++) {
 					   $('#meetings').append("<div class='line2' style='top: "+top2+"px; height:1px; left:0px; width:"+(document.getElementById('schedule').offsetWidth)+"px; </div>"); //시간별 가로라인
 					   top2 += 40;
 				   }
-
+				   
 				   for (var i = 0; i < data.confers.length; i++) {
 					   bottom = 0;
+					   var start, end, alphaT;
+					   
+					   var confName = data.meetings[j].confer_nm;
+					   left = 70 + width * conference.indexOf(confName);
 
-					   conference.push(data.confers[i].confname);
-
-
-					   while (j < data.meetings.length && data.meetings[j].confer_nm == data.confers[i].confname) {
+					   while (j < data.meetings.length && data.meetings[j].confer_nm == confName) {
 						   top = (timeToMin(data.meetings[j].start) - 540) / 30 * 20;
 						   height = (timeToMin(data.meetings[j].end) - timeToMin(data.meetings[j].start)) / 30 * 20;
 
 						   // 예약되어있지 않는 공간
-						   $('#meetings').append("<div id='empty' class='empty'"
-								   + "style='top:"+bottom+"px; left:"+left+"px; width:"+width+"px; height:"+(top-bottom)+"px;'"
-								   + "onClick='reserve("+i+", "+(bottom/20*30+540)+", "+(top/20*30+540)+"); '></div>");
-
-
+						   start = bottom/20*30+540;
+						   end = top/20*30+540;
+						   alphaT = 0;
+						   for(var k = start; k < end; k += 30){
+							   $('#meetings').append("<div id='empty' class='empty'"
+								   + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
+								   + "onClick='reserve("+i+", "+start+", "+end+", "+k+");'></div>");
+							   alphaT += 20;
+						   }
 
 						   bottom = top + height;
 
@@ -285,21 +293,22 @@ function getAdminMonth(projectname){
 								   + "style='border: 1px solid #FB7374; top:"+top+"px; left:"+left+"px; width:"+width+"px; height:"+height+"px;'"
 								   + "onClick='reserveInfo("+data.meetings[j].seq+");'>"+data.meetings[j].title+"</div>");
 
-
-
 						   j++;
 					   }
 
 					   // 예약되어있지 않는 공간
-					   $('#meetings').append("<div id='empty' class='empty'"
-							   + "style='top:"+bottom+"px; left:"+left+"px; width:"+width+"px; height:"+(400-bottom)+"px;'"
-							   + "onClick='reserve("+i+", "+(bottom/20*30+540)+", "+(360/20*30+540)+");'></div>");
+					   start = bottom/20*30+540;
+					   end = 360/20*30+540;
+					   alphaT = 0;
+					   for(var k = start; k < end; k += 30){
+						   $('#meetings').append("<div id='empty' class='empty'"
+							   + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
+							   + "onClick='reserve("+i+", "+start+", "+end+", "+k+");'></div>");
+						   alphaT += 20;
+					   }
 
 					   displayTime();
 					   $('#meetings').append("<div class='line' style='top:0px; left:"+left+"px;'></div>"); //회의실별 세로라인 
-
-					   left += width;
-
 				   }
 
 			   },
@@ -351,12 +360,14 @@ function getAdminMonth(projectname){
 	   }
 
 	   // 빈 회의 시간표를 클릭시 예약 할 수 있도록 해준다.
-	   function reserve(conf_idx, start, end){
+	   function reserve(conf_idx, start, end, selectT){
 		   //alert(minToTime(start) + " - " + minToTime(end));
+		   //alert(minToTime(start)+"/"+minToTime(end)+"/"+minToTime(selectT));
+		   
 		   $("#registerInfo").hide();
 		   $("#register").show();
 
-		   timeSelectList(start, end)
+		   timeSelectList(start, end, selectT);
 
 		   $('#name').empty();
 		   $('#phone').empty();
@@ -373,18 +384,18 @@ function getAdminMonth(projectname){
 		   $('input[name="del_pw"]').val("");
 	   }
 
-	   function timeSelectList(start, end){
+	   function timeSelectList(start, end, selectT){
 		   $('#start_time').empty();
 		   for(var i=start; i<end; i+=30) {
 			   $('#start_time').append("<option value='"+minToStr(i)+"'>"+minToTime(i)+"</option>");
 		   }
-		   $("#start_time").val(minToStr(start)).attr("selected", "selected");
+		   $("#start_time").val(minToStr(selectT)).attr("selected", "selected");
 
 		   $('#end_time').empty();
 		   for(var i=start+30; i<=end; i+=30) {
 			   $('#end_time').append("<option value='"+minToStr(i)+"'>"+minToTime(i)+"</option>");
 		   }
-		   $("#end_time").val(minToStr(end)).attr("selected", "selected");
+		   $("#end_time").val(minToStr(selectT+30)).attr("selected", "selected");
 	   }
 
 	   function timeSelectListAll(start, end){

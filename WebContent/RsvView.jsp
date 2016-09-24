@@ -15,6 +15,9 @@
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<!-- ajax -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  -->
+
 <!-- 자동채우기 -->
 <script src="js/ajax_auto.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
@@ -22,11 +25,14 @@
 <script src="js/RsvView.js"></script>
 <link rel="stylesheet" type="text/css" href="css/RsvView.css">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
    
 <!--이모티콘 Font Awesome (added because you use icons in your prepend/append)-->
 <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
 
+<!-- date picker -->
+<link rel="stylesheet" href="css/datepicker.css">
+<script src="js/bootstrap-datepicker.js"></script>
 
 <style>
 .bootstrap-iso .formden_header h2,.bootstrap-iso .formden_header p,.bootstrap-iso form
@@ -125,6 +131,10 @@ input {
    position: absolute;
    left: 70px;
    border: 1px dotted #F8DEBD;
+}
+
+.align_right {
+	
 }
 
 textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
@@ -244,7 +254,7 @@ function adminMonthValidation(){
    <form method="post" name="myForm" action="Reservation.do">
       <div class="container">
          <!-- 사이트 선택 -->
-         <div class="row" style="padding-bottom:25px;">
+         <div class="row" >
 			<div class="col-md-6 col-sm-9 col-xs-12">
 			<%if(session.getAttribute("project").equals("master")){ %>
 				<select class="form-control" id="site" name="site" onchange="displayConf(this.value);">
@@ -264,20 +274,33 @@ function adminMonthValidation(){
 			</div>
 		</div>
 
+		<!-- 달력 -->
+		<%@ include file="calendar/calendar.jsp"%>
+		<!-- 
+			<div class="form-inline" align="right">
+			날짜<input type="text" name="date" id="date" class="form-control">
+			<script>
+				$('#date').datepicker({
+					dateFormat : 'yyyy-mm-dd',
+					onSelect: function(selected,evnt) {
+				         
+				         document.myForm.date.value = selected;
+				    }
+				});
+				$('#date').datepicker('hide');
+				
+				function test(){
+					alert("!!");
+				}
+			</script>
+			</div>
+			<br>
+			 -->
+			 
          <div class="row">
-            <center>
-               <!-- 달력 -->
-               <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:15px;">
-
-                  <div class="well well-lg col-md-12" style="padding-left:13%;">
-
-                     <%@ include file="calendar/calendar.jsp"%>
-                  </div>
-               </div>
-            </center>
 
             <!-- 회의실tab & 예약현황 -->
-            <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-12 col-sm-12 col-xs-12">
                <div>
                	  <!-- 회의실탭 -->
                	  <div class="col-md-6 col-sm-6 col-xs-12" id="conference"></div>
@@ -287,7 +310,7 @@ function adminMonthValidation(){
                      <div id="meetings"></div>
                   </div>
                </div>
-            </div>
+            </div> 
 
          </div>
 
