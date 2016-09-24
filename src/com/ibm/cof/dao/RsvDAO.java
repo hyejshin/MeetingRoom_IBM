@@ -5,10 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 
 import javax.annotation.Resource;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,7 +25,8 @@ public class RsvDAO {
 	PreparedStatement pstmt = null;
 	Statement st = null;
 	ResultSet rs = null;
-
+	SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" ); 
+	
 	public RsvDAO() {
 
 	}
@@ -666,6 +669,77 @@ public class RsvDAO {
 			}
 		}
 		return possible;
+	}
+	
+	/* 매월 예약을 할 때 시작날짜와 종료날짜를 넘겨받아서 처리한다. */
+	public void insertRepeat(RsvDTO rdto,java.util.Date start,java.util.Date end,int repeat_seq) {
+		String query = "insert into tb_reservation(rsv_site,rsv_confer_nm,rsv_date, "
+				+ "rsv_start_time, rsv_end_time, rsv_title, "
+				+ "rsv_mem_nm,rsv_mem_pn,rsv_mem_em,rsv_del_pw,rsv_reg_date,rsv_repeat_seq)"
+				+ " values(?,?,?,?,?,?,?,?,?,?,now(),?)";
+		try {
+			//1. 시작날짜와 종료날짜 비교 (시작날짜 < 종료날짜 or 시작날짜 > 종료날짜) 
+			conn = db.connect();
+									
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, rdto.getRsv_Site());
+			pstmt.setString(2, rdto.getRsv_Confer_Nm());
+			pstmt.setString(3, dateFormat.format(start)); // Date type -> String
+															// type
+			pstmt.setString(4, rdto.getRsv_Start_Time());
+			pstmt.setString(5, rdto.getRsv_End_Time());
+			pstmt.setString(6, rdto.getRsv_Title());
+			pstmt.setString(7, rdto.getRsv_Mem_Nm());
+			pstmt.setString(8, rdto.getRsv_Mem_Pn());
+			pstmt.setString(9, rdto.getRsv_Mem_Em());
+			pstmt.setString(10, rdto.getRsv_Del_Pw());
+			pstmt.setInt(11, repeat_seq);
+			pstmt.executeUpdate();
+												
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+	
+	public void insertRepeatByDay(RsvDTO rdto, Calendar start, Calendar end,int repeat_seq) {
+		String query = "insert into tb_reservation(rsv_site,rsv_confer_nm,rsv_date, "
+				+ "rsv_start_time, rsv_end_time, rsv_title, "
+				+ "rsv_mem_nm,rsv_mem_pn,rsv_mem_em,rsv_del_pw,rsv_reg_date,rsv_repeat_seq)"
+				+ " values(?,?,?,?,?,?,?,?,?,?,now(),?)";
+		try {
+			//1. 시작날짜와 종료날짜 비교 (시작날짜 < 종료날짜 or 시작날짜 > 종료날짜) 
+			conn = db.connect();
+									
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, rdto.getRsv_Site());
+			pstmt.setString(2, rdto.getRsv_Confer_Nm());
+			pstmt.setString(3, dateFormat.format(start.getTime())); // Calendar -> String
+															// type
+			pstmt.setString(4, rdto.getRsv_Start_Time());
+			pstmt.setString(5, rdto.getRsv_End_Time());
+			pstmt.setString(6, rdto.getRsv_Title());
+			pstmt.setString(7, rdto.getRsv_Mem_Nm());
+			pstmt.setString(8, rdto.getRsv_Mem_Pn());
+			pstmt.setString(9, rdto.getRsv_Mem_Em());
+			pstmt.setString(10, rdto.getRsv_Del_Pw());
+			pstmt.setInt(11, repeat_seq);
+			pstmt.executeUpdate();
+												
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
 	}
 
 }

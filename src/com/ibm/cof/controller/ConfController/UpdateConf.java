@@ -48,11 +48,11 @@ public class UpdateConf extends HttpServlet {
 		
 		int seq = Integer.parseInt(request.getParameter("seq"));
 		String name = request.getParameter("name");
-		String stat = request.getParameter("state");
+		int order = Integer.parseInt(request.getParameter("order"));
 		
 		ConfDAO cdao = new ConfDAO();
 		//ConfDTO cdto = new ConfDTO(name,stat);
-		cdao.updateState(seq, name, stat);
+		cdao.updateState(seq, name, order);
         
         RequestDispatcher rd = request.getRequestDispatcher("SelectConf.do");
         rd.forward(request, response);

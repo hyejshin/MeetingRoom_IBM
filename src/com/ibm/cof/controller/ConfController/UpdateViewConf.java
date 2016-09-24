@@ -49,8 +49,6 @@ public class UpdateViewConf extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		System.out.println("se");
-		
 		int seq = Integer.parseInt(request.getParameter("seq"));
 		
 		JSONArray json = new JSONArray();

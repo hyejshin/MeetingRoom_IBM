@@ -4,15 +4,15 @@ public class ConfDTO {
 	private int Confrn_Seq;
 	private String Confrn_Nm;
 	private String Confrn_Site;
-	private String Confrn_Stat;
+	private int Confrn_Order;
 	
 	public ConfDTO(int confrn_Seq, String confrn_Nm, String confrn_Site,
-			String confrn_Stat) {
+			int confrn_Order) {
 		super();
 		Confrn_Seq = confrn_Seq;
 		Confrn_Nm = confrn_Nm;
 		Confrn_Site = confrn_Site;
-		Confrn_Stat = confrn_Stat;
+		Confrn_Order = confrn_Order;
 	}
 	
 	public int getConfrn_Seq() {
@@ -33,11 +33,11 @@ public class ConfDTO {
 	public void setConfrn_Site(String confrn_Site) {
 		Confrn_Site = confrn_Site;
 	}
-	public String getConfrn_Stat() {
-		return Confrn_Stat;
+	public int getConfrn_Order() {
+		return Confrn_Order;
 	}
-	public void setConfrn_Stat(String confrn_Stat) {
-		Confrn_Stat = confrn_Stat;
+	public void setConfrn_Order(int confrn_Order) {
+		Confrn_Order = confrn_Order;
 	}
 	
 }

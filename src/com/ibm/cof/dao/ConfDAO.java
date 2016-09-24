@@ -33,15 +33,15 @@ public class ConfDAO {
 	}
 
 	/* 관리자는 회의실의 이름,어느 프로젝트 소속,상태등을 추가할 수 있다. */
-	public void insert(String name,String site,String stat) {
-		String query = "insert into tb_conference(confrn_nm,confrn_site,confrn_stat)"
+	public void insert(String name, String site, int order) {
+		String query = "insert into tb_conference(confrn_nm,confrn_site,confrn_order)"
 				+ " values(?,?,?)";
 		try {
 			conn = db.connect();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, name);
 			pstmt.setString(2, site);
-			pstmt.setString(3, stat);
+			pstmt.setInt(3, order);
 
 			pstmt.executeUpdate();
 
@@ -56,18 +56,44 @@ public class ConfDAO {
 		}
 	}
 
+	public int getMaxValue(String site) {
+		String query = "select MAX(confrn_order) from tb_conference where confrn_site = ?";
+		int order = 1;
+		
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, site);
+			pstmt.executeUpdate();
+			
+			while(rs.next()) {
+				order = rs.getInt("confrn_order");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return order;
+	}
+	
 	/* 관리자는 회의실의 상태를 수정할 수 있다. */
-	public void updateState(int seq, String name, String stat) {
+	public void updateState(int seq, String name, int order) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		DBCon db = new DBCon();
 
 		try {
-			String query = "update tb_conference set confrn_nm=? , confrn_stat=? where confrn_seq=?";
+			String query = "update tb_conference set confrn_nm=? , confrn_order=? where confrn_seq=?";
 			conn = db.connect();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, name);
-			pstmt.setString(2, stat);
+			pstmt.setInt(2, order);
 			pstmt.setInt(3, seq);
 
 			pstmt.executeUpdate();
@@ -108,28 +134,28 @@ public class ConfDAO {
 	// 프로젝트별 회의실 목록을 가져온다
 	public JSONArray selectListByName(String sitename)
 	{
-		 String query = "select confrn_nm, confrn_stat from tb_conference where confrn_site = ? order by confrn_nm"; 
-		 
+		String query = "select confrn_nm, confrn_order from tb_conference where confrn_site = ? order by confrn_order, confrn_nm"; 
 		JSONArray jarray = new JSONArray();
-		String conf_name, conf_stat;
-				
+		String conf_name;
+		int conf_order;
+		
 		try {
 			conn = db.connect();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, sitename);
 			rs = pstmt.executeQuery();
-						
+
 			while(rs.next()) {
-				
+
 				JSONObject json = new JSONObject();
 
 				conf_name =  rs.getString("confrn_nm");
-				conf_stat =  rs.getString("confrn_stat"); 
-				json.put("confname",conf_name);
-				json.put("stat",conf_stat);
+				conf_order =  rs.getInt("confrn_order"); 
+				json.put("confname", conf_name);
+				json.put("order", conf_order);
 				jarray.add(json);
 			}
-					
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -146,8 +172,9 @@ public class ConfDAO {
 	public ArrayList<ConfDTO> printRoom(String proj) {
 		ArrayList<ConfDTO> cdtos = new ArrayList<ConfDTO>();
 		ConfDTO cdto = null;
-		String query = "select * from tb_conference where confrn_site=?";
-		String confer_nm,confer_stat,confer_site=null;
+		String query = "select * from tb_conference where confrn_site=? order by confrn_order, confrn_nm";
+		String confer_nm, confer_site;
+		int confer_order;
 		int seq=0;
 		try {
 			conn = db.connect();
@@ -159,8 +186,8 @@ public class ConfDAO {
 				seq = rs.getInt("confrn_seq");
 				confer_nm = rs.getString("confrn_nm");
 				confer_site = rs.getString("confrn_site");
-				confer_stat = rs.getString("confrn_stat");
-				cdto = new ConfDTO(seq,confer_nm,confer_site,confer_stat);
+				confer_order = rs.getInt("confrn_order");
+				cdto = new ConfDTO(seq, confer_nm, confer_site, confer_order);
 				cdtos.add(cdto);
 			}
 
@@ -181,7 +208,6 @@ public class ConfDAO {
 	{
 		String query = "select * from tb_conference where confrn_seq=?";
 		JSONArray jarray = new JSONArray();
-		String name, stat;
 				
 		try {
 			conn = db.connect();
@@ -194,7 +220,7 @@ public class ConfDAO {
 				JSONObject json = new JSONObject();
 				json.put("seq", rs.getString("confrn_seq"));
 				json.put("name", rs.getString("confrn_nm"));
-				json.put("stat", rs.getString("confrn_stat"));
+				json.put("order", rs.getInt("confrn_order"));
 				jarray.add(json);
 			}
 					

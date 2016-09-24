@@ -15,6 +15,7 @@
 <script>
 	
 	function fillConferInfo(idx){
+		fillOrder("#order2", 0);
 		$.ajax({
 	        type: "post",
 	        url : "UpdateViewConf.do",
@@ -30,8 +31,33 @@
       			for(var i=0; i<data.result.length; i++) {
       				$('input[name="seq"]').val(idx);
       				$('input[name="name"]').val(data.result[i].name);
-      				$("#stat").val(data.result[i].stat).attr("selected", "selected");
+      				$("#order2").val(data.result[i].order).attr("selected", "selected");
       			  }
+	        },
+	        error : function() {
+	        	console.log("error");
+	        }
+ 	});
+	}
+	
+	function fillOrder(id, idx){
+		$.ajax({
+	        type: "post",
+	        url : "SelectBySite.do",
+	        dataType : 'json',
+	        data: { },
+	       
+	        success : function(data) {
+	        	$('#seq').empty();
+	        	$('#name').empty();
+	        	$('input[name="name"]').val("");
+	        	
+	        	$(id).empty();
+      			for(var i=1; i<=data.result.length+idx; i++) {
+      				$(id).append("<option value="+i+">"+i+"번</option>");
+      			  }
+      			if(idx == 1)
+      				$(id).val(data.result.length+idx).attr("selected", "selected");
 	        },
 	        error : function() {
 	        	console.log("error");
@@ -61,7 +87,8 @@
 		<!-- 회의실등록 -->
 		<div style="margin-bottom:20px; margin-top:20px;">
 		<button type="button" class="btn btn-default" data-toggle="collapse" 
-		data-target="#register"> 회의실등록▽<span class="glyphicon glyphicon-user-add"></span></button></div>
+		data-target="#register" onclick="fillOrder('#order1', 1);"> 회의실등록▽
+		<span class="glyphicon glyphicon-user-add"></span></button></div>
 		
 		<div id="register" class="collapse" style="margin-bottom: 40px; align:center;">
 			<form method="post" name="registerForm" action="InsertConf.do">
@@ -70,10 +97,8 @@
 					<label for="name">회의실이름:</label> <input type="text"
 						class="form-control" name="name" placeholder="회의실이름">
 
-					<label for="stat">회의실상태:</label>
-					<select class="form-control" name="stat">
-						<option value="Y">사용가능</option>
-						<option value="N">사용불가</option>
+					<label for="order">회의실번호:</label>
+					<select class="form-control" name="order" id="order1">
 					</select>
 								
 					<button type="submit" class="btn btn-primary" style="margin-left:20px;">등록</button>
@@ -84,16 +109,14 @@
 		<!-- 회의실 정보 수정 -->
 		<div id="update" class="collapse" style="margin-bottom: 40px;">
 			<h3>회의실 정보 수정</h3><br>
-			<form method="post" name="modifyForm" action="UpdateConfer.do">
+			<form method="post" name="modifyForm" action="UpdateConf.do">
 			<input type="hidden" name="seq" id="seq">
 				<div class="form-inline">					
 					<label for="name">회의실이름:</label> <input type="text"
 						class="form-control" name="name" id="name">
 
-					<label for="stat">회의실상태:</label>
-					<select class="form-control" name="stat" id="stat">
-						<option value="Y">사용가능</option>
-						<option value="N">사용불가</option>
+					<label for="order">회의실번호:</label>
+					<select class="form-control" name="order" id="order2">
 					</select>
 
 					<button type="submit" class="btn btn-primary" style="margin-left:20px;">수정</button>
@@ -105,36 +128,26 @@
 		<%
 			ArrayList<ConfDTO> dtos = (ArrayList) request.getAttribute("list");
 		%>
+		<div class="col-md-10 col-sm-12 col-xs-12 col-centered">
 		<table class="table table-hover" style="margin-top:30px; text-align:center;">
 			<tr>
 				<td>회의실번호</td>
 				<td>회의실이름</td>
-				<td>회의실상태</td>
 				<td></td>
 			</tr>
-			<%	int no = 1;
-				String state;
-				if (dtos != null) {
-					for (int i = 0; i < dtos.size(); i++) {
-						ConfDTO dto = dtos.get(i);
-						
-						if(dto.getConfrn_Stat().equals("Y")){
-							state = "사용가능";
-						}else{
-							state = "사용불가";
-						}
-			%>
+
+			<%for(int i=0; i<dtos.size(); i++){
+				ConfDTO dto = dtos.get(i);%>
 			<tr>
-				<td><%=no%></td>
+				<td><%=dto.getConfrn_Order()%></td>
 				<td><%=dto.getConfrn_Nm()%></td>
-				<td><%=state%></td>
 				
 				<td><a href="#" data-toggle="collapse" data-target="#update" 
 					onclick="fillConferInfo(<%=dto.getConfrn_Seq()%>);">수정</a>|
 					<a href="DeleteConf.do?seq=<%=dto.getConfrn_Seq()%>">삭제</a></td>
 			</tr>
-			<%no++;
-			}}%>
+			<%}%>
 		</table>
+		</div>
 </body>
 </html>

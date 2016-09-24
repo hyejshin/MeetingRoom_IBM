@@ -48,8 +48,8 @@ CREATE TABLE tb_conference (
   confrn_seq int(11) NOT NULL AUTO_INCREMENT,
   confrn_nm varchar(20) NOT NULL,
   confrn_site varchar(30) NOT NULL,
-  confrn_stat varchar(10) DEFAULT NULL,
-  PRIMARY KEY (confrn_nm, confrn_site)
+  confrn_order int(11) DEFAULT NULL,
+  PRIMARY KEY (confrn_seq)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE tb_admin (
