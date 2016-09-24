@@ -17,12 +17,6 @@
 <link rel="stylesheet" href="css/datepicker.css">
 <script src="js/bootstrap-datepicker.js"></script>
 
-<script>
-	function check(){
-		alert("!");
-	}
-</script>
-
 </head>
 <body>
 	<!-- navigation bar -->
@@ -37,13 +31,37 @@
 		<li><a href="AdminSetting.do">설정</a></li>
 	</ul>
 	
-	<br><br>
-	
-	<div class="container">
-	<form method="post" name="myForm" action="SearchHistory.do">
+
+	<div class="container">		
+		
+	<!-- 예약현황 삭제 -->
+		<div align="right" style="margin-bottom:20px;">
+		<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#delete">
+		기록삭제<span class="glyphicon glyphicon-user-add"></span></button></div>
+		
+		<div id="delete" class="collapse" style="margin-bottom:40px;" align="right">
+			<form method="post" name="registerForm" action="InsertMember.do">
+			<input type="hidden" name="page" value="AdminMember.jsp">
+				<div class="form-inline">
+					<input type="text" name="delete_date" id="delete_date" class="form-control">
+					이전 날짜의 예약기록을 삭제합니다.
+					<script>
+						$('#delete_date').datepicker({
+							dateFormat : 'yyyy-mm-dd'
+						});
+						$('#delete_date').datepicker('hide');
+					</script>
+					<button type="submit" class="btn btn-warning" style="margin-left:10px;">삭제</button>
+				</div>
+			</form>
+		</div>
+		<br>
+		
+	<!-- 예약내역 검색 -->
+		<form method="post" name="myForm" action="SearchHistory.do">
 		<div class="form-inline">
-			시작 날짜<input type="text" name="start_date" id="start_date" class="form-control" onchange="check();">
-			끝 날짜<input type="text" name="end_date" id="end_date" class="form-control" onchange="check();">
+			시작 날짜<input type="text" name="start_date" id="start_date" class="form-control">
+			끝 날짜<input type="text" name="end_date" id="end_date" class="form-control">
 			<script>
 				$('#start_date').datepicker({
 					dateFormat : 'yyyy-mm-dd'
@@ -59,7 +77,6 @@
 			<button type="submit" class="btn btn-info">검색 <span class='glyphicon glyphicon-search'></span></button>
 		</div>
 	</form>
-	<br>
 	<%
 		ArrayList<HistoryDTO> dtos = (ArrayList)request.getAttribute("list");
 	%>
@@ -78,6 +95,8 @@
 		<td><%=dto.getHst_Rsv_Title()%></td><td><%=dto.getHst_State()%></td><td><%=dto.getHst_Date()%></td></tr>
 		<%}}%>
 	</table>
+	
+		
 </div>
 </body>
 </html>
