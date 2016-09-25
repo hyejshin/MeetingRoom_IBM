@@ -251,12 +251,15 @@ function getAdminMonth(projectname){
 				   var width = (document.getElementById('schedule').offsetWidth - 70)/confNumber;
 				   var left = 70;
 				   var top, top2=0, height, j=0, bottom;
+				   var start, end, alphaT;
 
 				   $('#meetings').empty();      
 
 				   conference = [];
+				   var check = [];
 				   for (var i = 0; i < data.confers.length; i++) {
 					   conference.push(data.confers[i].confname);
+					   check.push(false);
 				   }
 
 				   for (var i = 0; i < 10; i++) {
@@ -265,13 +268,18 @@ function getAdminMonth(projectname){
 				   }
 				   
 				   for (var i = 0; i < data.confers.length; i++) {
+					   var flag = false;
 					   bottom = 0;
-					   var start, end, alphaT;
 					   
-					   var confName = data.meetings[j].confer_nm;
-					   left = 70 + width * conference.indexOf(confName);
-
+					   if(j < data.meetings.length){
+						   var confName = data.meetings[j].confer_nm;
+						   left = 70 + width * conference.indexOf(confName);
+						   check[conference.indexOf(confName)] = true;
+					   }  
+					   
 					   while (j < data.meetings.length && data.meetings[j].confer_nm == confName) {
+						   flag = true;
+						   
 						   top = (timeToMin(data.meetings[j].start) - 540) / 30 * 20;
 						   height = (timeToMin(data.meetings[j].end) - timeToMin(data.meetings[j].start)) / 30 * 20;
 
@@ -296,21 +304,36 @@ function getAdminMonth(projectname){
 						   j++;
 					   }
 
-					   // 예약되어있지 않는 공간
-					   start = bottom/20*30+540;
-					   end = 360/20*30+540;
-					   alphaT = 0;
-					   for(var k = start; k < end; k += 30){
-						   $('#meetings').append("<div id='empty' class='empty'"
-							   + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
-							   + "onClick='reserve("+i+", "+start+", "+end+", "+k+");'></div>");
-						   alphaT += 20;
+					   if(flag){
+						   // 예약되어있지 않는 공간
+						   start = bottom/20*30+540;
+						   end = 360/20*30+540;
+						   alphaT = 0;
+						   for(var k = start; k < end; k += 30){
+							   $('#meetings').append("<div id='empty' class='empty'"
+								   + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
+								   + "onClick='reserve("+i+", "+start+", "+end+", "+k+");'></div>");
+							   alphaT += 20;
+						   }
+						   
+						   $('#meetings').append("<div class='line' style='top:0px; left:"+left+"px;'></div>"); //회의실별 세로라인 
 					   }
-
-					   displayTime();
-					   $('#meetings').append("<div class='line' style='top:0px; left:"+left+"px;'></div>"); //회의실별 세로라인 
 				   }
-
+				   
+				   for(var i = 0; i < data.confers.length; i++){
+					   if(check[i] == false){
+						   left = 70 + width * i;
+						   top = 0;
+						   for(var k = 540; k<1080; k+=30){
+							   $('#meetings').append("<div id='empty' class='empty'"
+									   + "style='top:"+top+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
+									   + "onClick='reserve("+i+", "+540+", "+1080+", "+k+");'></div>");
+							   top += 20;
+						   }
+						   $('#meetings').append("<div class='line' style='top:0px; left:"+left+"px;'></div>"); //회의실별 세로라인
+					   }
+				   }
+				   displayTime();
 			   },
 			   error : function() {
 				   console.log("error");
