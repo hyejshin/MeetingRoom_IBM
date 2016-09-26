@@ -252,6 +252,8 @@ function getAdminMonth(projectname){
 				   var left = 70;
 				   var top, top2=0, height, j=0, bottom;
 				   var start, end, alphaT;
+				   var confName = "";
+				   var confIdx = 0;
 
 				   $('#meetings').empty();      
 
@@ -272,8 +274,9 @@ function getAdminMonth(projectname){
 					   bottom = 0;
 					   
 					   if(j < data.meetings.length){
-						   var confName = data.meetings[j].confer_nm;
-						   left = 70 + width * conference.indexOf(confName);
+						   confName = data.meetings[j].confer_nm;
+						   confIdx = conference.indexOf(confName);
+						   left = 70 + width * confIdx;
 						   check[conference.indexOf(confName)] = true;
 					   }  
 					   
@@ -290,7 +293,7 @@ function getAdminMonth(projectname){
 						   for(var k = start; k < end; k += 30){
 							   $('#meetings').append("<div id='empty' class='empty'"
 								   + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
-								   + "onClick='reserve("+i+", "+start+", "+end+", "+k+");'></div>");
+								   + "onClick='reserve("+confIdx+", "+start+", "+end+", "+k+");'></div>");
 							   alphaT += 20;
 						   }
 
@@ -312,7 +315,7 @@ function getAdminMonth(projectname){
 						   for(var k = start; k < end; k += 30){
 							   $('#meetings').append("<div id='empty' class='empty'"
 								   + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
-								   + "onClick='reserve("+i+", "+start+", "+end+", "+k+");'></div>");
+								   + "onClick='reserve("+confIdx+", "+start+", "+end+", "+k+");'></div>");
 							   alphaT += 20;
 						   }
 						   
