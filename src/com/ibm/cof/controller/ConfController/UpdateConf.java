@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ibm.cof.dao.ConfDAO;
+import com.ibm.cof.dao.RsvDAO;
 
 /**
  * Servlet implementation class InsertConf
@@ -48,11 +49,19 @@ public class UpdateConf extends HttpServlet {
 		
 		int seq = Integer.parseInt(request.getParameter("seq"));
 		String name = request.getParameter("name");
+		String prvName = request.getParameter("prvName");
 		int order = Integer.parseInt(request.getParameter("order"));
 		
 		ConfDAO cdao = new ConfDAO();
 		//ConfDTO cdto = new ConfDTO(name,stat);
 		cdao.updateState(seq, name, order);
+		
+		if(!name.equals(prvName)){
+			HttpSession session = request.getSession();
+			String site = (String)session.getAttribute("project");
+			RsvDAO rdao = new RsvDAO();
+			rdao.updateConfName(site, prvName, name);
+		}
         
         RequestDispatcher rd = request.getRequestDispatcher("SelectConf.do");
         rd.forward(request, response);

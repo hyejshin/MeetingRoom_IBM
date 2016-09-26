@@ -145,6 +145,28 @@ public class RsvDAO {
 			}
 		}
 	}
+	
+	public void updateConfName(String site, String confPrvName, String confNewName){
+		String query = "update tb_reservation set rsv_confer_nm=? where rsv_site=? and rsv_confer_nm=?";
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, confNewName);
+			pstmt.setString(2, site);
+			pstmt.setString(3, confPrvName);
+
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(pstmt, conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 
 	/* 사용자가 예약한 것을 삭제할 수 있다. */

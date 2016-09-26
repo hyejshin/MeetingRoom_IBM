@@ -31,6 +31,7 @@
       			for(var i=0; i<data.result.length; i++) {
       				$('input[name="seq"]').val(idx);
       				$('input[name="name"]').val(data.result[i].name);
+      				$('input[name="prvName"]').val(data.result[i].name);
       				$("#order2").val(data.result[i].order).attr("selected", "selected");
       			  }
 	        },
@@ -114,11 +115,10 @@
 				<div class="form-inline">					
 					<label for="name">회의실이름:</label> <input type="text"
 						class="form-control" name="name" id="name">
-
 					<label for="order">회의실번호:</label>
 					<select class="form-control" name="order" id="order2">
 					</select>
-
+					<input type="hidden" name="prvName" id="prvName">
 					<button type="submit" class="btn btn-primary" style="margin-left:20px;">수정</button>
 					<a href="#" class="btn btn-default" data-toggle="collapse" data-target="#update"> 취소</a>
 				</div>
