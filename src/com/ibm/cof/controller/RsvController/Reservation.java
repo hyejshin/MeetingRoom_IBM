@@ -70,15 +70,9 @@ public class Reservation extends HttpServlet {
 		RsvDAO rdao = new RsvDAO();
 		RsvDTO rdto = new RsvDTO(date, start_time, end_time, title, site,
 		confer_nm, name, phone, email, del_pw);
-		 
+		
 		
 		System.out.println("===========InsertReservation.java============");
-
-		String inststate = "예약";
-		byte[] euckrStringBuffer = inststate.getBytes(Charset.forName("euc-kr"));
-		String decodedFromEucKr = new String(euckrStringBuffer, "euc-kr");
-		byte[] utf8StringBuffer = decodedFromEucKr.getBytes("utf-8");
-		String decodedFromUtf8 = new String(utf8StringBuffer, "utf-8");
 		
 		
 		System.out.println(rdao.CheckRsv(confer_nm,start_time,end_time,site,date));
@@ -99,11 +93,11 @@ public class Reservation extends HttpServlet {
 			// 회의실 예약 내역 추가
 			HistoryDAO hdao = new HistoryDAO();
 			HistoryDTO hdto = new HistoryDTO(date, start_time, end_time, title, site,
-					confer_nm, name, phone, email, del_pw, decodedFromUtf8);
+					confer_nm, name, phone, email, del_pw, "reserve");
 			hdao.insert(hdto);
-			message = "예약이 완료 되었습니다.";
+			message = "sucess";
 		}else{
-			message = "선택하신 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.";
+			message = "notValid";
 		}
 
 		JSONObject json = new JSONObject();

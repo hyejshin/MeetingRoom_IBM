@@ -71,7 +71,7 @@ public class DeleteRsv extends HttpServlet {
 		HistoryDAO hdao = new HistoryDAO();
 		HistoryDTO hdto = new HistoryDTO(rdto.getRsv_Date(), rdto.getRsv_Start_Time(), rdto.getRsv_End_Time(), 
 				rdto.getRsv_Title(), rdto.getRsv_Site(), rdto.getRsv_Confer_Nm(), rdto.getRsv_Mem_Nm(),
-				rdto.getRsv_Mem_Pn(), rdto.getRsv_Mem_Em(), rdto.getRsv_Del_Pw(), "삭제");
+				rdto.getRsv_Mem_Pn(), rdto.getRsv_Mem_Em(), rdto.getRsv_Del_Pw(), "delete");
 	
 		AdminDAO adao = new AdminDAO();
 		
@@ -83,18 +83,18 @@ public class DeleteRsv extends HttpServlet {
 			if(projPassword.equals(del_pw)){
 				rdao.delete(seq);
 				hdao.insert(hdto);
-				message = "삭제가 완료 되었습니다.";
+				message = "sucess";
 				System.out.println("삭제완료");
 			}			
 		}
 		else if(password.equals(del_pw)) { //비밀번호 일치여부 확인
 			rdao.delete(seq);
 			hdao.insert(hdto);
-			message = "삭제가 완료 되었습니다.";
+			message = "sucess";
 			System.out.println("삭제완료");
 		}
 		else{
-			message = "비밀번호가 일치하지 않습니다.";
+			message = "password Not Match";
 			System.out.println(message);
 		}
 		

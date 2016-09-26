@@ -39,15 +39,12 @@
    font-family: Arial, Helvetica, sans-serif;
    color: black
 }
-
 .bootstrap-iso form button,.bootstrap-iso form button:hover {
    color: white !important;
 }
-
 .asteriskField {
    color: red;
 }
-
 body {
    background: url(image/10.jpg) center fixed;
    -webkit-background-size: cover;
@@ -56,12 +53,10 @@ body {
    background-size: cover;
    font-family: 'Noto Sans KR', sans-serif !important;
 }
-
 input {
    /*사용자가 입력하는 내용은 나눔명조체*/
    font-family: 'Noto Sans KR', sans-serif !important;
 }
-
 #conference {
    position: relative;
    width: 100%;
@@ -69,12 +64,10 @@ input {
    margin-bottom: 5px;
    background-color: rgba(255, 255, 255, 0); /*마지막0: 투명도 */
 }
-
 .conf {
    position: absolute;
    text-align: center;
 }
-
 #timeDiv {
    /*border: 5px inset #48BAE4;*/
    position: relative;
@@ -84,13 +77,11 @@ input {
    border-top-right-radius: 10px;
    width: 70px;
 }
-
 .time {
    position: absolute;
    width: 70px;
    left: 0px;
 }
-
 #schedule {
    position: relative;
    width: 100%;
@@ -104,45 +95,38 @@ input {
    border-bottom-right-radius: 10px;
    border-top-right-radius: 10px;
 }
-
 .meeting {
    position: absolute;
    text-align: center;
    background-color: #F8DEBD;
    border: 1px inset #FF7182;
 }
-
 .empty {
    position: absolute;
    text-align: center;
    background-color: #F9F9F9;
    border-radius: 10px;
 }
-
 .line {
    position: absolute;
    height: 400px;
    width: 1px;
    border: 1px dotted #F8DEBD;
 }
-
 .line2 {
    position: absolute;
    left: 70px;
    border: 1px dotted #F8DEBD;
 }
-
 .align_right {
 	
 }
-
 textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
    border-color: rgba(102, 102, 102, 0.7);
    box-shadow: 0 1px 1px rgba(51, 51, 51, 0.3) inset, 0 0 8px
       rgba(51, 51, 51, 0.9);
    outline: 0 none;
 }
-
 .button {
    border: 0px solid #000000;
    background: #000000;
@@ -170,7 +154,6 @@ textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
    text-decoration: none;
    vertical-align: middle;
 }
-
 .button:hover {
    border: 0px solid #0a3c59;
    text-shadow: #dce7ed 0 1px 0;
@@ -184,7 +167,6 @@ textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
    background-image: -ms-linear-gradient(top, #3a3b3b 0%, #403e40 100%);
    color: #fff;
 }
-
 .button:active {
    text-shadow: #667680 0 1px 0;
    border: 0px solid #000000;
@@ -263,7 +245,6 @@ function adminMonthValidation(){
 			 
 			 
          <div class="row">
-
             <!-- 회의실tab & 예약현황 -->
             <div class="col-md-12 col-sm-12 col-xs-12">
                <div>
@@ -276,9 +257,7 @@ function adminMonthValidation(){
                   </div>
                </div>
             </div> 
-
          </div>
-
          <div class="row">
             <!-- 회의실 예약 입력창 -->
             <div class="search-container">
@@ -288,7 +267,6 @@ function adminMonthValidation(){
                      <div class="well well-lg col-md-12" role="register">
                         <section class="register-form">
                         <div class="row">
-
                            
                         <div class="row">
                            <div class="col-md-4">
@@ -311,7 +289,6 @@ function adminMonthValidation(){
                                     <div class="input-group-addon">
                                        <i class="fa fa-clock-o"> </i>
                                     </div>
-
                                     <select class="form-control" name="start_time"
                                        id="start_time">
                                        <option value="">선택하세요</option>
@@ -326,7 +303,6 @@ function adminMonthValidation(){
                                     <div class="input-group-addon">
                                        <i class="fa fa-clock-o"> </i>
                                     </div>
-
                                     <select class="form-control" name="end_time" id="end_time">
                                        <option value="">선택하세요</option>
                                     </select>
@@ -384,9 +360,7 @@ function adminMonthValidation(){
                                        name="phone" value="0104995">
                                  </div>
                               </div>
-
                            </div>
-
                            <div class="col-md-4">
                               <div class="form-group ">
                                  <label class="control-label " for="name"> 이름 </label>
@@ -399,7 +373,6 @@ function adminMonthValidation(){
                                  </div>
                               </div>
                            </div>
-
                            <div class="col-md-4">
                               <div class="form-group ">
                                  <label class="control-label " for="email"> 이메일 </label>
@@ -413,12 +386,10 @@ function adminMonthValidation(){
                               </div>
                            </div>
                         </div>
-
                         <!-- 예약 버튼 -->
 						<div id="register">
 							<button type="button" class="btn btn-primary" onClick="Reservation();">예약</button>
 						</div>
-
 						<!-- 수정 및 삭제 -->
 						<div id="registerInfo">
 							<button type="button" class="btn btn-primary" onClick="Modify();">수정</button>
@@ -430,13 +401,10 @@ function adminMonthValidation(){
                         <input type="hidden" id="rsv_seq" name="rsv_seq">
                      </div>
                   </div>
-
-
                </div>
             </div>
          </div>
    </form>
-
    <div style="margin-top: 30px"></div>
    <script>
 		//해당 날짜 선택되어 있게
@@ -492,7 +460,10 @@ function adminMonthValidation(){
 		        },
 
 		        success : function(data) {
-					alert(data.result.message);
+		        	if(data.result.message == "sucess")
+						alert("예약이 되었습니다.");
+		        	else
+		        		alert("선택하신 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.");
 		        },
 		        error : function() {
 		           console.log("error");
@@ -527,7 +498,13 @@ function adminMonthValidation(){
 		        },
 
 		        success : function(data) {
-					alert(data.result.message);
+		        	var msg = data.result.message;
+					if(msg == "sucess")
+						alert("수정되었습니다.");
+					else if(msg == "password not match")
+						alert("비밀번호가 일치하지 않습니다.");
+					else
+						alert("시간이 겹쳐서 수정이 불가합니다.")
 		        },
 		        error : function() {
 		           console.log("error");
@@ -548,7 +525,11 @@ function adminMonthValidation(){
 		        },
 
 		        success : function(data) {
-					alert(data.result.message);
+		        	if(data.result.message == "sucess")
+						alert("삭제되었습니다.");
+		        	else{
+		        		alert("비밀번호가 일치하지 않습니다.");
+		        	}
 		        },
 		        error : function() {
 		           console.log("error");

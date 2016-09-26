@@ -17,12 +17,12 @@
 		theForm = document.pwForm;
 		if (theForm.oldpw.value == "") {
 			alert("기존 비밀번호를 입력하세요.");
-			theForm.name.focus();
+			theForm.oldpw.focus();
 			return false;
 		}
 		if (theForm.newpw.value == "") {
 			alert("새로운 비밀번호를 입력하세요.");
-			theForm.name.focus();
+			theForm.newpw.focus();
 			return false;
 		}
 		document.pwForm.submit();
@@ -33,18 +33,23 @@
 		
 		if (theForm.newmonth.value == "") {
 			alert("새로운 예약가능한 개월 수를 입력하세요.");
-			theForm.name.focus();
+			theForm.newmonth.focus();
 			return false;
 		}
 
 		if (!parseInt(theForm.newmonth.value)){
 			alert("0 보다 큰 정수를 입력하세요.");
-			theForm.name.focus();
+			theForm.newmonth.focus();
 			return false;
 		}
 		if (parseInt(theForm.newmonth.value) < 1){
 			alert("0 보다 큰 정수를 입력하세요.");
-			theForm.name.focus();
+			theForm.newmonth.focus();
+			return false;
+		}
+		if (parseInt(theForm.newmonth.value) > 12){
+			alert("12보다 작은 수를 입력하세요.");
+			theForm.newmonth.focus();
 			return false;
 		}
 		document.monthForm.submit();
@@ -85,7 +90,15 @@
                         		onclick="pwValidationCheck();" style="margin-left: 20px;">변경하기</button>
                   </div>
                </form>
-               <br>${message}
+					<%
+						String message = (String) request.getAttribute("message");
+						if (message != null && message == "sucess") {
+							%><%="비밀번호가 성공적으로 변경되었습니다."%><%
+						} else if (message != null && message == "fail") {
+							%><%="비밀번호가 일치하지 않습니다."%><%
+						}
+					%>				
+					<br>
             </div>
          </div>
       </div>

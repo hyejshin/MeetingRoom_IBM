@@ -89,16 +89,16 @@ public class ModifyRsv extends HttpServlet {
 			System.out.println("modifyError!");
 		}*/
 		
-		String inststate = "수정";
+		/*String inststate = "수정";
 		byte[] euckrStringBuffer = inststate.getBytes(Charset.forName("euc-kr"));
 		String decodedFromEucKr = new String(euckrStringBuffer, "euc-kr");
 		byte[] utf8StringBuffer = decodedFromEucKr.getBytes("utf-8");
-		String decodedFromUtf8 = new String(utf8StringBuffer, "utf-8");
+		String decodedFromUtf8 = new String(utf8StringBuffer, "utf-8");*/
 		
 		
 		HistoryDAO hdao = new HistoryDAO();
 		HistoryDTO hdto = new HistoryDTO(date, start_time, end_time, title, site,
-				confer_nm, name, phone, email, del_pw, decodedFromUtf8);
+				confer_nm, name, phone, email, del_pw, "modify");
 
 		AdminDAO adao = new AdminDAO();
 		
@@ -113,23 +113,23 @@ public class ModifyRsv extends HttpServlet {
 				
 				if(projPassword.equals(del_pw)){
 					rdao.update(rdto);
-					message = "수정이 완료되었습니다.";
+					message = "sucess";
 					memberUpdate(mdto); // 회원정보 등록 또는 업데이트
 					hdao.insert(hdto); // 회의실 예약 내역 추가
 				}
 			}
 			else if(key_pw.equals(del_pw)) { //비밀번호 일치여부 확인
 				rdao.update(rdto);
-				message = "수정이 완료되었습니다.";
+				message = "sucess";
 				memberUpdate(mdto); // 회원정보 등록 또는 업데이트
 				hdao.insert(hdto); // 회의실 예약 내역 추가
 			}
 			else{
-				message = "비밀번호가 일치하지 않습니다.";
+				message = "password not match";
 				System.out.println(message);
 			}
 		}else{
-			message = "시간이 겹쳐서 수정이 불가합니다.";
+			message = "not valid time";
 			System.out.println(message);
 		}
 

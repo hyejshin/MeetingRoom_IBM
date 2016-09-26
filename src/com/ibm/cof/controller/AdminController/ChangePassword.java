@@ -59,9 +59,9 @@ public class ChangePassword extends HttpServlet {
 		String message = "";
 		if(correctPW.equals(oldpassword)){
 			adao.changePassword(project, newpassword);
-			message = "비밀번호가 성공적으로 변경되었습니다.";
+			message = "sucess";
 		}else{
-			message = "비밀번호가 일치하지 않습니다.";
+			message = "fail";
 		}
 		
 		request.setAttribute("message", message);

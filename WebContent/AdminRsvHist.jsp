@@ -89,10 +89,18 @@
 				String endTime = dto.getHst_Rsv_End_Time();
 				String time = startTime.substring(0,2) + ":" + startTime.substring(2,4) + "~";
 				time += endTime.substring(0,2) + ":" + endTime.substring(2,4);
+				
+				String stat = dto.getHst_State();
+				if(stat.equals("reserve"))
+					stat = "예약";
+				else if(stat.equals("modify"))
+					stat = "수정";
+				else if(stat.equals("delete"))
+					stat = "삭제";
 			%>
 		<tr><td><%=dto.getHst_Rsv_Date()%></td><td><%=time%></td><td><%=dto.getHst_Rsv_Mem_Nm()%></td>
 		<td><%=dto.getHst_Rsv_Mem_Pn()%></td><td><%=dto.getHst_Rsv_Confer_Nm()%></td>
-		<td><%=dto.getHst_Rsv_Title()%></td><td><%=dto.getHst_State()%></td><td><%=dto.getHst_Date()%></td></tr>
+		<td><%=dto.getHst_Rsv_Title()%></td><td><%=stat%></td><td><%=dto.getHst_Date()%></td></tr>
 		<%}}%>
 	</table>
 	
