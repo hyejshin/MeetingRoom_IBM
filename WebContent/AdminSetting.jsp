@@ -12,6 +12,45 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<script>
+	function pwValidationCheck() {
+		theForm = document.pwForm;
+		if (theForm.oldpw.value == "") {
+			alert("기존 비밀번호를 입력하세요.");
+			theForm.name.focus();
+			return false;
+		}
+		if (theForm.newpw.value == "") {
+			alert("새로운 비밀번호를 입력하세요.");
+			theForm.name.focus();
+			return false;
+		}
+		document.pwForm.submit();
+	};
+	
+	function monthValidationCheck() {
+		theForm = document.monthForm;
+		
+		if (theForm.newmonth.value == "") {
+			alert("새로운 예약가능한 개월 수를 입력하세요.");
+			theForm.name.focus();
+			return false;
+		}
+
+		if (!parseInt(theForm.newmonth.value)){
+			alert("0 보다 큰 정수를 입력하세요.");
+			theForm.name.focus();
+			return false;
+		}
+		if (parseInt(theForm.newmonth.value) < 1){
+			alert("0 보다 큰 정수를 입력하세요.");
+			theForm.name.focus();
+			return false;
+		}
+		document.monthForm.submit();
+	};
+</script>
+
 </head>
 <body>
 
@@ -36,13 +75,14 @@
          <div style="margin-top: 1%; padding: 3%">
             <div class="well well-sm col-md-11 col-sm-11 col-xs-12 col-centered"
                style="border-radius: 10px;">
-               <form method="post" name="myForm" action="ChangePassword.do">
+               <form method="post" name="pwForm" action="ChangePassword.do">
                   <div class="form-inline" style="margin-top: 30px;">
                      기존 비밀번호 <input name="oldpw" id="oldpw" type="password"
                         class="form-control"> 
                         
                         새 비밀번호 <input name="newpw" type="password" class="form-control">
-                        <button type="submit" class="btn btn-info" style="margin-left: 20px;">변경하기</button>
+                        <button type="button" class="btn btn-info"
+                        		onclick="pwValidationCheck();" style="margin-left: 20px;">변경하기</button>
                   </div>
                </form>
                <br>${message}
@@ -58,15 +98,15 @@
          <div style="margin-top: 1%; padding: 3%">
             <div class="well well-sm col-md-11 col-sm-11 col-xs-12 col-centered"
                style="border-radius: 10px;">
-               <form method="post" name="myForm2" action="ChangeMonth.do">
+               <form method="post" name="monthForm" action="ChangeMonth.do">
                <div class="form-inline" style="margin-top: 30px;">
                   기존 예약 가능한 달 수: ${pmonth}달&nbsp;&nbsp;
                   
                   새 예약 가능한 달 수 
                   <input name="newmonth" id="newmonth" class="form-control">
                   
-                  <button type="submit" class="btn btn-info" style="margin-left: 20px;" onClick ="ValidationCheck()">
-                  변경하기</button>
+                  <button type="button" class="btn btn-info" style="margin-left: 20px;" 
+                  		onClick ="monthValidationCheck()">변경하기</button>
                </div>
             </form>
             <br>

@@ -78,6 +78,7 @@ function check_onclick() {
 		<form method="post" name="registerForm" action="InsertProject.do">
 			<div class="form-inline">
 				<table>
+				<tr>
 					<td><label for="name">프로젝트명: </label> <input type="text"
 						class="form-control" name="name" placeholder="사이트명"></td>
 
@@ -92,7 +93,7 @@ function check_onclick() {
 						<button type=button class="btn btn-primary"
 							onclick="check_onclick()" style="margin-left:15px;">등록</button>
 					</td>
-
+				</tr>
 				</table>
 			</div>
 		</form>
