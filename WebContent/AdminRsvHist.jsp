@@ -40,7 +40,7 @@
 		기록삭제<span class="glyphicon glyphicon-user-add"></span></button></div>
 		
 		<div id="delete" class="collapse" style="margin-bottom:40px;" align="right">
-			<form method="post" name="registerForm" action="InsertMember.do">
+			<form method="post" name="deleteForm" action="DeleteRsvRecord.do">
 			<input type="hidden" name="page" value="AdminMember.jsp">
 				<div class="form-inline">
 					<input type="text" name="delete_date" id="delete_date" class="form-control">

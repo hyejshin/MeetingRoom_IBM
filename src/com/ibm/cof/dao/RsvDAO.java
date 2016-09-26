@@ -168,6 +168,28 @@ public class RsvDAO {
 			db.close(pstmt, conn);
 		}
 	}
+	
+	public void deleteRsvRecord(String site, String date) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		DBCon db = new DBCon();
+
+		try {
+			conn = db.connect();
+			String sql = "delete from tb_reservation where rsv_site=? and rsv_date=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, site);
+			pstmt.setString(2, date);
+			pstmt.executeUpdate();
+
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			db.close(pstmt, conn);
+		}
+	}
 
 	/*
 	 * 핸드폰번호(사용자를 구별할 수 있는 키)를 이용하여 사용자의 정보를 모두 가져와서 View에 뿌려준다. 하지만 핸드폰번호가 아니어도
