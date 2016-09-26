@@ -80,7 +80,7 @@ function getAdminMonth(projectname){
 		},
 
 		success : function(data) {      
-
+			
 			var adminmonth =0;
 			var newdate; 
 			var d = new Date();
@@ -89,7 +89,8 @@ function getAdminMonth(projectname){
 			leadingZeros(d.getDate(), 2);
 
 			adminmonth = data.result[0].admin_month; //db에서 admin_month 가져옴 
-
+			//alert("이번달날짜:"+date);
+			
 			if((d.getMonth()+adminmonth+1)>12) //이번달 + admin_month 가 12월을 초과하면 
 			{
 				newdate = leadingZeros((d.getFullYear()+1), 4) + '-' +
@@ -103,7 +104,7 @@ function getAdminMonth(projectname){
 				leadingZeros(d.getDate(), 2) + ' ';
 			}
 
-
+			//alert("달력에서고른날짜"+document.myForm.date.value);
 			if (document.myForm.date.value > newdate) {
 				alert("관리자가 지정한 날짜보다 초과하였습니다. 날짜를 다시 선택해주세요.");
 				$('input[name="date"]').val("");    
@@ -236,7 +237,6 @@ function getAdminMonth(projectname){
 	   // 날짜를 클릭할 때마다 이벤트가 발생하며 회의 스케줄을 보여준다
 	   function displaySchedule(date){
 		   var site = document.getElementById('site').value;
-
 		   $.ajax({
 			   type : "post",
 			   url : "SelectRsvBySiteDate.do",

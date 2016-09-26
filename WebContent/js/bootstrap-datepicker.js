@@ -135,6 +135,10 @@
 				this.element.data('date', formated);
 			} else {
 				this.element.prop('value', formated);
+				// 스케줄 현황을 불러온다
+				document.myForm.date.value = formated;
+				displaySchedule(formated);
+				adminMonthValidation();
 			}
 		},
 		

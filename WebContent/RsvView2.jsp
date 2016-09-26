@@ -30,6 +30,11 @@
 		$(id).addClass('active');
 		document.myForm.confer_nm.value = name;
 	}
+	
+	<%String message = (String)request.getAttribute("message");
+	if(message != null){
+		%>alert('<%=message%>');<%
+	}%>
 </script>
 </head>
 

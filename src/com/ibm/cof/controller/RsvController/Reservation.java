@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import com.ibm.cof.dao.HistoryDAO;
 import com.ibm.cof.dao.MemberDAO;
 import com.ibm.cof.dao.RsvDAO;
@@ -50,7 +52,7 @@ public class Reservation extends HttpServlet {
 
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-
+		
 		String phone = request.getParameter("phone");
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
@@ -63,8 +65,7 @@ public class Reservation extends HttpServlet {
 		String title = request.getParameter("title");
 		String del_pw = request.getParameter("del_pw");
 		
-		String message = "";
-
+		String message = "ok";
 
 		RsvDAO rdao = new RsvDAO();
 		RsvDTO rdto = new RsvDTO(date, start_time, end_time, title, site,
@@ -103,11 +104,21 @@ public class Reservation extends HttpServlet {
 			message = "예약이 완료 되었습니다.";
 		}else{
 			message = "선택하신 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.";
-			
 		}
+
+		JSONObject json = new JSONObject();
+		json.put("message", message);
 		
-		request.setAttribute("message", message);
+		JSONObject obj = new JSONObject();
+		obj.put("result", json);
+		
+		
+		response.setContentType("text/html;charset=UTF-8");
+		response.getWriter().print(obj);
+		response.setCharacterEncoding("UTF-8");
+		
+		/*request.setAttribute("message", message);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("home.do");
-		dispatcher.forward(request, response);
+		dispatcher.forward(request, response);*/
 	}
 }

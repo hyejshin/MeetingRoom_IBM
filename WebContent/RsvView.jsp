@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ibm.cof.dto.ConfDTO"%>
 <%@ page import="com.ibm.cof.dto.ProjectDTO"%>
 <%@ page import="java.util.ArrayList"%>
@@ -26,7 +25,7 @@
 <link rel="stylesheet" type="text/css" href="css/RsvView.css">
 
 
-   
+
 <!--이모티콘 Font Awesome (added because you use icons in your prepend/append)-->
 <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
 
@@ -203,50 +202,17 @@ textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
 
 
 <script language="javascript">
-
-function Reservation() {
-	if(ValidationCheck() == false){	
-		return false;
-	}
-	
-	document.myForm.action = "Reservation.do";
-	document.myForm.submit();
-}
-
-function Modify() {
-	if(ValidationCheck() == false){	
-		return false;
-	}
-	
-	document.myForm.action = "ModifyRsv.do";
-	document.myForm.submit();
-}
-
-function Delete() {
-	//var seq = document.myForm.rsv_seq.value;
-	//var pw = document.myForm.del_pw.value;
-
-	document.myForm.action = "DeleteRsv.do";
-	document.myForm.submit();
-}
-
 function adminMonthValidation(){
    var projectnm = "<%=(String)session.getAttribute("project")%>";
 	if (document.myForm.date.value != "") {
 		getAdminMonth(projectnm);
 	}
 }
-
-<%String message = (String)request.getAttribute("message");
-	if(message != null){
-		%>alert('<%=message%>');<%
-	}%>
-	
-
 </script>
 </head>
 
 <body>
+<%String selectDate = (String)request.getAttribute("selectDate");%>
 
 	<!-- navigation bar -->
 	<%@ include file="header.jsp"%>	
@@ -275,27 +241,26 @@ function adminMonthValidation(){
 		</div>
 
 		<!-- 달력 -->
-		<%@ include file="calendar/calendar.jsp"%>
-		<!-- 
+		<%//@ include file="calendar/calendar.jsp"%>
+		 
 			<div class="form-inline" align="right">
-			날짜<input type="text" name="date" id="date" class="form-control">
+			날짜<input type="text" name="datepicker" id="datepicker" class="form-control" value='<%=selectDate%>'>
 			<script>
-				$('#date').datepicker({
+				$('#datepicker').datepicker({
 					dateFormat : 'yyyy-mm-dd',
 					onSelect: function(selected,evnt) {
-				         
-				         document.myForm.date.value = selected;
+				         test(selected);
 				    }
 				});
-				$('#date').datepicker('hide');
+				$('#datepicker').datepicker('hide');
 				
-				function test(){
-					alert("!!");
+				function test(value){
+					alert(value);
 				}
 			</script>
 			</div>
 			<br>
-			 -->
+			 
 			 
          <div class="row">
 
@@ -473,5 +438,126 @@ function adminMonthValidation(){
    </form>
 
    <div style="margin-top: 30px"></div>
+   <script>
+		//해당 날짜 선택되어 있게
+		<%
+		if(selectDate != null){%>
+			setDate('<%=selectDate%>');
+		<%}else{
+			%>
+			var currentTime = new Date();
+			var date = "";
+			var year = currentTime.getFullYear();
+			date += year;
+			var month = currentTime.getMonth() + 1;
+			if(month < 10)
+				date += "-0" + month + "-";
+			else
+				date += "-" + month + "-";
+			var day = currentTime.getDate();
+			if(day < 10)
+				date += "0"+day;
+			else
+				date += day;
+			
+			setDate(date);
+		<%}%>
+		function setDate(date){
+			document.myForm.date.value = date;
+			document.myForm.datepicker.value = date;
+			displaySchedule(date);
+		}
+		
+		function Reservation() {
+			if(ValidationCheck() == false){	
+				return false;
+			}
+			
+			$.ajax({
+		        type : "post",
+		        url : "Reservation.do",
+		        dataType : 'json',
+		        data : {
+		           phone : document.myForm.phone.value,
+		           name : document.myForm.name.value,
+		           email : document.myForm.email.value,
+		           site : document.myForm.site.value,
+		           
+		           confer_nm : document.myForm.confer_nm.value,
+		           date : document.myForm.date.value,
+		           start_time : document.myForm.start_time.value,
+		           end_time : document.myForm.end_time.value,
+		           title : document.myForm.title.value,
+		           del_pw : document.myForm.del_pw.value
+		        },
+
+		        success : function(data) {
+					alert(data.result.message);
+		        },
+		        error : function() {
+		           console.log("error");
+		        }
+		     });
+			document.myForm.action = "home.do?selectDate="+document.myForm.datepicker.value;
+			document.myForm.submit();
+		}
+
+		function Modify() {
+			if(ValidationCheck() == false){	
+				return false;
+			}
+			
+			$.ajax({
+		        type : "post",
+		        url : "ModifyRsv.do",
+		        dataType : 'json',
+		        data : {
+		           rsv_seq : document.myForm.rsv_seq.value,
+		           phone : document.myForm.phone.value,
+		           name : document.myForm.name.value,
+		           email : document.myForm.email.value,
+		           site : document.myForm.site.value,
+		           
+		           confer_nm : document.myForm.confer_nm.value,
+		           date : document.myForm.date.value,
+		           start_time : document.myForm.start_time.value,
+		           end_time : document.myForm.end_time.value,
+		           title : document.myForm.title.value,
+		           del_pw : document.myForm.del_pw.value
+		        },
+
+		        success : function(data) {
+					alert(data.result.message);
+		        },
+		        error : function() {
+		           console.log("error");
+		        }
+		     });
+			document.myForm.action = "home.do?selectDate="+document.myForm.datepicker.value;
+			document.myForm.submit();
+		}
+
+		function Delete() {
+			$.ajax({
+		        type : "post",
+		        url : "DeleteRsv.do",
+		        dataType : 'json',
+		        data : {
+		           rsv_seq : document.myForm.rsv_seq.value,
+		           del_pw : document.myForm.del_pw.value
+		        },
+
+		        success : function(data) {
+					alert(data.result.message);
+		        },
+		        error : function() {
+		           console.log("error");
+		        }
+		     });
+			//setDate(document.myForm.date.value);
+			document.myForm.action = "home.do?selectDate="+document.myForm.datepicker.value;
+			document.myForm.submit();
+		}
+	</script>
 </body>
 </html>

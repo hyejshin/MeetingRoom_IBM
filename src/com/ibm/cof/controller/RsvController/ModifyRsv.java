@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+
 import com.ibm.cof.dao.AdminDAO;
 import com.ibm.cof.dao.HistoryDAO;
 import com.ibm.cof.dao.MemberDAO;
@@ -132,9 +134,20 @@ public class ModifyRsv extends HttpServlet {
 		}
 
 
-		request.setAttribute("message", message);
+		JSONObject json = new JSONObject();
+		json.put("message", message);
+		
+		JSONObject obj = new JSONObject();
+		obj.put("result", json);
+	
+		response.setContentType("text/html;charset=UTF-8");
+		response.getWriter().print(obj);
+		response.setCharacterEncoding("UTF-8");
+		
+		
+		/*request.setAttribute("message", message);
 		RequestDispatcher rd = request.getRequestDispatcher("home.do");
-		rd.forward(request, response);
+		rd.forward(request, response);*/
 	}
 	
 	// 회원정보 등록 또는 업데이트

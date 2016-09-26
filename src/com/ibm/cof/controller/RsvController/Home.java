@@ -49,7 +49,7 @@ public class Home extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session=request.getSession();
-		
+	
 		String key = request.getParameter("key");
 		String nextPage = "RsvView.jsp";
 		
@@ -70,7 +70,11 @@ public class Home extends HttpServlet {
 	        request.setAttribute("proj", proj);
 		}
 		
-
+		String selectDate = request.getParameter("selectDate");
+		if(selectDate != null)
+			request.setAttribute("selectDate", selectDate);
+		
+		
         RequestDispatcher rd = request.getRequestDispatcher(nextPage);
         rd.forward(request, response);
     }
