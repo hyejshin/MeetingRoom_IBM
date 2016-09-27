@@ -2,8 +2,8 @@ package com.ibm.cof.controller.AdminController;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
@@ -18,23 +18,16 @@ import com.ibm.cof.dao.RsvDAO;
 import com.ibm.cof.dto.RsvDTO;
 
 /**
- * Servlet implementation class RsvEveryMonth
+ * Servlet implementation class RsvEveryWeekByDay
  */
-@WebServlet("/RsvEveryMonth.do")
-public class RsvEveryMonth extends HttpServlet {
+@WebServlet("/RsvEveryWeekByDay.do")
+public class RsvEveryWeekByDay extends HttpServlet {
    private static final long serialVersionUID = 1L;
-   private int repeat_seq = 1;
    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-   Date start, end , today= null;
-
-   /**
-    * @see HttpServlet#HttpServlet()
-    */
-   public RsvEveryMonth() {
-      super();
-      // TODO Auto-generated constructor stub
-   }
+   Calendar start_day = Calendar.getInstance();
+   Calendar end_day = Calendar.getInstance();
+   int repeat_seq = 1;
+   Date today = new Date();
 
    /**
     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -64,6 +57,7 @@ public class RsvEveryMonth extends HttpServlet {
 
       /* Start_date, End_date(String) -> transform to Date type */
       try {
+         Integer per = Integer.parseInt(request.getParameter("per"));
          String start_date = request.getParameter("start_dt"); // 시작날짜
          String end_date = request.getParameter("end_dt"); // 종료날짜
          String phone = request.getParameter("phone");
@@ -75,28 +69,28 @@ public class RsvEveryMonth extends HttpServlet {
          String end_time = request.getParameter("end_time");
          String title = request.getParameter("title");
          String del_pw = request.getParameter("del_pw");
-                  
+
+         Date start = transFormat.parse(start_date); // String -> Date
+         Date end = transFormat.parse(end_date); // String -> Date
+         
          /* 관리자가 제한횟수(달)을 가져온다 */
          AdminDAO adao = new AdminDAO();
          int month = adao.selectMonthbyName(site);
          
          /* 오늘날짜에 관리자가 제한한 달을 수를 더한다 */
-         today = new Date();
-         today.setMonth(today.getMonth()+month);
          
-         Date start = transFormat.parse(start_date);
-         Date end = transFormat.parse(end_date);
+         today.setMonth(today.getMonth()+month); // 오늘날짜 더하기 제한달
          
-         System.out.println("시작날짜 : "+start+"오늘 : "+today);
-
          int compare = start.compareTo(end); // 시작날짜와 종료날짜를 비교한다.
          int compare_admin = start.compareTo(today); // 시작날짜와 오늘날짜+관리자제한달수를 비교한다.
-         int compare_result = end.compareTo(today);  // 종료날짜와 오늘날짜_관리자제한달수를 비교한다. 
+         int compare_result = end.compareTo(today);  // 종료날짜와 오늘날짜+관리자제한달수를 비교한다. 
                                        // 종료날짜가 관리자제한달보다 작으면 음수 , 크면 양수 반환
          RsvDAO rdao = new RsvDAO();
          RsvDTO rdto = new RsvDTO(start_time, end_time, title, site, confer_nm, name, phone, email, del_pw);
          
-         if(compare_result < 0 )  // 종료날짜 < 관리날짜
+         System.out.println("오늘 : "+today+"시작날짜 : "+start+"종료날짜 : "+end);
+
+         if( compare_result < 0 ) // 종료날짜 < 관리날짜
          {
         	 while (compare < 0) {
 
@@ -108,7 +102,9 @@ public class RsvEveryMonth extends HttpServlet {
                     out.println(message);
                     break;
                  }
-                 start.setMonth(start.getMonth() + 1);
+                 start.setDate(start.getDate() + 7 *per);
+                 System.out.println("제한날짜 < 종료날짜일경우 - 시작날짜 : "+start+"종료날짜 : "+end);
+                 
                  compare = start.compareTo(end);
 
               }
@@ -120,7 +116,7 @@ public class RsvEveryMonth extends HttpServlet {
 
                  while (compare < 0) {
                     rdao.insertRepeat(rdto, start, end, repeat_seq);
-                    start.setMonth(start.getMonth() + 1);
+                    start.setDate(start.getDate() + 7 *per);
                     compare = start.compareTo(end);
                  }
 
@@ -130,7 +126,7 @@ public class RsvEveryMonth extends HttpServlet {
          
          else { // 관리날짜 < 종료날짜
         	 
-        	 while ( compare_admin < 0) { // 시작날짜 < 관리날짜
+        	 while (compare_admin < 0) { // 시작날짜 < 관리날짜
 
                  if (rdao.CheckRsv(confer_nm, start_time, end_time, site, transFormat.format(start)) == false) {
                     start_date = transFormat.format(start);
@@ -140,8 +136,9 @@ public class RsvEveryMonth extends HttpServlet {
                     out.println(message);
                     break;
                  }
-                 start.setMonth(start.getMonth() + 1);
-                 compare = start.compareTo(today);
+                 start.setDate(start.getDate() + 7 * per);
+                 System.out.println("제한날짜 < 종료날짜일경우 - 시작날짜 : "+start+"오늘 : "+today);
+                 compare_admin = start.compareTo(today);
 
               }
 
@@ -152,21 +149,21 @@ public class RsvEveryMonth extends HttpServlet {
 
                  while (compare < 0) {
                     rdao.insertRepeat(rdto, start, today, repeat_seq);
-                    start.setMonth(start.getMonth() + 1);
+                    start.setDate(start.getDate() + 7 *per);
                     compare = start.compareTo(today);
                  }
 
                  repeat_seq = repeat_seq + 1;
               }
          }
-         
-         
-      } catch (ParseException e) {
+
+      } catch (Exception e) {
          // TODO Auto-generated catch block
          e.printStackTrace();
       }
 
-      if (message.equals("Free day") != true) {
+
+		if (message.equals("Free day") != true) {
 			RequestDispatcher rd = request.getRequestDispatcher("fail_repeat.jsp");
 			rd.forward(request, response);
 			return;
@@ -174,6 +171,6 @@ public class RsvEveryMonth extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("success_repeat.jsp");
 		rd.forward(request, response);
 		return;
-   }
+ }
 
 }

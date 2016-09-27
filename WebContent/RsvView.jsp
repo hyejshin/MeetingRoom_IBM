@@ -46,17 +46,11 @@
    color: red;
 }
 body {
-   background: url(image/10.jpg) center fixed;
-   -webkit-background-size: cover;
-   -moz-background-size: cover;
-   -o-background-size: cover;
-   background-size: cover;
-   font-family: 'Noto Sans KR', sans-serif !important;
+   /*font-family: 'Noto Sans KR', sans-serif !important;*/ 
+    font-family: 'Jeju Gothic', serif !important; 
 }
-input {
-   /*사용자가 입력하는 내용은 나눔명조체*/
-   font-family: 'Noto Sans KR', sans-serif !important;
-}
+
+
 #conference {
    position: relative;
    width: 100%;
@@ -98,8 +92,9 @@ input {
 .meeting {
    position: absolute;
    text-align: center;
-   background-color: #F8DEBD;
-   border: 1px inset #FF7182;
+   color:#ffffff; 
+   background-color: #00599D;
+   border: 1px solid #ffffff;
 }
 .empty {
    position: absolute;
@@ -111,15 +106,15 @@ input {
    position: absolute;
    height: 400px;
    width: 1px;
-   border: 1px dotted #F8DEBD;
+   border: 1px dotted #00599D;
 }
 .line2 {
    position: absolute;
    left: 70px;
-   border: 1px dotted #F8DEBD;
+   border: 1px dotted #00599D;
 }
 .align_right {
-	
+   
 }
 textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
    border-color: rgba(102, 102, 102, 0.7);
@@ -127,68 +122,16 @@ textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
       rgba(51, 51, 51, 0.9);
    outline: 0 none;
 }
-.button {
-   border: 0px solid #000000;
-   background: #000000;
-   background: -webkit-gradient(linear, left top, left bottom, from(#060e14),
-      to(#000000));
-   background: -webkit-linear-gradient(top, #060e14, #000000);
-   background: -moz-linear-gradient(top, #060e14, #000000);
-   background: -ms-linear-gradient(top, #060e14, #000000);
-   background: -o-linear-gradient(top, #060e14, #000000);
-   background-image: -ms-linear-gradient(top, #060e14 0%, #000000 100%);
-   padding: 10px 20px;
-   -webkit-border-radius: 6px;
-   -moz-border-radius: 6px;
-   border-radius: 6px;
-   -webkit-box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0, inset
-      rgba(255, 255, 255, 0.4) 0 1px 0;
-   -moz-box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0, inset
-      rgba(255, 255, 255, 0.4) 0 1px 0;
-   box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0, inset
-      rgba(255, 255, 255, 0.4) 0 1px 0;
-   text-shadow: #ffffff 0 1px 0;
-   color: #eaeced;
-   font-size: 15px;
-   font-family: 'Noto Sans KR', sans-serif;
-   text-decoration: none;
-   vertical-align: middle;
-}
-.button:hover {
-   border: 0px solid #0a3c59;
-   text-shadow: #dce7ed 0 1px 0;
-   background: #403e40;
-   background: -webkit-gradient(linear, left top, left bottom, from(#3a3b3b),
-      to(#403e40));
-   background: -webkit-linear-gradient(top, #3a3b3b, #403e40);
-   background: -moz-linear-gradient(top, #3a3b3b, #403e40);
-   background: -ms-linear-gradient(top, #3a3b3b, #403e40);
-   background: -o-linear-gradient(top, #3a3b3b, #403e40);
-   background-image: -ms-linear-gradient(top, #3a3b3b 0%, #403e40 100%);
-   color: #fff;
-}
-.button:active {
-   text-shadow: #667680 0 1px 0;
-   border: 0px solid #000000;
-   background: #151717;
-   background: -webkit-gradient(linear, left top, left bottom, from(#1f1f1f),
-      to(#403e40));
-   background: -webkit-linear-gradient(top, #1f1f1f, #151717);
-   background: -moz-linear-gradient(top, #1f1f1f, #151717);
-   background: -ms-linear-gradient(top, #1f1f1f, #151717);
-   background: -o-linear-gradient(top, #1f1f1f, #151717);
-   background-image: -ms-linear-gradient(top, #1f1f1f 0%, #151717 100%);
-   color: #fff;
-}
+
 </style>
 
 
 <script language="javascript">
 function adminMonthValidation(){
    var projectnm = "<%=(String)session.getAttribute("project")%>";
-	if (document.myForm.date.value != "") {
-		getAdminMonth(projectnm);
-	}
+   if (document.myForm.date.value != "") {
+      getAdminMonth(projectnm);
+   }
 }
 </script>
 </head>
@@ -196,62 +139,62 @@ function adminMonthValidation(){
 <body>
 <%String selectDate = (String)request.getAttribute("selectDate");%>
 
-	<!-- navigation bar -->
-	<%@ include file="header.jsp"%>	
+   <!-- navigation bar -->
+   <%@ include file="header.jsp"%>   
 
    <form method="post" name="myForm" action="Reservation.do">
       <div class="container">
          <!-- 사이트 선택 -->
          <div class="row" >
-			<div class="col-md-6 col-sm-9 col-xs-12">
-			<%if(session.getAttribute("project").equals("master")){ %>
-				<select class="form-control" id="site" name="site" onchange="displayConf(this.value);">
-				<option value="">선택하세요</option>
-				<%ArrayList<String> proj = (ArrayList) request.getAttribute("proj");
-					if (proj != null) {
-						for (int i = 0; i < proj.size(); i++) {
-							String name = proj.get(i);%>
-					<option value="<%=name%>"><%=name%></option> <%}%>
-				</select>
-				<%}}else{
-					String project = (String)session.getAttribute("project");%>
-					<h2>${project} 회의실</h2>
-					<input type="hidden" id="site" name="site" value=${project}>
-					<script>displayConf('<%=project%>');</script>
-				<%}%>
-			</div>
-		</div>
+         <div class="col-md-6 col-sm-9 col-xs-12">
+         <%if(session.getAttribute("project").equals("master")){ %>
+            <select class="form-control" id="site" name="site" onchange="displayConf(this.value);">
+            <option value="">선택하세요</option>
+            <%ArrayList<String> proj = (ArrayList) request.getAttribute("proj");
+               if (proj != null) {
+                  for (int i = 0; i < proj.size(); i++) {
+                     String name = proj.get(i);%>
+               <option value="<%=name%>"><%=name%></option> <%}%>
+            </select>
+            <%}}else{
+               String project = (String)session.getAttribute("project");%>
+               <h2 style="margin-left: 10%; font-family: 'Jeju Gothic', serif;">${project} 회의실</h2>
+               <input type="hidden" id="site" name="site" value=${project}>
+               <script>displayConf('<%=project%>');</script>
+            <%}%>
+         </div>
+      </div>
 
-		<!-- 달력 -->
-		<%//@ include file="calendar/calendar.jsp"%>
-		 
-			<div class="form-inline" align="right">
-			날짜<input type="text" name="datepicker" id="datepicker" class="form-control" value='<%=selectDate%>'>
-			<script>
-				$('#datepicker').datepicker({
-					dateFormat : 'yyyy-mm-dd',
-					onSelect: function(selected,evnt) {
-				         test(selected);
-				    }
-				});
-				$('#datepicker').datepicker('hide');
-				
-				function test(value){
-					alert(value);
-				}
-			</script>
-			</div>
-			<br>
-			 
-			 
+      <!-- 달력 -->
+      <%//@ include file="calendar/calendar.jsp"%>
+       
+         <div class="form-inline" align="right">
+         날짜<input type="text" name="datepicker" id="datepicker" class="form-control" value='<%=selectDate%>'>
+         <script>
+            $('#datepicker').datepicker({
+               dateFormat : 'yyyy-mm-dd',
+               onSelect: function(selected,evnt) {
+                     test(selected);
+                }
+            });
+            $('#datepicker').datepicker('hide');
+            
+            function test(value){
+               alert(value);
+            }
+         </script>
+         </div>
+         <br>
+          
+          
          <div class="row">
             <!-- 회의실tab & 예약현황 -->
             <div class="col-md-12 col-sm-12 col-xs-12">
                <div>
-               	  <!-- 회의실탭 -->
-               	  <div class="col-md-6 col-sm-6 col-xs-12" id="conference"></div>
+                    <!-- 회의실탭 -->
+                    <div class="col-md-6 col-sm-6 col-xs-12" id="conference"></div>
                
-                  <div id="schedule" class="col-md-6 col-sm-6 col-xs-12">
+                  <div id="schedule" class="col-md-12 col-sm-12 col-xs-12">
                      <div id="timeDiv"></div>
                      <div id="meetings"></div>
                   </div>
@@ -260,11 +203,11 @@ function adminMonthValidation(){
          </div>
          <div class="row">
             <!-- 회의실 예약 입력창 -->
-            <div class="search-container">
+            <div class="search-container" style="font-family: 'Nanum Gothic', serif;">
                <div class="row" id="resv_container">
-                  <div class="col-md-12"></div>
+                  <div class="col-md-12 col-sm-12 col-xs-12"></div>
                   <div>
-                     <div class="well well-lg col-md-12" role="register">
+                     <div class="well well-lg col-md-12 col-sm-12 col-xs-12" role="register">
                         <section class="register-form">
                         <div class="row">
                            
@@ -387,14 +330,14 @@ function adminMonthValidation(){
                            </div>
                         </div>
                         <!-- 예약 버튼 -->
-						<div id="register">
-							<button type="button" class="btn btn-primary" onClick="Reservation();">예약</button>
-						</div>
-						<!-- 수정 및 삭제 -->
-						<div id="registerInfo">
-							<button type="button" class="btn btn-primary" onClick="Modify();">수정</button>
-							<button type="button" class="btn btn-primary" onClick="Delete();">삭제</button>
-						</div>
+		                  <div id="register" align="right">
+		                     <button type="button" class="btn btn-primary" onClick="Reservation();">예약</button>
+		                  </div>
+		                  <!-- 수정 및 삭제 -->
+		                  <div id="registerInfo" align="right">
+		                     <button type="button" class="btn btn-primary" onClick="Modify();">수정</button>
+		                     <button type="button" class="btn btn-primary" onClick="Delete();">삭제</button>
+		                  </div>
                         </div>
                         </section>
                         
@@ -407,138 +350,143 @@ function adminMonthValidation(){
    </form>
    <div style="margin-top: 30px"></div>
    <script>
-		//해당 날짜 선택되어 있게
-		<%
-		if(selectDate != null){%>
-			setDate('<%=selectDate%>');
-		<%}else{
-			%>
-			var currentTime = new Date();
-			var date = "";
-			var year = currentTime.getFullYear();
-			date += year;
-			var month = currentTime.getMonth() + 1;
-			if(month < 10)
-				date += "-0" + month + "-";
-			else
-				date += "-" + month + "-";
-			var day = currentTime.getDate();
-			if(day < 10)
-				date += "0"+day;
-			else
-				date += day;
-			
-			setDate(date);
-		<%}%>
-		function setDate(date){
-			document.myForm.date.value = date;
-			document.myForm.datepicker.value = date;
-			displaySchedule(date);
-		}
-		
-		function Reservation() {
-			if(ValidationCheck() == false){	
-				return false;
-			}
-			
-			$.ajax({
-		        type : "post",
-		        url : "Reservation.do",
-		        dataType : 'json',
-		        data : {
-		           phone : document.myForm.phone.value,
-		           name : document.myForm.name.value,
-		           email : document.myForm.email.value,
-		           site : document.myForm.site.value,
-		           
-		           confer_nm : document.myForm.confer_nm.value,
-		           date : document.myForm.date.value,
-		           start_time : document.myForm.start_time.value,
-		           end_time : document.myForm.end_time.value,
-		           title : document.myForm.title.value,
-		           del_pw : document.myForm.del_pw.value
-		        },
+      //해당 날짜 선택되어 있게
+      <%
+      if(selectDate != null){%>
+         setDate('<%=selectDate%>');
+      <%}else{
+         %>
+         var currentTime = new Date();
+         var date = "";
+         var year = currentTime.getFullYear();
+         date += year;
+         var month = currentTime.getMonth() + 1;
+         if(month < 10)
+            date += "-0" + month + "-";
+         else
+            date += "-" + month + "-";
+         var day = currentTime.getDate();
+         if(day < 10)
+            date += "0"+day;
+         else
+            date += day;
+         
+         setDate(date);
+      <%}%>
+      function setDate(date){
+         document.myForm.date.value = date;
+         document.myForm.datepicker.value = date;
+         displaySchedule(date);
+      }
+      
+      function Reservation() {
+         if(ValidationCheck() == false){   
+            return false;
+         }
+         
+         $.ajax({
+              type : "post",
+              url : "Reservation.do",
+              dataType : 'json',
+              data : {
+                 phone : document.myForm.phone.value,
+                 name : document.myForm.name.value,
+                 email : document.myForm.email.value,
+                 site : document.myForm.site.value,
+                 
+                 confer_nm : document.myForm.confer_nm.value,
+                 date : document.myForm.date.value,
+                 start_time : document.myForm.start_time.value,
+                 end_time : document.myForm.end_time.value,
+                 title : document.myForm.title.value,
+                 del_pw : document.myForm.del_pw.value
+              },
 
-		        success : function(data) {
-		        	if(data.result.message == "sucess")
-						alert("예약이 되었습니다.");
-		        	else
-		        		alert("선택하신 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.");
-		        },
-		        error : function() {
-		           console.log("error");
-		        }
-		     });
-			document.myForm.action = "home.do?selectDate="+document.myForm.datepicker.value;
-			document.myForm.submit();
-		}
+              success : function(data) {
+            	 var msg = "" + data.result.message;
+                 if(msg == "sucess") {
+                    alert("예약이 되었습니다.");
+                 } else {
+                    alert("선택하신 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.");
+                 }
+                    
+              },
+              error : function() {
+                 console.log("error");
+              }
+           });
+         document.myForm.action = "home.do?selectDate="+document.myForm.datepicker.value;
+         document.myForm.submit();
+      }
 
-		function Modify() {
-			if(ValidationCheck() == false){	
-				return false;
-			}
-			
-			$.ajax({
-		        type : "post",
-		        url : "ModifyRsv.do",
-		        dataType : 'json',
-		        data : {
-		           rsv_seq : document.myForm.rsv_seq.value,
-		           phone : document.myForm.phone.value,
-		           name : document.myForm.name.value,
-		           email : document.myForm.email.value,
-		           site : document.myForm.site.value,
-		           
-		           confer_nm : document.myForm.confer_nm.value,
-		           date : document.myForm.date.value,
-		           start_time : document.myForm.start_time.value,
-		           end_time : document.myForm.end_time.value,
-		           title : document.myForm.title.value,
-		           del_pw : document.myForm.del_pw.value
-		        },
+      function Modify() {
+         if(ValidationCheck() == false){   
+            return false;
+         }
+         
+         $.ajax({
+              type : "post",
+              url : "ModifyRsv.do",
+              dataType : 'json',
+              data : {
+                 rsv_seq : document.myForm.rsv_seq.value,
+                 phone : document.myForm.phone.value,
+                 name : document.myForm.name.value,
+                 email : document.myForm.email.value,
+                 site : document.myForm.site.value,
+                 
+                 confer_nm : document.myForm.confer_nm.value,
+                 date : document.myForm.date.value,
+                 start_time : document.myForm.start_time.value,
+                 end_time : document.myForm.end_time.value,
+                 title : document.myForm.title.value,
+                 del_pw : document.myForm.del_pw.value
+              },
 
-		        success : function(data) {
-		        	var msg = data.result.message;
-					if(msg == "sucess")
-						alert("수정되었습니다.");
-					else if(msg == "password not match")
-						alert("비밀번호가 일치하지 않습니다.");
-					else
-						alert("시간이 겹쳐서 수정이 불가합니다.")
-		        },
-		        error : function() {
-		           console.log("error");
-		        }
-		     });
-			document.myForm.action = "home.do?selectDate="+document.myForm.datepicker.value;
-			document.myForm.submit();
-		}
+              success : function(data) {
+            	   var msg = "" + data.result.message;
+                   if(msg == "sucess") {
+	                  alert("수정되었습니다.");
+	               } else if(msg == "password not match") {
+	                  alert("비밀번호가 일치하지 않습니다.");
+	               } else {
+	                  alert("시간이 겹쳐서 수정이 불가합니다.");
+	               }
+              },
+              error : function() {
+                 console.log("error");
+              }
+           });
+         document.myForm.action = "home.do?selectDate="+document.myForm.datepicker.value;
+         document.myForm.submit();
+      }
 
-		function Delete() {
-			$.ajax({
-		        type : "post",
-		        url : "DeleteRsv.do",
-		        dataType : 'json',
-		        data : {
-		           rsv_seq : document.myForm.rsv_seq.value,
-		           del_pw : document.myForm.del_pw.value
-		        },
+      function Delete() {
+         $.ajax({
+              type : "post",
+              url : "DeleteRsv.do",
+              dataType : 'json',
+              data : {
+                 rsv_seq : document.myForm.rsv_seq.value,
+                 del_pw : document.myForm.del_pw.value
+              },
 
-		        success : function(data) {
-		        	if(data.result.message == "sucess")
-						alert("삭제되었습니다.");
-		        	else{
-		        		alert("비밀번호가 일치하지 않습니다.");
-		        	}
-		        },
-		        error : function() {
-		           console.log("error");
-		        }
-		     });
-			//setDate(document.myForm.date.value);
-			document.myForm.action = "home.do?selectDate="+document.myForm.datepicker.value;
-			document.myForm.submit();
-		}
-	</script>
+              success : function(data) {
+            	 var msg = "" + data.result.message;
+                 if(msg == "sucess") {
+                   alert("삭제되었습니다.");
+                 } else{
+                    alert("비밀번호가 일치하지 않습니다.");
+                 }
+              },
+              error : function() {
+                 console.log("error");
+              }
+           });
+         //setDate(document.myForm.date.value);
+         document.myForm.action = "home.do?selectDate="+document.myForm.datepicker.value;
+         document.myForm.submit();
+      }
+   </script>
 </body>
 </html>

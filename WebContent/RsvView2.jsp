@@ -158,5 +158,118 @@
 	</form> 
 
 <div style="margin-top:30px"></div>
+
+
+<script>
+//날짜를 클릭할 때마다 이벤트가 발생하며 회의 스케줄을 보여준다
+function displaySchedule(date){
+	   var site = document.getElementById('site').value;
+	   $.ajax({
+		   type : "post",
+		   url : "SelectRsvBySiteDate.do",
+		   dataType : 'json',
+		   data : {
+			   site : site,
+			   date : date
+		   },
+
+		   success : function(data) {
+			   var confNumber = data.confers.length;
+			   var width = (document.getElementById('schedule').offsetWidth - 70)/confNumber;
+			   var left = 70;
+			   var top, top2=0, height, j=0, bottom;
+			   var start, end, alphaT;
+			   var confName = "";
+			   var confIdx = 0;
+
+			   $('#meetings').empty();      
+
+			   conference = [];
+			   var check = [];
+			   for (var i = 0; i < data.confers.length; i++) {
+				   conference.push(data.confers[i].confname);
+				   check.push(false);
+			   }
+
+			   for (var i = 0; i < 10; i++) {
+				   $('#meetings').append("<div class='line2' style='top: "+top2+"px; height:1px; left:0px; width:"+(document.getElementById('schedule').offsetWidth)+"px; </div>"); //시간별 가로라인
+				   top2 += 40;
+			   }
+			   
+			   for (var i = 0; i < data.confers.length; i++) {
+				   var flag = false;
+				   bottom = 0;
+				   
+				   if(j < data.meetings.length){
+					   confName = data.meetings[j].confer_nm;
+					   confIdx = conference.indexOf(confName);
+					   left = 70 + width * confIdx;
+					   check[conference.indexOf(confName)] = true;
+				   }  
+				   
+				   while (j < data.meetings.length && data.meetings[j].confer_nm == confName) {
+					   flag = true;
+					   
+					   top = (timeToMin(data.meetings[j].start) - 540) / 30 * 20;
+					   height = (timeToMin(data.meetings[j].end) - timeToMin(data.meetings[j].start)) / 30 * 20;
+
+					   // 예약되어있지 않는 공간
+					   start = bottom/20*30+540;
+					   end = top/20*30+540;
+					   alphaT = 0;
+					   for(var k = start; k < end; k += 30){
+						   $('#meetings').append("<div id='empty' class='empty'"
+							   + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
+							   + "onClick='reserve("+confIdx+", "+start+", "+end+", "+k+");'></div>");
+						   alphaT += 20;
+					   }
+
+					   bottom = top + height;
+
+					   // 예약된 공간
+					   $('#meetings').append("<div id='reserved' class='meeting'"
+							   + "style='border: 1px solid #FB7374; top:"+top+"px; left:"+left+"px; width:"+width+"px; height:"+height+"px;'"
+							   + "onClick='reserveInfo("+data.meetings[j].seq+");'>"+data.meetings[j].title+"</div>");
+
+					   j++;
+				   }
+
+				   if(flag){
+					   // 예약되어있지 않는 공간
+					   start = bottom/20*30+540;
+					   end = 360/20*30+540;
+					   alphaT = 0;
+					   for(var k = start; k < end; k += 30){
+						   $('#meetings').append("<div id='empty' class='empty'"
+							   + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
+							   + "onClick='reserve("+confIdx+", "+start+", "+end+", "+k+");'></div>");
+						   alphaT += 20;
+					   }
+					   
+					   $('#meetings').append("<div class='line' style='top:0px; left:"+left+"px;'></div>"); //회의실별 세로라인 
+				   }
+			   }
+			   
+			   for(var i = 0; i < data.confers.length; i++){
+				   if(check[i] == false){
+					   left = 70 + width * i;
+					   top = 0;
+					   for(var k = 540; k<1080; k+=30){
+						   $('#meetings').append("<div id='empty' class='empty'"
+								   + "style='top:"+top+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
+								   + "onClick='reserve("+i+", "+540+", "+1080+", "+k+");'></div>");
+						   top += 20;
+					   }
+					   $('#meetings').append("<div class='line' style='top:0px; left:"+left+"px;'></div>"); //회의실별 세로라인
+				   }
+			   }
+			   displayTime();
+		   },
+		   error : function() {
+			   console.log("error");
+		   }
+	   });
+}
+</script>
 </body>
 </html>
