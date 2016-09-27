@@ -6,7 +6,7 @@ CREATE TABLE tb_member (
   mem_site varchar(45) NOT NULL,
   mem_reg_date date NOT NULL,
   PRIMARY KEY (mem_seq,mem_em),
-  UNIQUE KEY mem_pn_UNIQUE (mem_pn),
+  UNIQUE KEY mem_pn_UNIQUE (mem_pn)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE tb_reservation (

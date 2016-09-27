@@ -97,7 +97,7 @@ public class Reservation extends HttpServlet {
 			hdao.insert(hdto);
 			message = "sucess";
 		}else{
-			message = "notValid";
+			message = "not valid";
 		}
 
 		JSONObject json = new JSONObject();

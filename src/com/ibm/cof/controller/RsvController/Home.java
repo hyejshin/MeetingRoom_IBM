@@ -74,6 +74,9 @@ public class Home extends HttpServlet {
 		if(selectDate != null)
 			request.setAttribute("selectDate", selectDate);
 		
+		String message = request.getParameter("message");
+		if(message != null)
+			request.setAttribute("message", message);
 		
         RequestDispatcher rd = request.getRequestDispatcher(nextPage);
         rd.forward(request, response);

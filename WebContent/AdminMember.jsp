@@ -13,6 +13,26 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<style>
+#admintitle {
+	font-family: 'Jeju Gothic', serif;
+	margin-left: 10%;
+}
+
+#subtitle{
+	font-size: 130%;
+	font-family: 'Nanum Pen Script', serif;
+	margin-left:11%;
+	margin-top:1%;"
+}
+.nav-pills {
+	font-family: 'Jeju Gothic', serif;
+	font-size: 130%;
+	margin-left: 10%;
+	margin-top:3%
+}
+</style>
+
 <script>
 	function fillMemInfo(idx){
 		fillSite("#siteU");

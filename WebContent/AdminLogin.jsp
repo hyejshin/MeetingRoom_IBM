@@ -1,214 +1,164 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="http://code.jquery.com/jquery-1.9.1.js"
-	type="text/javascript"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"
-	type="text/javascript"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!--이모티콘 Font Awesome (added because you use icons in your prepend/append)-->
+<link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
 
 <link rel="stylesheet" href="css/dialog.css">
 <title>관리자 로그인</title>
 
+
 <style>
-@CHARSET "UTF-8";
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	outline: none;
-}
-
-.form-control {
-	position: relative;
-	font-size: 16px;
-	height: auto;
-	padding: 10px;
-	@
-	include
-	box-sizing(border-box);
-	&:
-	focus
-	{
-	z-index
-	:
-	2;
-}
-
-}
-body {
-	background: url(image/10.jpg) no-repeat center center fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-.login-form {
-	margin-top: 60px;
-}
-
-form[role=login] {
-	color: #5d5d5d;
-	background: #f2f2f2;
-	padding: 26px;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-}
-
-form[role=login] img {
-	display: block;
-	margin: 0 auto;
-	margin-bottom: 35px;
-}
-
-form[role=login] input,form[role=login] button {
-	font-size: 18px;
-	margin: 16px 0;
-}
-
-form[role=login]>div {
+@import url(http://fonts.googleapis.com/earlyaccess/kopubbatang.css);/*font*/
+@import url(http://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+.navbar-header {
+	float: left;
+	padding: 1px;
 	text-align: center;
+	width: 100%;
+	margin-bottom:1px; 
 }
 
-.form-links {
+.navbar-brand {
+	float: none;
+}
+
+#myNavbar {
+	float: right;
+	padding: 1px;
 	text-align: center;
-	margin-top: 1em;
-	margin-bottom: 50px;
+	width: 100%;
+	margin-top:1px; 
+	padding-top:1%; 
+	padding-left:60%; 
 }
 
-.form-links a {
-	color: #fff;
-}
-
-.button {
+.navbar-inverse {
+	background-color: rgba(255, 255, 255, 1);
 	border: 0px solid #000000;
-	background: #000000;
-	background: -webkit-gradient(linear, left top, left bottom, from(#060e14),
-		to(#000000));
-	background: -webkit-linear-gradient(top, #060e14, #000000);
-	background: -moz-linear-gradient(top, #060e14, #000000);
-	background: -ms-linear-gradient(top, #060e14, #000000);
-	background: -o-linear-gradient(top, #060e14, #000000);
-	background-image: -ms-linear-gradient(top, #060e14 0%, #000000 100%);
-	padding: 10px 20px;
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
-	-webkit-box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0, inset
-		rgba(255, 255, 255, 0.4) 0 1px 0;
-	-moz-box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0, inset
-		rgba(255, 255, 255, 0.4) 0 1px 0;
-	box-shadow: rgba(255, 255, 255, 0.4) 0 1px 0, inset
-		rgba(255, 255, 255, 0.4) 0 1px 0;
-	text-shadow: #ffffff 0 1px 0;
-	color: #eaeced;
-	font-size: 15px;
-	font-family: helvetica, serif;
-	text-decoration: none;
-	vertical-align: middle;
 }
 
-.button:hover {
-	border: 0px solid #0a3c59;
-	text-shadow: #dce7ed 0 1px 0;
-	background: #403e40;
-	background: -webkit-gradient(linear, left top, left bottom, from(#3a3b3b),
-		to(#403e40));
-	background: -webkit-linear-gradient(top, #3a3b3b, #403e40);
-	background: -moz-linear-gradient(top, #3a3b3b, #403e40);
-	background: -ms-linear-gradient(top, #3a3b3b, #403e40);
-	background: -o-linear-gradient(top, #3a3b3b, #403e40);
-	background-image: -ms-linear-gradient(top, #3a3b3b 0%, #403e40 100%);
-	color: #fff;
+.img-responsive2 {
+	display: inline-block;
+	max-width: 100%;
+	height: 2%;
+	margin-bottom: 3%;
 }
 
-.button:active {
-	text-shadow: #667680 0 1px 0;
-	border: 0px solid #000000;
-	background: #151717;
-	background: -webkit-gradient(linear, left top, left bottom, from(#1f1f1f),
-		to(#403e40));
-	background: -webkit-linear-gradient(top, #1f1f1f, #151717);
-	background: -moz-linear-gradient(top, #1f1f1f, #151717);
-	background: -ms-linear-gradient(top, #1f1f1f, #151717);
-	background: -o-linear-gradient(top, #1f1f1f, #151717);
-	background-image: -ms-linear-gradient(top, #1f1f1f 0%, #151717 100%);
-	color: #fff;
+.img-responsive3 {
+	display: inline-block;
+	width: 100%;
+	max-width: 100%;
+	height: 1px;
+	margin-top: 1%;
+}
+
+.font-style{
+	font-family: 'Nanum Pen Script';
+	font-size: 25px;
 }
 </style>
+
 <body>
 
 	<!-- navigation bar -->
 	<nav class="navbar navbar-inverse">
 	<div class="container-fluid">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target="#myNavbar">
-				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
+		
+		<div class="navbar-header">			
+			<img class="img-responsive2" src="image/colorbar-01.png" title="top">
+			<div class="col-md-12 col-sm-12 col-xs-12">
 			<a class="navbar-brand" href="#"
-				style="color: white; font-weight: bold">IBM 회의실 예약 시스템</a>
+			style="margin-top:1px;color:#000; font-family:'Nanum Pen Script', serif;font-size:48px">
+			   IBM 회의실 예약 시스템</a>
+			</div>
 		</div>
-		<div class="collapse navbar-collapse" id="myNavbar">
-			<ul class="nav navbar-nav">
-				<li><a href="#">예약/현황</a></li>
-				<li><a href="#">검색</a></li>
+		
+		<div id="myNavbar" >
+			<div class="col-md-12 col-sm-12 col-xs-12">
+			<ul class="nav navbar-nav inline">
+				<li><a href="#" class="font-style" style="color:#000;">예약/현황</a></li>
+				<li><a href="#" class="font-style" style="color:#000;">검색</a></li>
 			</ul>
-			<ul class="nav navbar-nav navbar-right">
-			</ul>
-		</div>
+		</div></div>
 	</div>
 	</nav>
 
-
-
-	<div class="container">
-
-		<div class="row" id="pwd-container">
-			<div class="col-md-4"></div>
-
-			<div class="col-md-4">
-				<section class="login-form">
-				<form method="post" action="AdminLogin.do" role="login">
-					<img src="image/admin-picture.png" class="img-responsive" alt="" />
-
-					<input type="text" name="id" id="id" required
-						class="form-control input-lg" placeholder="ID" value="" /> <input
-						type="password" name="pw" id="pw" class="form-control input-lg"
-						id="password" placeholder="Password" required="" />
-
-
-					<div class="pwstrength_viewport_progress"></div>
-
-
-					<button class="button btn-block" type="submit" name="go"
-						role="loginOK">Admin Login</button>
-
-				</form>
-
-				<div class="form-links">
-					<a href="www.ibm.com">www.ibm.com</a>
-				</div>
-				</section>
-			</div>
-
-			<div class="col-md-4"></div>
-
-
-		</div>
-
-
-
+	<div>
+		<center style="font-size: 36px; font-family: 'Nanum Myeongjo', serif;">Admin LOGIN
+		</center>
+		<center style="font-size: 28px; font-family: 'Nanum Pen Script', serif;">
+			관리자 페이지는 각 사이트 담당자에게 배정된 아이디, 비밀번호로 이용 가능하며<br> 일반 사용자께서는 홈페이지
+			주소를 다시 한번 확인 부탁드립니다.
+		</center>
 	</div>
+
+
+	<div>
+		<div class="well well-lg col-md-6 col-sm-8 col-xs-8"
+			style="border-radius: 2px; background: rgba(0, 90, 158, 0.2); padding-top: 3%; padding-left: 5%; padding-right: 5%; margin-top: 3%; margin-left: 24%;">
+
+			<form method="post" action="AdminLogin.do">
+				<div class="container-fluid">
+					<div class="row-fluid">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<div>
+								<div class="form-group">
+									<label class="control-label"> 아이디 </label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-smile-o"> </i>
+										</div>
+										<input type="text" class="form-control" id="id" name="id">
+									</div>
+								</div>
+							</div>
+							<div>
+								<div class="form-group">
+									<label class="control-label"> 비밀번호 </label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-lock"> </i>
+										</div>
+										<input type="password" class="form-control" id="pw"
+											name="pw" data-title="Caps lock is on">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="">
+							<button class="btn" type="submit" name="go"
+							style="font-size:20px; margin-top:20px;margin-buttom:20px;margin-left:40px;
+							width:200px; height:130px; background-color:#00599D; color:#FFFFFF">
+							AdminLogin</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12"></div>
+				</div>
+
+
+				<div class="row row-sapn"></div>
+				<div class="row">
+					<div class="col-md-12"></div>
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+
+
+
 </body>
 </html>

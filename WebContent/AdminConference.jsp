@@ -68,6 +68,26 @@
 		
 </script>
 
+<style>
+#admintitle {
+	font-family: 'Jeju Gothic', serif;
+	margin-left: 10%;
+}
+
+#subtitle{
+	font-size: 130%;
+	font-family: 'Nanum Pen Script', serif;
+	margin-left:11%;
+	margin-top:1%;"
+}
+.nav-pills {
+	font-family: 'Jeju Gothic', serif;
+	font-size: 130%;
+	margin-left: 10%;
+	margin-top:3%
+}
+</style>
+
 </head>
 <body>
 
