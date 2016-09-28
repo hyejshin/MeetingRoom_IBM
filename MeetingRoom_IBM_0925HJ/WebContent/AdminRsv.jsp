@@ -195,15 +195,11 @@ function Reservation() {
 	if(ValidationCheck() == false){	
 		return false;
 	}
-	
-	
-	
-	
-	
-	
+		
 	document.myForm.action = "Reservation.do";
 	document.myForm.submit();
 }
+
 
 function Modify() {
 	if(ValidationCheck() == false){	
@@ -238,6 +234,10 @@ function adminMonthValidation(){
 
 	function popup_month(frm)
 	{		
+		if(ValidationCheck() == false){	
+			return false;
+		}
+		
 		var winObject = null;
 		var winWidth = 600;
 		var winHeight = 600;
@@ -263,6 +263,10 @@ function adminMonthValidation(){
 
 	function popup_week(frm)
 	{
+		if(ValidationCheck() == false){	
+			return false;
+		}
+		
 		var winObject = null;
 		var winWidth = 600;
 		var winHeight = 600;

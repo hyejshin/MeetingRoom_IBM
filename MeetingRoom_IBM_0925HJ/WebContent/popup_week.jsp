@@ -31,35 +31,7 @@ window.onload = function() {
 	document.frm.title.value = window.opener.document.myForm.title.value;
 	document.frm.site.value = window.opener.document.myForm.site.value;
 	document.frm.del_pw.value = window.opener.document.myForm.del_pw.value;
-	
-	$("#summary").empty();
-	$("#summary").val("");
-	var sDate = $("#start_dt").val();
-	/* 요일 파싱 부분 */
-	var yy = parseInt(sDate.substr(0, 4), 10);
-    var mm = parseInt(sDate.substr(5, 2), 10);
-    var dd = parseInt(sDate.substr(8), 10);
-	var day = null;
-    
-    var d = new Date(yy,mm - 1, dd);
-    var weekday=new Array(7);
-    weekday[0]="일";
-    weekday[1]="월";
-    weekday[2]="화";
-    weekday[3]="수";
-    weekday[4]="목";
-    weekday[5]="금";
-    weekday[6]="토";
-    
-    sDate = sDate.replace(/\-/g,''); // 2016-09-20에서 -지워서 20160920 만들기
-    //getSecofWeek(sDate); // ~번째 주에서 주 만들기
-	/* 파싱한 요일을 한글과 합치기 */
-	
-	mm = mm + "월 "; // ~월
-    day = weekday[d.getDay()] + "요일 "; // ~요일 
-    var dayofweek = getSecofWeek(sDate) + "번째 주 "; // ~번째 주
-    var total = "매월 " + dayofweek + day;
-    $("#summary").val(total);
+	 
 }
 
 function selectRadio()
@@ -81,49 +53,50 @@ function selectRadio()
 
 $(document).ready(function()
 {
-    $('#dayFormat').change(function(){
-        var test = $('#dayFormat option:selected').val();
-        
-        if(test=="day") {
-        	$("#summary").empty();
-        	$("#summary").val("");
-        	var sDate = $("#start_dt").val();
-        	/* 요일 파싱 부분 */
-        	var yy = parseInt(sDate.substr(0, 4), 10);
-    	    var mm = parseInt(sDate.substr(5, 2), 10);
-    	    var dd = parseInt(sDate.substr(8), 10);
-    		var day = null;
+    $('#per').change(function(){
+       	
+    	var per = $('#per option:selected').val();
+        $("#summary").empty();
+        $("#summary").val("");
+        var sDate = $("#start_dt").val();
+        	
+        var yy = parseInt(sDate.substr(0, 4), 10); 
+    	var mm = parseInt(sDate.substr(5, 2), 10); 
+    	var dd = parseInt(sDate.substr(8), 10);
+    	var day = null;
     	    
-    	    var d = new Date(yy,mm - 1, dd);
-    	    var weekday=new Array(7);
-    	    weekday[0]="일";
-    	    weekday[1]="월";
-    	    weekday[2]="화";
-    	    weekday[3]="수";
-    	    weekday[4]="목";
-    	    weekday[5]="금";
-    	    weekday[6]="토";
+    	var d = new Date(yy,mm - 1, dd);
+    	var weekday=new Array(7);
+    	weekday[0]="일";
+    	weekday[1]="월";
+    	weekday[2]="화";
+    	weekday[3]="수";
+    	weekday[4]="목";
+    	weekday[5]="금";
+    	weekday[6]="토";
     	    
-    	    sDate = sDate.replace(/\-/g,''); // 2016-09-20에서 -지워서 20160920 만들기
+    	sDate = sDate.replace(/\-/g,''); // 2016-09-20에서 -지워서 20160920 만들기
     	    //getSecofWeek(sDate); // ~번째 주에서 주 만들기
-			/* 파싱한 요일을 한글과 합치기 */
 			
-			mm = mm + "월 "; // ~월
-    	    day = weekday[d.getDay()] + "요일 "; // ~요일 
-    	    var dayofweek = getSecofWeek(sDate) + "번째 주 "; // ~번째 주
-    	    var total = "매월 " + dayofweek + day;
-    	    $("#summary").val(total);
-    	   	        	    
-        } else if(test == "date") {
-        	$("#summary").empty();
-        	$("#summary").val("");
-        	var sDate = $("#start_dt").val();
-    		var dd = parseInt(sDate.substr(8), 10);
-    		var total = "매월 " + dd +"일";
+			
+		mm = mm + "월 "; // ~월
+    	day = weekday[d.getDay()] + "요일,"; // ~요일 
+    	var dayofweek = getSecofWeek(sDate) + "번째 주 "; // ~번째 주
+    	var total = mm + dayofweek + day+per+"주마다 반복";
+    	//$("#summary").val(total);
+    	
+    	if( per == 1) {
+    		$("#summary").val(total);
+    	} else if( per == 2) {
+    		$("#summary").val(total);
+    	} else if( per == 3) {
+    		$("#summary").val(total);
+    	} else if( per == 4) {
     		$("#summary").val(total);
     	}
+    	       
     });
-});
+}); 
 
 /* 몇번째 주인지 반환하는 함수 */
 function getSecofWeek(date){
@@ -183,7 +156,7 @@ function closeMe(f) {
 			  
 			  <br><br><br><br>Summary : <input type="text" readonly id="summary" name="summary">
 </center>
-<center><input type="button" value="설정" onClick="closeMe();">&nbsp;&nbsp;&nbsp;
+<center><input type="submit" value="설정" onClick="closeMe();">&nbsp;&nbsp;&nbsp;
 		<input type="reset" value="취소" onClick="window.close();">
 </center>
 </form>
