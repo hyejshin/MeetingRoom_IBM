@@ -55,11 +55,10 @@ public class DeleteRsv extends HttpServlet {
 		HttpSession session=request.getSession();
 
 		Integer seq = Integer.parseInt(request.getParameter("rsv_seq"));
-		String del_pw =request.getParameter("del_pw");
-		String message = "error";
-		
-		System.out.println(seq);
-		System.out.println(del_pw);
+		//Integer repeat_seq = Integer.parseInt(request.getParameter("repeat_seq"));
+		//String deleteAll =request.getParameter("deleteAll");
+		String message = "error";        
+        
 
 		RsvDAO rdao = new RsvDAO();
 		String password = rdao.getPassword(seq);
@@ -75,10 +74,19 @@ public class DeleteRsv extends HttpServlet {
 	
 		AdminDAO adao = new AdminDAO();
 		
+		/*
+		if(deleteAll.equals("yes")) {
+			rdao.delete(seq);
+			System.out.println("삭제완료");
+		} else {
+			rdao.deleteAllRepeat(repeat_seq);
+			System.out.println("전체삭제완료");
+		}*/
+		
 		rdao.delete(seq);
+		System.out.println("삭제완료");
 		hdao.insert(hdto);
 		message = "sucess";
-		System.out.println("삭제완료");
 		
 		JSONObject json = new JSONObject();
 		json.put("message", message);

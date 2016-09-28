@@ -490,17 +490,20 @@ function adminMonthValidation(){
     	 if(PasswordCheck() == false){
               return false;
          }
+    	 
          $.ajax({
               type : "post",
               url : "DeleteRsv.do",
               dataType : 'json',
               data : {
                  rsv_seq : document.myForm.rsv_seq.value,
-                 del_pw : document.myForm.del_pw.value
               },
 
               success : function(data) {
-            	  
+            	  var msg = "" + data.result.message;
+                  if(msg == "sucess") {
+	                  alert("삭제되었습니다.");
+	               }
               },
               error : function() {
                  console.log("error");
@@ -536,6 +539,7 @@ function adminMonthValidation(){
     	  
 		return true;
       }
+      
 </script>
 </body>
 </html>
