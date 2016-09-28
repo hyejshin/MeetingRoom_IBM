@@ -129,6 +129,8 @@
 		<%}}%>
 	</table>
 	
+	<!-- footer -->
+   <%@ include file="footer.jsp"%>  
 		
 </div>
 </body>

@@ -166,6 +166,7 @@
       </div>
    </center>
 
-
+	<!-- footer -->
+   <%@ include file="footer.jsp"%>  
 </body>
 </html>

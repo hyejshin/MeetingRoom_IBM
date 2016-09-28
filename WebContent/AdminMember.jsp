@@ -220,5 +220,8 @@
 			</tr>
 			<%}}%>
 		</table>
+		
+		<!-- footer -->
+   		<%@ include file="footer.jsp"%>  
 </body>
 </html>

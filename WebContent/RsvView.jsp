@@ -554,5 +554,8 @@ function adminMonthValidation(){
       }
 
 </script>
+
+	<!-- footer -->
+   <%@ include file="footer.jsp"%>  
 </body>
 </html>

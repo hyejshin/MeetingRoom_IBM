@@ -443,8 +443,8 @@ function popup_week(frm)
                         </section>
                         
                         <input type="hidden" id="rsv_seq" name="rsv_seq">
-                        <input type="text" id="rsv_repeat_seq" name="rsv_repeat_seq">
-                        <input type="text" id="rsv_correct_pw" name="rsv_correct_pw">
+                        <input type="hidden" id="rsv_repeat_seq" name="rsv_repeat_seq">
+                        <input type="hidden" id="rsv_correct_pw" name="rsv_correct_pw">
                      </div>
                   </div>
                </div>
@@ -626,7 +626,7 @@ function popup_week(frm)
       }
       </script>
       
-      <!-- footer -->
+   <!-- footer -->
    <%@ include file="footer.jsp"%>   
 </body>
 </html>

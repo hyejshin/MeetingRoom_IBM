@@ -108,5 +108,8 @@ textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
             </tbody>
          </table>
       </div>
+      
+    <!-- footer -->
+   	<%@ include file="footer.jsp"%>  
 </body>
 </html>
