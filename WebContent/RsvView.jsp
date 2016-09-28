@@ -137,6 +137,7 @@ function adminMonthValidation(){
 </head>
 
 <body>
+
 <%String selectDate = (String)request.getAttribute("selectDate");%>
 
    <!-- navigation bar -->
@@ -212,7 +213,7 @@ function adminMonthValidation(){
                            
                         <div class="row">
                            <div class="col-md-3">
-                              <div class="form-group ">
+                              <div class="form-group">
                                  <label class="control-label " for="date"> 날짜 </label>
                                  <div class="input-group">
                                     <div class="input-group-addon">
@@ -224,7 +225,7 @@ function adminMonthValidation(){
                               </div>
                            </div>
                            <div class="col-md-3">
-                              <div class="form-group ">
+                              <div class="form-group">
                                  <label class="control-label " for="start_time"> 시작시간
                                  </label>
                                  <div class="input-group">
@@ -239,8 +240,8 @@ function adminMonthValidation(){
                               </div>
                            </div>
                            <div class="col-md-3">
-                              <div class="form-group ">
-                                 <label class="control-label " for="end_time"> 끝시간 </label>
+                              <div class="form-group">
+                                 <label class="control-label" for="end_time"> 끝시간 </label>
                                  <div class="input-group">
                                     <div class="input-group-addon">
                                        <i class="fa fa-clock-o"> </i>
@@ -253,7 +254,7 @@ function adminMonthValidation(){
                            </div>
                            <div class="col-md-3">
                               <div class="form-group ">
-                                 <label class="control-label " for="color"> 색깔
+                                 <label class="control-label" for="color"> 색깔
                                  </label>
                                  <div class="input-group">
                                     <div class="input-group-addon">
@@ -265,6 +266,7 @@ function adminMonthValidation(){
                                        <option value="#001D59">짙은파랑</option>
                                        <option value="#3399ff">하늘</option>
                                        <option value="#33cc33">초록</option>
+                                       <option value="#5B7444">초록</option>
                                        <option value="#fe9a2e">주황</option>
                                        <option value="#ff1a1a">빨강</option>
                                     </select>
@@ -275,7 +277,7 @@ function adminMonthValidation(){
                         <div class="row">
                            <div class="col-md-4">
                               <div class="form-group ">
-                                 <label class="control-label " for="confer_nm"> 회의실 </label>
+                                 <label class="control-label" for="confer_nm"> 회의실 </label>
                                  <div class="input-group">
                                     <div class="input-group-addon">
                                        <i class="fa fa-building"> </i>
@@ -287,7 +289,7 @@ function adminMonthValidation(){
                            </div>
                            <div class="col-md-4">
                               <div class="form-group ">
-                                 <label class="control-label " for="title"> 회의제목 </label>
+                                 <label class="control-label" for="title"> 회의제목 </label>
                                  <div class="input-group">
                                     <div class="input-group-addon">
                                        <i class="fa fa-commenting"> </i>
@@ -299,7 +301,7 @@ function adminMonthValidation(){
                            </div>
                            <div class="col-md-4">
                               <div class="form-group ">
-                                 <label class="control-label " for="del_pw"> 비밀번호 </label>
+                                 <label class="control-label" for="del_pw"> 비밀번호 </label>
                                  <div class="input-group">
                                     <div class="input-group-addon">
                                        <i class="fa fa-lock"> </i>
@@ -313,7 +315,7 @@ function adminMonthValidation(){
                            
                            <div class="col-md-4">
                               <div class="form-group ">
-                                 <label class="control-label " for="title"> 전화번호 </label>
+                                 <label class="control-label" for="title"> 전화번호 </label>
                                  <div class="input-group">
                                     <div class="input-group-addon">
                                        <i class="fa fa-phone"> </i>
@@ -325,7 +327,7 @@ function adminMonthValidation(){
                            </div>
                            <div class="col-md-4">
                               <div class="form-group ">
-                                 <label class="control-label " for="name"> 이름 </label>
+                                 <label class="control-label" for="name"> 이름 </label>
                                  <div class="input-group">
                                     <div class="input-group-addon">
                                        <i class="fa fa-smile-o"> </i>
@@ -337,7 +339,7 @@ function adminMonthValidation(){
                            </div>
                            <div class="col-md-4">
                               <div class="form-group ">
-                                 <label class="control-label " for="email"> 이메일 </label>
+                                 <label class="control-label" for="email"> 이메일 </label>
                                  <div class="input-group">
                                     <div class="input-group-addon">
                                        <i class="fa fa-envelope-o"></i>
@@ -543,6 +545,15 @@ function adminMonthValidation(){
 		return true;
       }
       
+      var title = document.getElementById("title");
+      title.addEventListener("focus", confCheck, true);
+
+      function confCheck() {
+			theForm = document.myForm;
+        	if(theForm.confer_nm.value == "")
+      			alert("회의실을 선택하세요.");
+      }
+
 </script>
 </body>
 </html>

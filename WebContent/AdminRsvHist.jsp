@@ -24,7 +24,7 @@
 }
 
 #subtitle{
-	font-size: 130%;
+	font-size: 24px;
 	font-family: 'Nanum Pen Script', serif;
 	margin-left:11%;
 	margin-top:1%;"
@@ -42,7 +42,7 @@
 <body>
 	<!-- navigation bar -->
 	<%@ include file="header.jsp"%>
-	<h3>&nbsp;&nbsp;${project} 관리자 페이지</h3>
+	<h3 id="admintitle">&nbsp;&nbsp;${project} 관리자 페이지</h3>
 	
 	<ul class="nav nav-pills">
 		<li><a href="AdminRsv.jsp">예약관리</a></li>
@@ -51,6 +51,10 @@
 		<li><a href="SelectConf.do">회의실관리</a></li>
 		<li><a href="AdminSetting.do">설정</a></li>
 	</ul>
+	
+	<div id = "subtitle">
+	특정 기간동안 회원들이 예약한 내용을 확인할 수 있는 페이지입니다.  
+	</div>	
 	
 
 	<div class="container">		

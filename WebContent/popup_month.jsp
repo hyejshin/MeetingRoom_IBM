@@ -7,11 +7,26 @@
 <script src="js/bootstrap-datepicker.js"></script>
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
 <title>Insert title here</title>
+
+<style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 </head>
+
+<style>
+	.fontSize{
+		font-size: 24px;
+	}
+	input{
+		font-size: 24px;
+	}
+	select{
+		font-size: 24px;
+	}
+</style>
 
 <script>
 <%
@@ -35,6 +50,7 @@ window.onload = function() {
 	document.frm.site.value = window.opener.document.myForm.site.value;
 	document.frm.del_pw.value = window.opener.document.myForm.del_pw.value;
 	document.frm.color.value = window.opener.document.myForm.color.value;
+	document.frm.rsvdate.value = window.opener.document.myForm.date.value;
 }
 
 function selectRadio()
@@ -49,8 +65,6 @@ function selectRadio()
 	}
 	if(test == "end_dt") {
 		$("input[name=end_dt]").attr("disabled",false);
-		
-		
 	}
 }
 
@@ -95,9 +109,8 @@ $(document).ready(function()
         	$("#summary").val("");
         	var sDate = $("#start_dt").val();
     		var dd = parseInt(sDate.substr(8), 10);
-    		var total = "�ſ� " + dd +"��";
+    		var total = "매월 " + dd +"일";
     		$("#summary").val(total);
-    		alert($("#site").val());
     	}
     });
 });
@@ -118,13 +131,11 @@ function closeMe(f) {
 	if ( $("#dayFormat").val() == "date") {
 		f.action = "RsvEveryMonth.do";
 		return true;
-		
 	}
 	
 	else  {
 		f.action = "RsvEveryMonthByDay.do";
 		return true;
-		
 	}
   
 
@@ -132,41 +143,65 @@ function closeMe(f) {
 
 </script>
 <body>
+
 <form name="frm" method="post" onsubmit="return closeMe(this);">
 <input type="hidden" id="phone" name="phone"><input type="hidden" id="name" name="name">
 <input type="hidden" id="start_time" name="start_time"><input type="hidden" id="email" name="email">
 <input type="hidden" id="end_time" name="end_time"><input type="hidden" id="confer_nm" name="confer_nm">
 <input type="hidden" id="title" name="title"><input type="hidden" id="del_pw" name="del_pw">
 <input type="hidden" id="site" name="site"><input type="hidden" id="color" name="color">
+<input type="hidden" id="rsvdate" name="rsvdate">
 
-<center>반복주기 : 매월  </center><br>
+<img class="img-responsive2" src="image/colorbar-01.png" title="top">
+<br><br>
+<div class="fontSize">
+<table class="col-md-9 col-sm-8 col-xs-12"
+            style="font-family: 'Jeju Gothic', serif !important; font-size: 100%; padding-top: 5%; margin-left: 3%"
+            align="center">
+            <tr>
+               <td>반복주기 :</td>
+               <td>매월</td>
+            </tr>
+            <tr>
+               <td>일/요일 :</td>
+               <td><select id="dayFormat" name="dayFormat">
+                     <option value="select" selected="selected">선택하시오</option>
+                     <option value="date">일</option>
+                     <option value="day">요일</option>
+               </select></td>
+            </tr>
+            <tr>
+               <td>
+                  <!-- 사용자가 선택한 예약날짜가 시작날짜에 들어가야함 -->시작날짜 :
+               </td>
+               <td><input type="text" name="start_dt" id="start_dt" readonly
+                  style="width: 50%" onfocus="getWeekday(this.value);"></td>
+            </tr>
+            <tr>
+               <td>종료날짜 :</td>
+               <td><input type="text" name="end_dt" id="end_dt"
+                  style="width: 50%"><br> <script>
+                     $('#end_dt').datepicker({
+                        dateFormat : 'yy-mm-dd'
 
-<center>일/요일 :
-	<select id="dayFormat" name="dayFormat">
-		<option value="select" selected="selected">선택하시오</option>
-		<option value="date">일</option><option value="day">요일</option>
-		
-	</select>
-</center>
-							<!-- 사용자가 선택한 예약날짜가 시작날짜에 들어가야함 --><br>
-<center>시작날짜 : <input type="text" name="start_dt" id="start_dt" readonly style="width:20%" onfocus="getWeekday(this.value);"></center><br> 
-<center>종료날짜 : <input type="text" name="end_dt" id="end_dt" style="width:20%"><br>
-			  <script>
-			  
-			  $('#end_dt').datepicker({
-				   dateFormat : 'yy-mm-dd'
-				   
-				});
+                     });
 
-				$('#end_dt').datepicker('hide');
+                     $('#end_dt').datepicker('hide');
+                  </script></td>
+            </tr>
+            <tr>
+               <td>Summary :</td>
+               <td><input type="text" readonly id="summary" name="summary"></td>
+            </tr>
+         </table>
 
-			  </script>
-			  
-			  <br><br><br><br>Summary : <input type="text" readonly id="summary" name="summary">
-</center>
+<br><br>
+      
 <center><input type="submit" value="설정" >&nbsp;&nbsp;&nbsp;
 		<input type="reset" value="취소" onClick="window.close();">
 </center>
+</div>
+
 </form>
 </body>
 </html> 

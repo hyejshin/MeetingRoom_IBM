@@ -31,7 +31,6 @@ textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
       rgba(0, 29, 89, 0.34);
    outline: 0 none;
 }
-
 .col-centered {
    float: none;
    margin-right: auto;
@@ -47,22 +46,26 @@ textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
 
 	<center>
 		<form method="post" name="myForm" action="SearchRsv.do">
-			<div class="container col-md-9 col-sm-8 col-xs-12"style=" margin-left:11%; margin-bottom:3%">	
-			<div class="form-inline">
-				<select class="form-control" id="option" name="option">
-					<option value="rsv_mem_nm">예약자</option>
-				</select>
+			<div class="row col-sm-10 col-md-7 col-centered">
+				<div class="col-md-2 col-sm-3 col-xs-3">
+					<select class="form-control" id="option" name="option">
+						<option value="rsv_mem_nm">예약자</option>
+					</select>
+				</div>
 
-				<input type="text" class="form-control" size="70" name="context">
+				<div class="col-sm-6 col-md-6 col-sm-5 col-xs-6">
+					<input type="text" class="form-control" name="context">
+				</div>
 
-				<button type="submit" class="btn btn-info">검색
-					<span class='glyphicon glyphicon-search'></span>
-				</button>
-			</div>
+				<div class="col-sm-2 col-md-2 col-sm-2 col-xs-2">
+					<button type="submit" class="btn btn-info">
+						검색 <span class='glyphicon glyphicon-search'></span>
+					</button>
+				</div>
 			</div>
 		</form>
 	</center>
-	
+	<br><br>
 	<%
 		ArrayList<RsvDTO> dtos = (ArrayList) request.getAttribute("list");
 	%>

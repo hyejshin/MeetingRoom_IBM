@@ -144,6 +144,15 @@ textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
 
 
 <script language="javascript">
+
+var title = document.getElementById("title");
+title.addEventListener("focus", confCheck, true);
+
+function confCheck() {
+	theForm = document.myForm;
+    alert("회의실을 선택하세요.");
+}
+   
 function adminMonthValidation(){
    var projectnm = "<%=(String)session.getAttribute("project")%>";
    if (document.myForm.date.value != "") {
@@ -159,8 +168,8 @@ function popup_month(frm)
 	}
 	
 	var winObject = null;
-	var winWidth = 600;
-	var winHeight = 600;
+	var winWidth = 500;
+	var winHeight = 450;
 	var winURL = "popup_month.jsp";
 	var winName = "month";
 	var winPosLeft = (screen.width - winWidth) / 2;
@@ -188,8 +197,8 @@ function popup_week(frm)
 	}
 	
 	var winObject = null;
-	var winWidth = 600;
-	var winHeight = 600;
+	var winWidth = 500;
+	var winHeight = 450;
 	var winURL = "popup_week.jsp";
 	var winName = "week";
 	var winPosLeft = (screen.width - winWidth) / 2;

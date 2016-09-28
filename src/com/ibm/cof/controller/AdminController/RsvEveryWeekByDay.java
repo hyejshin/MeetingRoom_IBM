@@ -28,6 +28,7 @@ public class RsvEveryWeekByDay extends HttpServlet {
    Calendar start_day = Calendar.getInstance();
    Calendar end_day = Calendar.getInstance();
    Date today = new Date();
+   String rsvdate;
 
    /**
     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -70,6 +71,7 @@ public class RsvEveryWeekByDay extends HttpServlet {
          String title = request.getParameter("title");
          String del_pw = request.getParameter("del_pw");
          String color = request.getParameter("color");
+         rsvdate = request.getParameter("selectDate");
 
          Date start = transFormat.parse(start_date); // String -> Date
          Date end = transFormat.parse(end_date); // String -> Date

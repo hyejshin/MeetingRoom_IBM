@@ -10,7 +10,24 @@
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
 <title>Insert title here</title>
+
+<style>@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);</style>
 </head>
+
+<style>
+	.fontSize{
+		font-size: 24px;
+	}
+	input{
+		font-size: 24px;
+	}
+	select{
+		font-size: 24px;
+	}
+	button{
+		font-size: 24px;
+	}
+</style>
 
 <script>
 <%
@@ -31,6 +48,7 @@ window.onload = function() {
 	document.frm.site.value = window.opener.document.myForm.site.value;
 	document.frm.del_pw.value = window.opener.document.myForm.del_pw.value;
 	document.frm.color.value = window.opener.document.myForm.color.value;
+	document.frm.rsvdate.value = window.opener.document.myForm.date.value;
 	
 	$("#summary").empty();
 	$("#summary").val("");
@@ -138,55 +156,112 @@ function closeMe(f) {
 	//var selectBox = document.getElementById("dayFormat");
 	//var selected = selectBox.options[selectBox.selectedIndex].value;
 	
-	f.action="RsvEveryWeekByDay.do";
+	var rsvdate = document.frm.rsvdate.value;
+	f.action="RsvEveryWeekByDay.do?selectDate="+rsvdate;
 	return true;
 			
     window.close();
-
 }
 
 
 </script>
+<style>
+@import url(http://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+
+	.img-responsive3 {
+	   display: inline-block;
+	   width: 100%;
+	   max-width: 100%;
+	   height: 1px;
+	   margin-top: 1%;
+	}
+	
+	.fontSize{
+		font-size: 24px;
+	}
+	input{
+		font-size: 24px;
+	}
+	select{
+		font-size: 24px;
+	}
+	
+</style>
 <body>
-<form name="frm" method="post" onsubmit="return closeMe(this);">
-<input type="hidden" id="phone" name="phone"><input type="hidden" id="name" name="name">
-<input type="hidden" id="start_time" name="start_time"><input type="hidden" id="email" name="email">
-<input type="hidden" id="end_time" name="end_time"><input type="hidden" id="confer_nm" name="confer_nm">
-<input type="hidden" id="title" name="title"><input type="hidden" id="del_pw" name="del_pw">
-<input type="hidden" id="site" name="site"><input type="hidden" id="color" name="color">
-<center>반복빈도 : 매주  </center><br>
-<br><br>
-<center>반복주기
-<select id="per" name="per">
-<option value="1" selected="selected">1</option>
-<option value="2">2</option>
-<option value="3">3</option>
-<option value="4">4</option>
-</select>
-</center>
 
-<!-- 사용자가 선택한 예약날짜가 시작날짜에 들어가야함 -->
-<center>시작날짜 : <input type="text" name="start_dt" id="start_dt" readonly style="width:20%" onfocus="getWeekday(this.value);"></center><br> 
-<center><br>
+   
+   <img class="img-responsive2" src="image/colorbar-01.png" title="top">
+   
 
-			 종료날짜 : 
-			  <input type="text" name="end_dt" id="end_dt" style="width:20%"><br>
-			  <script>
-			  
-			  $('#end_dt').datepicker({
-				   dateFormat : 'yy-mm-dd'
-				   
-				});
+   <form name="frm" method="post" onsubmit="return closeMe(this);">
 
-				$('#end_dt').datepicker('hide');
+      <input type="hidden" id="phone" name="phone">
+      <input type="hidden" id="name" name="name">
+      <input type="hidden" id="start_time" name="start_time">
+      <input type="hidden" id="email" name="email">
+      <input type="hidden" id="end_time" name="end_time">
+      <input type="hidden" id="confer_nm"   name="confer_nm"> 
+      <input type="hidden" id="title"   name="title">
+      <input type="hidden" id="del_pw" name="del_pw">
+      <input type="hidden" id="site" name="site">
 
-			  </script>
-			  
-			  <br><br><br><br>Summary : <input type="text" readonly id="summary" name="summary">
-</center>
-<center><input type="submit" value="설정" onClick="closeMe();">&nbsp;&nbsp;&nbsp;
-		<input type="reset" value="취소" onClick="window.close();">
-</center>
-</form>
+	  <br>
+      <div class="fontSize">
+
+         <table class="col-md-9 col-sm-8 col-xs-12" style="font-family: 'Jeju Gothic', serif !important; font-size:100%;padding-top:5%;
+         margin-left:3%" align="center">
+            <tr>
+               <td>반복빈도 :</td>
+               <td>매주</td>
+            </tr>
+            <tr>
+               <td>반복주기 :</td>
+               <td><select id="per" name="per">
+                     <option value="1" selected="selected">매주</option>
+                     <option value="2">격주</option>
+                     <option value="3">3주</option>
+                     <option value="4">4주</option>
+               </select></td>
+            </tr>
+            <tr>
+               <td>
+                  <!-- 사용자가 선택한 예약날짜가 시작날짜에 들어가야함 --> 시작날짜 :
+               </td>
+               <td><input type="text" name="start_dt" id="start_dt" readonly
+                  style="width: 50%" onfocus="getWeekday(this.value);"></td>
+            </tr>
+            <tr>
+               <td>종료날짜 :</td>
+               <td><input type="text" name="end_dt" id="end_dt"
+                  style="width: 50%"><br> <script>
+                     $('#end_dt').datepicker({
+                        dateFormat : 'yy-mm-dd'
+
+                     });
+
+                     $('#end_dt').datepicker('hide');
+                  </script></td>
+            </tr>
+            <tr>
+               <td>Summary :</td>
+               <td><input type="text" readonly id="summary" name="summary">
+               </td>
+            </tr>
+         </table>
+
+		<br><br>
+		
+            <center>
+               
+               <button class="btn btn-primary" type="submit" value="설정" onClick="closeMe();">설정</button>
+               &nbsp;&nbsp;&nbsp;
+               <button class="btn btn-primary" type="reset" value="취소" onClick="window.close();">취소</button>
+            </center>
+         </div>
+      </div>
+   </form>
 </body>
 </html>

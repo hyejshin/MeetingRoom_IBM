@@ -225,6 +225,30 @@ public class RsvDAO {
 		}
 	}
 	
+	
+	/* 해당 사이트와 회의실의 예약 내역 삭제 */
+	public void deleteConfName(String site, String deleteConfName) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		DBCon db = new DBCon();
+
+		try {
+			conn = db.connect();
+			String sql = "delete from tb_reservation where rsv_site=? and rsv_confer_nm=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, site);
+			pstmt.setString(2, deleteConfName);
+			pstmt.executeUpdate();
+			System.out.println("예약내역삭제");
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			db.close(pstmt, conn);
+		}
+	}
+	
 	/* 해당반복을 전부 삭제한다. */
 	public void deleteAllRepeat(int repeat_seq) {
 		Connection conn = null;

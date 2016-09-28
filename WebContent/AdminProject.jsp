@@ -9,33 +9,31 @@
 <title>관리자페이지</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-</head>
-<body>
 
-	<!-- temporary -->
-	<link rel="stylesheet" href="css/dialog.css">
-	<script src="js/dialog.js"></script>
-	<link rel="shortcut icon" href="/favicon.ico" />
-
-	<style>
-body {
-	background: url(image/10.jpg) no-repeat center center fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
+<style>
+	.col-centered {
+	   float: none;
+	   margin-right: auto;
+	   margin-left: auto;
+	}
 </style>
 
-	<script> 
+<script> 
 
+	function CheckAgain(idx){
+	      
+	      if (confirm("[경고] 프로젝트를 삭제하시면 되돌릴 수 없습니다. 진행하시겠습니까?") == true){//확인
+	      
+	         location.replace("DeleteProject.do?seq="+idx);
+	      }else{   //취소
+	          return;
+	      }
+	   };
+	   
 function check_onclick() {
    theForm = document.registerForm;
       if(theForm.name.value =="" || theForm.id.value=="" || theForm.passwd.value=="" )
@@ -76,7 +74,7 @@ function check_onclick() {
 
 	<div id="register" style="margin-bottom: 40px;">
 		<form method="post" name="registerForm" action="InsertProject.do">
-			<div class="form-inline">
+			<div class="form-inline row col-md-7 col-sm-12 col-xs-12 col-centered">
 				<table>
 				<tr>
 					<td><label for="name">프로젝트명: </label> <input type="text"
@@ -118,9 +116,7 @@ function check_onclick() {
 		<tr>
 			<td><%=dto.getAdmin_Proj()%></td>
 			<td><%=dto.getAdmin_Id()%></td>
-			<td><a href="DeleteProject.do?seq=<%=dto.getAdmin_Seq()%>">삭제</a></td>
-			<!--  위 함수 인자 설명 첫번째: Confirm창 문구, 두번째: 삭제function으로갈지op, 세번째: 삭제할index -->
-			<!-- onclick="Confirm.render('프로젝트를 정말 삭제하시겠습니까?','delete_project', dto.seq)" -->
+			<td><a href="#" onclick="CheckAgain(<%=dto.getAdmin_Seq()%>);">삭제</a></td>
 		</tr>
 		<%
          }}

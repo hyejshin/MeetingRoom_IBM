@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -10,16 +9,15 @@
 <% response.setContentType("text/html; charset=UTF-8"); %> --%>
 <script>
 $(document).ready(function() { 
-      
-      alert("예약이 실패하였습니다.");
+      alert("fail.");
       opener.document.location.reload();
       self.close();
    });
 </script>
 
-<title>Insert title here</title>
+<title>예약실패</title>
 </head>
 <body>
- input fail!!!! T_T
+
 </body>
 </html>

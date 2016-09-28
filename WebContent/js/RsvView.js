@@ -1,16 +1,12 @@
 var conference = [];
 
+
 function ValidationCheck(){
    theForm = document.myForm;
    
    if (theForm.date.value == "") {
       alert("날짜를 선택하세요.");
       theForm.date.focus();
-      return false;
-   }
-   else if (theForm.confer_nm.value == "") {
-      alert("회의실을 선택하세요.");
-      theForm.confer_nm.focus();
       return false;
    }
    else if (theForm.start_time.value >= theForm.end_time.value) {
@@ -39,6 +35,7 @@ function ValidationCheck(){
    }
    return true;
 }
+
 
 /*
 function isPossible(seq, pw){

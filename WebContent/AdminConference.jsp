@@ -65,7 +65,16 @@
 	        }
  	});
 	}
-		
+	
+	function CheckAgain(idx, confer_nm){
+	      
+	      if (confirm("회의실을 삭제하시면 해당 회의실 예약도 같이 삭제됩니다. 그래도 진행하시겠습니까?") == true){//확인
+	      
+	         location.replace("DeleteConf.do?seq="+idx+"&confer_nm="+confer_nm);
+	      }else{   //취소
+	          return;
+	      }
+	   };
 </script>
 
 <style>
@@ -163,8 +172,8 @@
 				<td><%=dto.getConfrn_Nm()%></td>
 				
 				<td><a href="#" data-toggle="collapse" data-target="#update" 
-					onclick="fillConferInfo(<%=dto.getConfrn_Seq()%>);">수정</a>|
-					<a href="DeleteConf.do?seq=<%=dto.getConfrn_Seq()%>">삭제</a></td>
+					onclick="fillConferInfo(<%=dto.getConfrn_Seq()%>);">수정</a> |
+					<a href="#" onclick="CheckAgain(<%=dto.getConfrn_Seq()%>, '<%=dto.getConfrn_Nm()%>');">삭제</a></td>
 			</tr>
 			<%}%>
 		</table>
