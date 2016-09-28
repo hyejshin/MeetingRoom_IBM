@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -65,7 +64,7 @@ $(document).ready(function()
         	$("#summary").empty();
         	$("#summary").val("");
         	var sDate = $("#start_dt").val();
-        	/* ¿äÀÏ ÆÄ½Ì ºÎºĞ */
+        	/* ìš”ì¼ íŒŒì‹± ë¶€ë¶„ */
         	var yy = parseInt(sDate.substr(0, 4), 10);
     	    var mm = parseInt(sDate.substr(5, 2), 10);
     	    var dd = parseInt(sDate.substr(8), 10);
@@ -73,22 +72,22 @@ $(document).ready(function()
     	    
     	    var d = new Date(yy,mm - 1, dd);
     	    var weekday=new Array(7);
-    	    weekday[0]="ÀÏ";
-    	    weekday[1]="¿ù";
-    	    weekday[2]="È­";
-    	    weekday[3]="¼ö";
-    	    weekday[4]="¸ñ";
-    	    weekday[5]="±İ";
-    	    weekday[6]="Åä";
+    	    weekday[0]="ì¼";
+    	    weekday[1]="ì›”";
+    	    weekday[2]="í™”";
+    	    weekday[3]="ìˆ˜";
+    	    weekday[4]="ëª©";
+    	    weekday[5]="ê¸ˆ";
+    	    weekday[6]="í† ";
     	    
-    	    sDate = sDate.replace(/\-/g,''); // 2016-09-20¿¡¼­ -Áö¿ö¼­ 20160920 ¸¸µé±â
-    	    //getSecofWeek(sDate); // ~¹øÂ° ÁÖ¿¡¼­ ÁÖ ¸¸µé±â
-			/* ÆÄ½ÌÇÑ ¿äÀÏÀ» ÇÑ±Û°ú ÇÕÄ¡±â */
+    	    sDate = sDate.replace(/\-/g,''); // 2016-09-20ì—ì„œ -ì§€ì›Œì„œ 20160920 ë§Œë“¤ê¸°
+    	    //getSecofWeek(sDate); // ~ë²ˆì§¸ ì£¼ì—ì„œ ì£¼ ë§Œë“¤ê¸°
+			/* íŒŒì‹±í•œ ìš”ì¼ì„ í•œê¸€ê³¼ í•©ì¹˜ê¸° */
 			
-			mm = mm + "¿ù "; // ~¿ù
-    	    day = weekday[d.getDay()] + "¿äÀÏ "; // ~¿äÀÏ 
-    	    var dayofweek = getSecofWeek(sDate) + "¹øÂ° ÁÖ "; // ~¹øÂ° ÁÖ
-    	    var total = "¸Å¿ù " + dayofweek + day;
+			mm = mm + "ì›” "; // ~ì›”
+    	    day = weekday[d.getDay()] + "ìš”ì¼ "; // ~ìš”ì¼ 
+    	    var dayofweek = getSecofWeek(sDate) + "ë²ˆì§¸ ì£¼ "; // ~ë²ˆì§¸ ì£¼
+    	    var total = "ë§¤ì›” " + dayofweek + day;
     	    $("#summary").val(total);
     	   	        	    
         } else if(test == "date") {
@@ -96,14 +95,15 @@ $(document).ready(function()
         	$("#summary").val("");
         	var sDate = $("#start_dt").val();
     		var dd = parseInt(sDate.substr(8), 10);
-    		var total = "¸Å¿ù " + dd +"ÀÏ";
+    		var total = "ï¿½Å¿ï¿½ " + dd +"ï¿½ï¿½";
     		$("#summary").val(total);
     		alert($("#site").val());
     	}
     });
 });
 
-/* ¸î¹øÂ° ÁÖÀÎÁö ¹İÈ¯ÇÏ´Â ÇÔ¼ö */
+
+/* ëª‡ë²ˆì§¸ ì£¼ì¸ì§€ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜ */
 function getSecofWeek(date){
 	var d = new Date( date.substring(0,4), parseInt(date.substring(4,6))-1, date.substring(6,8) );
 	var fd = new Date( date.substring(0,4), parseInt(date.substring(4,6))-1, 1 );
@@ -138,18 +138,19 @@ function closeMe(f) {
 <input type="hidden" id="end_time" name="end_time"><input type="hidden" id="confer_nm" name="confer_nm">
 <input type="hidden" id="title" name="title"><input type="hidden" id="del_pw" name="del_pw">
 <input type="hidden" id="site" name="site"><input type="hidden" id="color" name="color">
-<center>¹İº¹ÁÖ±â : ¸Å¿ù  </center><br>
 
-<center>ÀÏ/¿äÀÏ :
+<center>ë°˜ë³µì£¼ê¸° : ë§¤ì›”  </center><br>
+
+<center>ì¼/ìš”ì¼ :
 	<select id="dayFormat" name="dayFormat">
-		<option value="select" selected="selected">¼±ÅÃÇÏ½Ã¿À</option>
-		<option value="date">ÀÏ</option><option value="day">¿äÀÏ</option>
+		<option value="select" selected="selected">ì„ íƒí•˜ì‹œì˜¤</option>
+		<option value="date">ì¼</option><option value="day">ìš”ì¼</option>
 		
 	</select>
 </center>
-							<!-- »ç¿ëÀÚ°¡ ¼±ÅÃÇÑ ¿¹¾à³¯Â¥°¡ ½ÃÀÛ³¯Â¥¿¡ µé¾î°¡¾ßÇÔ --><br>
-<center>½ÃÀÛ³¯Â¥ : <input type="text" name="start_dt" id="start_dt" readonly style="width:20%" onfocus="getWeekday(this.value);"></center><br> 
-<center>Á¾·á³¯Â¥ : <input type="text" name="end_dt" id="end_dt" style="width:20%"><br>
+							<!-- ì‚¬ìš©ìê°€ ì„ íƒí•œ ì˜ˆì•½ë‚ ì§œê°€ ì‹œì‘ë‚ ì§œì— ë“¤ì–´ê°€ì•¼í•¨ --><br>
+<center>ì‹œì‘ë‚ ì§œ : <input type="text" name="start_dt" id="start_dt" readonly style="width:20%" onfocus="getWeekday(this.value);"></center><br> 
+<center>ì¢…ë£Œë‚ ì§œ : <input type="text" name="end_dt" id="end_dt" style="width:20%"><br>
 			  <script>
 			  
 			  $('#end_dt').datepicker({
@@ -163,41 +164,10 @@ function closeMe(f) {
 			  
 			  <br><br><br><br>Summary : <input type="text" readonly id="summary" name="summary">
 </center>
-<center><input type="submit" value="¼³Á¤" >&nbsp;&nbsp;&nbsp;
-		<input type="reset" value="Ãë¼Ò" onClick="window.close();">
+<center><input type="submit" value="ì„¤ì •" >&nbsp;&nbsp;&nbsp;
+		<input type="reset" value="ì·¨ì†Œ" onClick="window.close();">
 </center>
 </form>
 </body>
 </html> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

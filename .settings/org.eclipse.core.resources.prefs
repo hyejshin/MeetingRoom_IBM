@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
 encoding//WebContent/calendar/calendar.jsp=UTF-8
 encoding//WebContent/header.jsp=UTF-8
+encoding//WebContent/popup_month.jsp=UTF-8
+encoding//WebContent/popup_week.jsp=UTF-8
 encoding/<project>=UTF-8
