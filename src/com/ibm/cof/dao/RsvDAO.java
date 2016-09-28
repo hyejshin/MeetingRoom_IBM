@@ -28,15 +28,15 @@ public class RsvDAO {
 	SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" ); 
 	
 	public RsvDAO() {
-
+		
 	}
 
 	/* 사용자가 자신이 원하는 회의실을 예약할 때 사용자가 입력한 모든 정보가 입력된다. */
 	public void insert(RsvDTO rdto) {
 		String query = "insert into tb_reservation(rsv_site,rsv_confer_nm,rsv_date, "
 				+ "rsv_start_time, rsv_end_time, rsv_title, "
-				+ "rsv_mem_nm,rsv_mem_pn,rsv_mem_em,rsv_del_pw,rsv_reg_date)"
-				+ " values(?,?,?,?,?,?,?,?,?,?,now())";
+				+ "rsv_mem_nm,rsv_mem_pn,rsv_mem_em,rsv_del_pw,rsv_color,rsv_reg_date)"
+				+ " values(?,?,?,?,?,?,?,?,?,?,?,now())";
 		try {
 			conn = db.connect();
 			pstmt = conn.prepareStatement(query);
@@ -50,6 +50,7 @@ public class RsvDAO {
 			pstmt.setString(8, rdto.getRsv_Mem_Pn());
 			pstmt.setString(9, rdto.getRsv_Mem_Em());
 			pstmt.setString(10, rdto.getRsv_Del_Pw());
+			pstmt.setString(11, rdto.getRsv_Color());
 
 			pstmt.executeUpdate();
 
@@ -257,7 +258,8 @@ public class RsvDAO {
 	
 	public RsvDTO selectBySeq(int seq) {
 		RsvDTO dto = null;
-		String date, start_time, end_time, title, site, confer_nm, name, phone, email, del_pw;
+		String date, start_time, end_time, title, site, confer_nm, name, phone, email, del_pw, color;
+		int repeat_seq;
 		String query = "select * from tb_reservation where rsv_seq = ?";
 
 		try {
@@ -277,8 +279,10 @@ public class RsvDAO {
 				phone = rs.getString("rsv_mem_pn");
 				email = rs.getString("rsv_mem_em");
 				del_pw = rs.getString("rsv_del_pw");
+				color = rs.getString("rsv_color");
+				repeat_seq = rs.getInt("rsv_repeat_seq");
 
-				dto = new RsvDTO(date, start_time, end_time, title, site, confer_nm, name, phone, email, del_pw);
+				dto = new RsvDTO(seq, date, start_time, end_time, title, site, confer_nm, name, phone, email, del_pw, color, repeat_seq);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -521,6 +525,7 @@ public class RsvDAO {
 				json.put("confer_nm", rs.getString("rsv_confer_nm"));
 				json.put("title", rs.getString("rsv_title"));
 				json.put("password", rs.getString("rsv_del_pw"));
+				json.put("repeat_seq", rs.getString("rsv_repeat_seq"));
 				jarray.add(json);
 			}
 

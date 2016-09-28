@@ -13,6 +13,8 @@ public class RsvDTO {
 	private String Rsv_Mem_Pn;
 	private String Rsv_Mem_Em;
 	private String Rsv_Del_Pw;
+	private String Rsv_Color;
+	private int Rsv_Repeat_Seq;
 
 	public RsvDTO() { };
 
@@ -29,7 +31,7 @@ public class RsvDTO {
 	}
 
 	public RsvDTO(int seq, String date, String start_time, String end_time, String title, String site,
-			String confer_nm, String name, String phone, String email, String del_pw) {
+			String confer_nm, String name, String phone, String email, String del_pw, String color, int repeat_seq) {
 		Rsv_Seq =seq;
 		Rsv_Date=date;
 		Rsv_Start_Time=start_time;
@@ -40,13 +42,31 @@ public class RsvDTO {
 		Rsv_Mem_Nm =name;
 		Rsv_Mem_Pn =phone;
 		Rsv_Mem_Em =email;
-		Rsv_Del_Pw =del_pw;	      
+		Rsv_Del_Pw =del_pw;
+		Rsv_Color = color;
+		Rsv_Repeat_Seq = repeat_seq;
 	}
-
+	
+	public RsvDTO(int seq, String date, String start_time, String end_time, String title, String site,
+			String confer_nm, String name, String phone, String email, String del_pw, String color) {
+		Rsv_Seq =seq;
+		Rsv_Date=date;
+		Rsv_Start_Time=start_time;
+		Rsv_End_Time =end_time;
+		Rsv_Title =title;
+		Rsv_Site =site;
+		Rsv_Confer_Nm =confer_nm;
+		Rsv_Mem_Nm =name;
+		Rsv_Mem_Pn =phone;
+		Rsv_Mem_Em =email;
+		Rsv_Del_Pw =del_pw;
+		Rsv_Color = color;
+	}
+	
 	public RsvDTO(String rsv_Date, String rsv_Start_Time, String rsv_End_Time,
 			String rsv_Title, String rsv_Site, String rsv_Confer_Nm,
 			String rsv_Mem_Nm, String rsv_Mem_Pn, String rsv_Mem_Em,
-			String rsv_Del_Pw) {
+			String rsv_Del_Pw, String color) {
 		Rsv_Date = rsv_Date;
 		Rsv_Start_Time = rsv_Start_Time;
 		Rsv_End_Time = rsv_End_Time;
@@ -57,6 +77,7 @@ public class RsvDTO {
 		Rsv_Mem_Pn = rsv_Mem_Pn;
 		Rsv_Mem_Em = rsv_Mem_Em;
 		Rsv_Del_Pw = rsv_Del_Pw;
+		Rsv_Color = color;
 	}
 
 	public RsvDTO(String rsv_Start_Time, String rsv_End_Time,
@@ -152,6 +173,12 @@ public class RsvDTO {
 	}
 	public void setRsv_Del_Pw(String rsv_Del_Pw) {
 		Rsv_Del_Pw = rsv_Del_Pw;
+	}
+	public String getRsv_Color() {
+		return Rsv_Color;
+	}
+	public void setRsv_Color(String rsv_Color) {
+		Rsv_Color = rsv_Color;
 	}
 
 }

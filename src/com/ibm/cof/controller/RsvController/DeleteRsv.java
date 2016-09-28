@@ -75,29 +75,10 @@ public class DeleteRsv extends HttpServlet {
 	
 		AdminDAO adao = new AdminDAO();
 		
-
-		if(password.equals(del_pw)) { //비밀번호 일치여부 확인
-			rdao.delete(seq);
-			hdao.insert(hdto);
-			message = "sucess";
-			System.out.println("삭제완료");
-		}
-		else if(session.getAttribute("admin") == "yes" && session.getAttribute("project") != "master"){
-			// 관리자는 모든 예약 삭제가능
-			String project = (String)session.getAttribute("project");
-			String projPassword = adao.selectPassword(project);
-			
-			if(projPassword.equals(del_pw)){
-				rdao.delete(seq);
-				hdao.insert(hdto);
-				message = "sucess";
-				System.out.println("삭제완료");
-			}			
-		}
-		else{
-			message = "password Not Match";
-			System.out.println(message);
-		}
+		rdao.delete(seq);
+		hdao.insert(hdto);
+		message = "sucess";
+		System.out.println("삭제완료");
 		
 		JSONObject json = new JSONObject();
 		json.put("message", message);

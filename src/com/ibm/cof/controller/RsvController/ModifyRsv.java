@@ -69,6 +69,7 @@ public class ModifyRsv extends HttpServlet {
 		String end_time = request.getParameter("end_time");
 		String title = request.getParameter("title");
 		String del_pw = request.getParameter("del_pw");
+		String color = request.getParameter("color");
 		
 		String key_pw;
 		String message = "";
@@ -78,16 +79,10 @@ public class ModifyRsv extends HttpServlet {
 		
 		RsvDAO rdao = new RsvDAO();
 		RsvDTO rdto = new RsvDTO(seq, date, start_time, end_time, title, site,
-				confer_nm, name, phone, email, del_pw);
+				confer_nm, name, phone, email, del_pw, color);
 
 		System.out.println("===========ModifyRsv.java============");
 		
-		/*
-		if(rdao.CheckRsvSeq(seq,confer_nm,start_time,end_time,site,date)) {
-			rdao.update(rdto);
-		}else {
-			System.out.println("modifyError!");
-		}*/
 		
 		/*String inststate = "수정";
 		byte[] euckrStringBuffer = inststate.getBytes(Charset.forName("euc-kr"));
@@ -104,30 +99,10 @@ public class ModifyRsv extends HttpServlet {
 		
 		//겹치는 일정 존재 여부 확인
 		if(rdao.CheckRsvSeq(seq,confer_nm,start_time,end_time,site,date)) {
-			key_pw = rdao.getPassword(seq);
-			
-			//관리자는 모든 예약 수정 가능
-			if(session.getAttribute("admin") == "yes" && session.getAttribute("project") != "master"){
-				String project = (String)session.getAttribute("project");
-				String projPassword = adao.selectPassword(project);
-				
-				if(projPassword.equals(del_pw)){
-					rdao.update(rdto);
-					message = "sucess";
-					memberUpdate(mdto); // 회원정보 등록 또는 업데이트
-					hdao.insert(hdto); // 회의실 예약 내역 추가
-				}
-			}
-			else if(key_pw.equals(del_pw)) { //비밀번호 일치여부 확인
-				rdao.update(rdto);
-				message = "sucess";
-				memberUpdate(mdto); // 회원정보 등록 또는 업데이트
-				hdao.insert(hdto); // 회의실 예약 내역 추가
-			}
-			else{
-				message = "password not match";
-				System.out.println(message);
-			}
+			rdao.update(rdto);
+			message = "sucess";
+			memberUpdate(mdto); // 회원정보 등록 또는 업데이트
+			hdao.insert(hdto); // 회의실 예약 내역 추가
 		}else{
 			message = "not valid time";
 			System.out.println(message);

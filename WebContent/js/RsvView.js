@@ -22,11 +22,6 @@ function ValidationCheck(){
       theForm.title.focus();
       return false;
    }
-   else if (theForm.del_pw.value == "") {
-      alert("비밀번호를 입력하세요.");
-      theForm.del_pw.focus();
-      return false;
-   }
    else if (theForm.phone.value == "") {
       alert("전화번호를 입력하세요.");
       theForm.phone.focus();
@@ -343,18 +338,19 @@ function getAdminMonth(projectname){
                    top = (timeToMin(data.meetings[j].start) - 540) / 30 * 20;
                    height = (timeToMin(data.meetings[j].end) - timeToMin(data.meetings[j].start)) / 30 * 20;
 
+                   var color = "#fe9a2e";
                    if(height <= 20)//30분짜리 예약일때만 (글씨가 작아지므로)
                       $('#meetings').append(
                            
                             "<div id='reserved' class='meeting'"
-                            + "style='top:"+top+"px; left:"+left+"px; width:"+width+"px; height:"+height+"px;'"
+                            + "style='background-color:"+color+"; top:"+top+"px; left:"+left+"px; width:"+width+"px; height:"+height+"px;'"
                             + "onClick='reserveInfo("+data.meetings[j].seq+");'>"+data.meetings[j].title+"</div>");
 
                    else
                    $('#meetings').append(
                         
                          "<div id='reserved' class='meeting'"
-                         + "style='top:"+top+"px; left:"+left+"px; width:"+width+"px; height:"+height+"px; padding-top:"+(height-15)/2+"px'"
+                         + "style='background-color:"+color+"; top:"+top+"px; left:"+left+"px; width:"+width+"px; height:"+height+"px; padding-top:"+(height-15)/2+"px'"
                          + "onClick='reserveInfo("+data.meetings[j].seq+");'>"+data.meetings[j].title+"</div>");
                }
             },
@@ -386,6 +382,8 @@ function getAdminMonth(projectname){
                $('#confer_nm').empty();
                $('#title').empty();
                $('#rsv_seq').empty();
+               $('#rsv_correct_pw').empty();
+               $('#rsv_repeat_seq').empty();
 
                for(var i=0; i<data.result.length; i++) {
                   $('input[name="name"]').val(data.result[i].name);
@@ -395,6 +393,8 @@ function getAdminMonth(projectname){
                   $('input[name="confer_nm"]').val(data.result[i].confer_nm);
                   $('input[name="title"]').val(data.result[i].title);
                   $('input[name="rsv_seq"]').val(""+seq);
+                  $('input[name="rsv_correct_pw"]').val(data.result[i].password);
+                  $('input[name="rsv_repeat_seq"]').val(data.result[i].repeat_seq);
                }
 
                timeSelectListAll(data.result[0].start_time, data.result[0].end_time);
@@ -442,8 +442,8 @@ function getAdminMonth(projectname){
             $('#end_time').append("<option value='"+minToStr(i)+"'>"+minToTime(i)+"</option>");
          }
          var endTime;
-         if(selectT + 120 <= 1080)
-        	 endTime = selectT+ 120;
+         if(selectT + 60 <= 1080)
+        	 endTime = selectT + 60;
          else
         	 endTime = 1080;
          
@@ -469,4 +469,3 @@ function getAdminMonth(projectname){
       $(document).ready(function(){
          $("#registerInfo").hide();
       });
-

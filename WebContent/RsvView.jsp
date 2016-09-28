@@ -212,7 +212,7 @@ function adminMonthValidation(){
                         <div class="row">
                            
                         <div class="row">
-                           <div class="col-md-4">
+                           <div class="col-md-3">
                               <div class="form-group ">
                                  <label class="control-label " for="date"> 날짜 </label>
                                  <div class="input-group">
@@ -224,7 +224,7 @@ function adminMonthValidation(){
                                  </div>
                               </div>
                            </div>
-                           <div class="col-md-4">
+                           <div class="col-md-3">
                               <div class="form-group ">
                                  <label class="control-label " for="start_time"> 시작시간
                                  </label>
@@ -239,7 +239,7 @@ function adminMonthValidation(){
                                  </div>
                               </div>
                            </div>
-                           <div class="col-md-4">
+                           <div class="col-md-3">
                               <div class="form-group ">
                                  <label class="control-label " for="end_time"> 끝시간 </label>
                                  <div class="input-group">
@@ -248,6 +248,26 @@ function adminMonthValidation(){
                                     </div>
                                     <select class="form-control" name="end_time" id="end_time">
                                        <option value="">선택하세요</option>
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-3">
+                              <div class="form-group ">
+                                 <label class="control-label " for="color"> 색깔
+                                 </label>
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-clock-o"> </i>
+                                    </div>
+                                    <select class="form-control" name="color"
+                                       id="color">
+                                       <option value="#00599D">옅은파랑</option>
+                                       <option value="#001D59">짙은파랑</option>
+                                       <option value="#3399ff">하늘</option>
+                                       <option value="#33cc33">초록</option>
+                                       <option value="#fe9a2e">주황</option>
+                                       <option value="#ff1a1a">빨강</option>
                                     </select>
                                  </div>
                               </div>
@@ -340,8 +360,10 @@ function adminMonthValidation(){
 		                  </div>
                         </div>
                         </section>
-                        
+                        <div style="background-color: #3399ff"></div>
                         <input type="hidden" id="rsv_seq" name="rsv_seq">
+                        <input type="text" id="rsv_repeat_seq" name="rsv_repeat_seq">
+                        <input type="text" id="rsv_correct_pw" name="rsv_correct_pw">
                      </div>
                   </div>
                </div>
@@ -349,7 +371,7 @@ function adminMonthValidation(){
          </div>
    </form>
    <div style="margin-top: 30px"></div>
-   <script>
+	<script>
       //해당 날짜 선택되어 있게
       <%
       if(selectDate != null){%>
@@ -398,6 +420,7 @@ function adminMonthValidation(){
                  date : document.myForm.date.value,
                  start_time : document.myForm.start_time.value,
                  end_time : document.myForm.end_time.value,
+                 color : document.myForm.color.value,
                  title : document.myForm.title.value,
                  del_pw : document.myForm.del_pw.value
               },
@@ -423,6 +446,9 @@ function adminMonthValidation(){
          if(ValidationCheck() == false){   
             return false;
          }
+         if(PasswordCheck() == false){
+             return false;
+        }
          
          $.ajax({
               type : "post",
@@ -439,6 +465,7 @@ function adminMonthValidation(){
                  date : document.myForm.date.value,
                  start_time : document.myForm.start_time.value,
                  end_time : document.myForm.end_time.value,
+                 color : document.myForm.color.value,
                  title : document.myForm.title.value,
                  del_pw : document.myForm.del_pw.value
               },
@@ -447,8 +474,6 @@ function adminMonthValidation(){
             	   var msg = "" + data.result.message;
                    if(msg == "sucess") {
 	                  alert("수정되었습니다.");
-	               } else if(msg == "password not match") {
-	                  alert("비밀번호가 일치하지 않습니다.");
 	               } else {
 	                  alert("시간이 겹쳐서 수정이 불가합니다.");
 	               }
@@ -462,6 +487,9 @@ function adminMonthValidation(){
       }
 
       function Delete() {
+    	 if(PasswordCheck() == false){
+              return false;
+         }
          $.ajax({
               type : "post",
               url : "DeleteRsv.do",
@@ -472,12 +500,7 @@ function adminMonthValidation(){
               },
 
               success : function(data) {
-            	 var msg = "" + data.result.message;
-                 if(msg == "sucess") {
-                   alert("삭제되었습니다.");
-                 } else{
-                    alert("비밀번호가 일치하지 않습니다.");
-                 }
+            	  
               },
               error : function() {
                  console.log("error");
@@ -487,6 +510,32 @@ function adminMonthValidation(){
          document.myForm.action = "home.do?selectDate="+document.myForm.datepicker.value;
          document.myForm.submit();
       }
-   </script>
+      
+      function PasswordCheck(){
+	   	  theForm = document.myForm;
+	   	  var userPW = theForm.del_pw.value;
+	   	  var correctPW = theForm.rsv_correct_pw.value;
+	   	  
+	   	  var projectnm = "<%=(String)session.getAttribute("project")%>";
+	   	  var admin = "<%=(String)session.getAttribute("admin")%>";
+
+	   	  if(projectnm != "master" && admin == "yes")
+	   		  return true;
+	   	  
+	   	  if(userPW == ""){
+	   		  alert("비밀번호를 입력하세요.");
+	   		  theForm.del_pw.focus();
+	   		  return false;
+	   	  }
+	   	  
+	   	  if(userPW != correctPW){
+	   		alert("비밀번호가 일치하지 않습니다.");
+	   		  theForm.del_pw.focus();
+	   		  return false;
+	   	  }
+    	  
+		return true;
+      }
+</script>
 </body>
 </html>

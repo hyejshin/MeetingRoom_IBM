@@ -62,14 +62,16 @@ public class Reservation extends HttpServlet {
 		String date = request.getParameter("date");
 		String start_time = request.getParameter("start_time");
 		String end_time = request.getParameter("end_time");
+		
 		String title = request.getParameter("title");
 		String del_pw = request.getParameter("del_pw");
+		String color = request.getParameter("color");
 		
 		String message = "ok";
 
 		RsvDAO rdao = new RsvDAO();
 		RsvDTO rdto = new RsvDTO(date, start_time, end_time, title, site,
-		confer_nm, name, phone, email, del_pw);
+		confer_nm, name, phone, email, del_pw, color);
 		
 		
 		System.out.println("===========InsertReservation.java============");

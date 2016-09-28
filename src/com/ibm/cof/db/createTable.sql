@@ -22,6 +22,7 @@ CREATE TABLE tb_reservation (
   rsv_mem_em varchar(45) NOT NULL,
   rsv_del_pw varchar(45) NOT NULL,
   rsv_reg_date date NOT NULL,
+  rsv_color varchar(45) NOT NULL,
   rsv_repeat_seq int(11) DEFAULT NULL,
   PRIMARY KEY (rsv_seq)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
