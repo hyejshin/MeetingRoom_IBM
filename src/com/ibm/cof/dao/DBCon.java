@@ -14,8 +14,8 @@ public class DBCon {
 		
 		  /*혜정
 	      String url = "jdbc:mysql://75.126.23.246:3307/d19baf15a17a54d5b9ab2f1aacfdd976e";
-	      String id = "uezJdcj0Udwdg";
-	      String pw = "peAIbmTprdguB";
+	      String id = "uwq3hYSeeQti0";
+	      String pw = "puc5ZwRkCvmSI";
 	      */
 	      
 	      
@@ -25,10 +25,10 @@ public class DBCon {
 	      String pw = "pWv7uXkGBeHzX";
 	      */
 		
-		  /* 은진2
-	      String url = "jdbc:mysql://75.126.23.246:3307/d3d08d061490e4199ab26a0b6060ec763";
-	      String id = "u135y7U5nLzdp";
-	      String pw = "p3g9D310DEZNi";
+		  /* 윤미
+	      String url = "jdbc:mysql://75.126.23.246:3307/dfa5faab21dd04469bfc00e89a3ad424c";
+	      String id = "uwhL1Fc3Gretj";
+	      String pw = "paCm136PBusb9";
 	      */
 	      
 	      // 로컬

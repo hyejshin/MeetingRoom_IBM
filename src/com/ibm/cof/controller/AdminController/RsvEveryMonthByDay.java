@@ -26,7 +26,7 @@ public class RsvEveryMonthByDay extends HttpServlet {
    private static final long serialVersionUID = 1L;
    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
    // SimpleDateFormat transFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-   private int repeat_seq = 1;
+   private int repeat_seq;
    
    /**
     * @see HttpServlet#HttpServlet()
@@ -75,6 +75,7 @@ public class RsvEveryMonthByDay extends HttpServlet {
          String end_time = request.getParameter("end_time");
          String title = request.getParameter("title");
          String del_pw = request.getParameter("del_pw");
+         String color = request.getParameter("color");
          
          Calendar start_day = Calendar.getInstance();
          Calendar end_day = Calendar.getInstance();
@@ -86,7 +87,13 @@ public class RsvEveryMonthByDay extends HttpServlet {
          /* 관리자가 제한횟수(달)을 가져온다 */
          AdminDAO adao = new AdminDAO();
          int month = adao.selectMonthbyName(site);
+                  
+         RsvDAO rdao = new RsvDAO();
+         RsvDTO rdto = new RsvDTO(start_time, end_time, title, site, confer_nm, name, phone, email, del_pw, color);
          
+         // 반복 repeat_seq 가져오기
+         repeat_seq = rdao.selectRepeatSeq(site);
+                  
          start_day.setTime(transFormat.parse(start_date)); // String -> Calendar
          end_day.setTime(transFormat.parse(end_date)); // String -> Calendar
          today.add(Calendar.MONTH, month);
@@ -99,9 +106,7 @@ public class RsvEveryMonthByDay extends HttpServlet {
          int compare_admin = start_day.compareTo(today); // 시작날짜와 오늘날짜+관리자제한달수를 비교한다.
          int compare_result = end_day.compareTo(today);  // 종료날짜와 오늘날짜_관리자제한달수를 비교한다. 
                                        // 종료날짜가 관리자제한달보다 작으면 음수 , 크면 양수 반환
-         
-         RsvDAO rdao = new RsvDAO();
-         RsvDTO rdto = new RsvDTO(start_time, end_time, title, site, confer_nm, name, phone, email, del_pw);
+        
          
          System.out.println("오늘 : "+today.getTime()+"시작날짜 : "+start_day.getTime()+"종료날짜 : "+end_day.getTime());
          System.out.println("compare_result : "+compare_result);
@@ -141,7 +146,7 @@ public class RsvEveryMonthByDay extends HttpServlet {
                                                      // Calendar
                  compare = start_day.compareTo(end_day);
                  while (compare < 0) {
-                    rdao.insertRepeatByDay(rdto, start_day, end_day, repeat_seq);
+                    rdao.insertRepeatByDay(rdto, start_day, end_day, repeat_seq+1);
                     prevDayOfWeekInMonth = start_day.get(Calendar.DAY_OF_WEEK_IN_MONTH); // 오늘이
                                                                           // 이번달
                                                                           // 몇째주
@@ -161,7 +166,7 @@ public class RsvEveryMonthByDay extends HttpServlet {
                                                                        // 몇째주
                     compare = start_day.compareTo(end_day);
                  }
-                 repeat_seq = repeat_seq + 1;
+                 
               }         	 
          } 
          
@@ -205,7 +210,7 @@ public class RsvEveryMonthByDay extends HttpServlet {
                  compare = start_day.compareTo(today);
                  while (compare < 0) {
                 	System.out.println("test_dayrepeat");
-                    rdao.insertRepeatByDay(rdto, start_day, end_day, repeat_seq);
+                    rdao.insertRepeatByDay(rdto, start_day, end_day, repeat_seq+1);
                     prevDayOfWeekInMonth = start_day.get(Calendar.DAY_OF_WEEK_IN_MONTH); // 오늘이
                                                                           // 이번달
                                                                           // 몇째주
@@ -225,7 +230,7 @@ public class RsvEveryMonthByDay extends HttpServlet {
                                                                        // 몇째주
                     compare = start_day.compareTo(today);
                  }
-                 repeat_seq = repeat_seq + 1;
+                 
               }
          }
          

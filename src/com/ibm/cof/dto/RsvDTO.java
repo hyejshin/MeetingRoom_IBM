@@ -83,7 +83,7 @@ public class RsvDTO {
 	public RsvDTO(String rsv_Start_Time, String rsv_End_Time,
             String rsv_Title, String rsv_Site,
             String rsv_Confer_Nm, String rsv_Mem_Nm, String rsv_Mem_Pn,
-            String rsv_Mem_Em, String rsv_Del_Pw
+            String rsv_Mem_Em, String rsv_Del_Pw, String rsv_Color
             ) {
          //Rsv_Date = rsv_Date;
          //Rsv_End_Date = rsv_End_Date;
@@ -96,6 +96,7 @@ public class RsvDTO {
          Rsv_Mem_Pn = rsv_Mem_Pn;
          Rsv_Mem_Em = rsv_Mem_Em;
          Rsv_Del_Pw = rsv_Del_Pw;
+         Rsv_Color = rsv_Color;
          
          //Rsv_Repeat_Seq = rsv_Repeat_Seq;
       }

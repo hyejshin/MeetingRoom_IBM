@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="css/datepicker.css">
 <script src="js/bootstrap-datepicker.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -31,6 +31,7 @@ window.onload = function() {
 	document.frm.title.value = window.opener.document.myForm.title.value;
 	document.frm.site.value = window.opener.document.myForm.site.value;
 	document.frm.del_pw.value = window.opener.document.myForm.del_pw.value;
+	document.frm.color.value = window.opener.document.myForm.color.value;
 	
 	$("#summary").empty();
 	$("#summary").val("");
@@ -152,7 +153,7 @@ function closeMe(f) {
 <input type="hidden" id="start_time" name="start_time"><input type="hidden" id="email" name="email">
 <input type="hidden" id="end_time" name="end_time"><input type="hidden" id="confer_nm" name="confer_nm">
 <input type="hidden" id="title" name="title"><input type="hidden" id="del_pw" name="del_pw">
-<input type="hidden" id="site" name="site">
+<input type="hidden" id="site" name="site"><input type="hidden" id="color" name="color">
 <center>반복빈도 : 매주  </center><br>
 <br><br>
 <center>반복주기

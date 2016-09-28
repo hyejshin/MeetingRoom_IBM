@@ -71,6 +71,9 @@ public class ModifyRsv extends HttpServlet {
 		String del_pw = request.getParameter("del_pw");
 		String color = request.getParameter("color");
 		
+		Integer repeat_seq = Integer.parseInt(request.getParameter("repeat_seq"));
+		Integer option = Integer.parseInt(request.getParameter("option"));
+		
 		String key_pw;
 		String message = "";
 
@@ -99,6 +102,15 @@ public class ModifyRsv extends HttpServlet {
 		
 		//겹치는 일정 존재 여부 확인
 		if(rdao.CheckRsvSeq(seq,confer_nm,start_time,end_time,site,date)) {
+			
+			if(option == 1 && repeat_seq > 0) {
+				rdao.updateAllRepeat(repeat_seq, rdto);
+				System.out.println("전체수정완료");
+			} else  {
+				rdao.update(rdto);
+				System.out.println("수정완료");
+			}
+			
 			rdao.update(rdto);
 			message = "sucess";
 			memberUpdate(mdto); // 회원정보 등록 또는 업데이트

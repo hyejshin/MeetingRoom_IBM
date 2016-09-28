@@ -68,7 +68,7 @@ public class RsvDAO {
 	/* 회의실 이름,예약날짜,예약시작시간,예약종료시간,예약목적을 수정할 수 있다. (추가로 수정될 사항이 있으면 추가하세요..) */
 	public void update(RsvDTO rdto) {
 		String query = "update tb_reservation set rsv_confer_nm=?, rsv_date=?, "
-				+ "rsv_start_time=?, rsv_end_time=?, rsv_title=?,"
+				+ "rsv_start_time=?, rsv_end_time=?, rsv_title=?, rsv_color=?, "
 				+ "rsv_site=?, rsv_mem_nm=?,rsv_mem_pn=?,rsv_mem_em=?" + " where rsv_seq=?";
 		try {
 			conn = db.connect();
@@ -79,11 +79,12 @@ public class RsvDAO {
 			pstmt.setString(3, rdto.getRsv_Start_Time());
 			pstmt.setString(4, rdto.getRsv_End_Time());
 			pstmt.setString(5, rdto.getRsv_Title());
-			pstmt.setString(6, rdto.getRsv_Site());
-			pstmt.setString(7, rdto.getRsv_Mem_Nm());
-			pstmt.setString(8, rdto.getRsv_Mem_Pn());
-			pstmt.setString(9, rdto.getRsv_Mem_Em());
-			pstmt.setInt(10, rdto.getRsv_Seq());
+			pstmt.setString(6, rdto.getRsv_Color());
+			pstmt.setString(7, rdto.getRsv_Site());
+			pstmt.setString(8, rdto.getRsv_Mem_Nm());
+			pstmt.setString(9, rdto.getRsv_Mem_Pn());
+			pstmt.setString(10, rdto.getRsv_Mem_Em());
+			pstmt.setInt(11, rdto.getRsv_Seq());
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -97,6 +98,38 @@ public class RsvDAO {
 		}
 	}
 	
+	// 반복 전체 내용 수정
+	public void updateAllRepeat(int repeat_seq, RsvDTO rdto) {
+		String query = "update tb_reservation set rsv_confer_nm=?, "
+				+ "rsv_start_time=?, rsv_end_time=?, rsv_title=?, rsv_color=?, "
+				+ "rsv_site=?, rsv_mem_nm=?,rsv_mem_pn=?,rsv_mem_em=? where rsv_repeat_seq=?";
+		
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, rdto.getRsv_Confer_Nm());
+			pstmt.setString(2, rdto.getRsv_Start_Time());
+			pstmt.setString(3, rdto.getRsv_End_Time());
+			pstmt.setString(4, rdto.getRsv_Title());
+			pstmt.setString(5, rdto.getRsv_Color());
+			pstmt.setString(6, rdto.getRsv_Site());
+			pstmt.setString(7, rdto.getRsv_Mem_Nm());
+			pstmt.setString(8, rdto.getRsv_Mem_Pn());
+			pstmt.setString(9, rdto.getRsv_Mem_Em());
+			pstmt.setInt(10, repeat_seq);
+
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
 	
 	
 	public void update2(RsvDTO rdto) {
@@ -181,6 +214,28 @@ public class RsvDAO {
 			String sql = "delete from tb_reservation where rsv_seq=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, rsv_seq);
+			pstmt.executeUpdate();
+
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			db.close(pstmt, conn);
+		}
+	}
+	
+	/* 해당반복을 전부 삭제한다. */
+	public void deleteAllRepeat(int repeat_seq) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		DBCon db = new DBCon();
+
+		try {
+			conn = db.connect();
+			String sql = "delete from tb_reservation where rsv_repeat_seq=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, repeat_seq);
 			pstmt.executeUpdate();
 
 		} catch (SQLException se) {
@@ -489,6 +544,7 @@ public class RsvDAO {
 				json.put("phone", rs.getString("rsv_mem_pn"));
 				json.put("email", rs.getString("rsv_mem_em"));
 				json.put("pwd", rs.getString("rsv_del_pw"));
+				json.put("color", rs.getString("rsv_color"));
 
 				jarray.add(json);
 			}
@@ -526,6 +582,7 @@ public class RsvDAO {
 				json.put("title", rs.getString("rsv_title"));
 				json.put("password", rs.getString("rsv_del_pw"));
 				json.put("repeat_seq", rs.getString("rsv_repeat_seq"));
+				json.put("color", rs.getString("rsv_color"));
 				jarray.add(json);
 			}
 
@@ -724,8 +781,8 @@ public class RsvDAO {
 	public void insertRepeat(RsvDTO rdto,java.util.Date start,java.util.Date end,int repeat_seq) {
 		String query = "insert into tb_reservation(rsv_site,rsv_confer_nm,rsv_date, "
 				+ "rsv_start_time, rsv_end_time, rsv_title, "
-				+ "rsv_mem_nm,rsv_mem_pn,rsv_mem_em,rsv_del_pw,rsv_reg_date,rsv_repeat_seq)"
-				+ " values(?,?,?,?,?,?,?,?,?,?,now(),?)";
+				+ "rsv_mem_nm,rsv_mem_pn,rsv_mem_em,rsv_del_pw,rsv_reg_date,rsv_repeat_seq,rsv_color)"
+				+ " values(?,?,?,?,?,?,?,?,?,?,now(),?,?)";
 		try {
 			//1. 시작날짜와 종료날짜 비교 (시작날짜 < 종료날짜 or 시작날짜 > 종료날짜) 
 			conn = db.connect();
@@ -743,6 +800,7 @@ public class RsvDAO {
 			pstmt.setString(9, rdto.getRsv_Mem_Em());
 			pstmt.setString(10, rdto.getRsv_Del_Pw());
 			pstmt.setInt(11, repeat_seq);
+			pstmt.setString(12, rdto.getRsv_Color());
 			pstmt.executeUpdate();
 												
 		} catch (Exception e) {
@@ -759,8 +817,8 @@ public class RsvDAO {
 	public void insertRepeatByDay(RsvDTO rdto, Calendar start, Calendar end,int repeat_seq) {
 		String query = "insert into tb_reservation(rsv_site,rsv_confer_nm,rsv_date, "
 				+ "rsv_start_time, rsv_end_time, rsv_title, "
-				+ "rsv_mem_nm,rsv_mem_pn,rsv_mem_em,rsv_del_pw,rsv_reg_date,rsv_repeat_seq)"
-				+ " values(?,?,?,?,?,?,?,?,?,?,now(),?)";
+				+ "rsv_mem_nm,rsv_mem_pn,rsv_mem_em,rsv_del_pw,rsv_reg_date,rsv_repeat_seq,rsv_color)"
+				+ " values(?,?,?,?,?,?,?,?,?,?,now(),?,?)";
 		try {
 			//1. 시작날짜와 종료날짜 비교 (시작날짜 < 종료날짜 or 시작날짜 > 종료날짜) 
 			conn = db.connect();
@@ -778,6 +836,7 @@ public class RsvDAO {
 			pstmt.setString(9, rdto.getRsv_Mem_Em());
 			pstmt.setString(10, rdto.getRsv_Del_Pw());
 			pstmt.setInt(11, repeat_seq);
+			pstmt.setString(12, rdto.getRsv_Color());
 			pstmt.executeUpdate();
 												
 		} catch (Exception e) {
@@ -790,5 +849,31 @@ public class RsvDAO {
 			}
 		}
 	}
+	
+	/* 최대seq를 가져옴 */
+	public int selectRepeatSeq(String site)
+	   {
+	      int max = 0;
+	      String query = "select max(rsv_repeat_seq) from tb_reservation where rsv_site = ?";
+	      try {
+	         conn = db.connect();
+	         pstmt = conn.prepareStatement(query);
+	         pstmt.setString(1, site);
+	         rs = pstmt.executeQuery();
+
+	         while (rs.next()) {
+	            max = rs.getInt("max(rsv_repeat_seq)");
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            db.close(rs, pstmt, conn);
+	         } catch (Exception e2) {
+	            e2.printStackTrace();
+	         }
+	      }
+	      return max;
+	   }
 
 }

@@ -211,22 +211,23 @@ function getAdminMonth(projectname){
       
       // 시간정보를 보여준다 09:00 ~ 18:00
       function displayTime(){
-         var time = 540;
-         var top = 0;
-         $('#timeDiv').empty();
-         for (var i = 0; i < 10; i++) {
-            /*if(time == 720) {
-               time += 60;
-               continue;
-            }*/
-            $('#timeDiv').append("<div class='time' style='top:"+top+"px; '>"+minToTime(time)+"</div>");
-            
-            //선긋기
-            $('#meetings').append("<div class='line2' style='top:"+top+"px; height:1px; width:"+(document.getElementById('schedule').offsetWidth-70)+"px;'</div>"); //시간별 가로라인
+          var time = 540;
+          var top = 0;
+          $('#timeDiv').empty();
+          for (var i = 0; i <= 10; i++) {
+             /*if(time == 720) {
+                time += 60;
+                continue;
+             }*/
+             if(i!=10){
+             $('#timeDiv').append("<div class='time' style='top:"+top+"px; '>"+minToTime(time)+"</div>");
+             }
+             //가로선긋기
+             $('#meetings').append("<div class='line2' style='top:"+top+"px; height:1px; width:"+(document.getElementById('schedule').offsetWidth-70)+"px;'</div>"); //시간별 가로라인
 
-            top += 40;
-            time += 60;
-         }
+             top += 40;
+             time += 60;
+          }
       }
 
       // 날짜를 클릭할 때마다 이벤트가 발생하며 회의 스케줄을 보여준다
@@ -323,9 +324,11 @@ function getAdminMonth(projectname){
                               + "onClick='reserve("+i+", "+540+", "+1080+", "+k+");'></div>");
                         top += 20;
                      }
-                     $('#meetings').append("<div class='line' style='top:0px; left:"+left+"px;'></div>"); //회의실별 세로라인
+                     //회의실별 세로라인
+                     $('#meetings').append("<div class='line' style='top:0px; left:"+left+"px;'></div>");
                   }
                }
+               $('#meetings').append("<div class='line' style='top:0px; left:"+(left+width)+"px;'></div>");
                
                displayTime();
                
@@ -396,6 +399,18 @@ function getAdminMonth(projectname){
                   $('input[name="rsv_correct_pw"]').val(data.result[i].password);
                   $('input[name="rsv_repeat_seq"]').val(data.result[i].repeat_seq);
                   $("#color").val(data.result[i].color).attr("selected", "selected");
+                  
+                  if(data.result[i].repeat_seq == 0){
+                	  $('#adminRsvButton').empty();
+                	  $("#adminRsvButton").append("<button type='button' class='btn btn-primary' onClick='Modify(0);'>수정</button>");
+                	  $("#adminRsvButton").append("<button type='button' class='btn btn-primary' onClick='Delete(0);'>삭제</button>");
+                  }else{
+                	  $('#adminRsvButton').empty();
+                	  $("#adminRsvButton").append("<button type='button' class='btn btn-primary' onClick='Modify(0);'>수정</button>");
+                	  $("#adminRsvButton").append("<button type='button' class='btn btn-primary' onClick='Delete(0);'>삭제</button>");
+                	  $("#adminRsvButton").append("<button type='button' class='btn btn-primary' onClick='Modify(1);'>전체수정</button>");
+                	  $("#adminRsvButton").append("<button type='button' class='btn btn-primary' onClick='Delete(1);'>전체삭제</button>");
+                  }
                }
 
                timeSelectListAll(data.result[0].start_time, data.result[0].end_time);
@@ -429,6 +444,7 @@ function getAdminMonth(projectname){
          $('input[name="confer_nm"]').val(conference[conf_idx]);
          $('input[name="title"]').val("");
          $('input[name="del_pw"]').val("");
+         $("#color").val("#00599D").attr("selected", "selected");
       }
 
       function timeSelectList(start, end, selectT){

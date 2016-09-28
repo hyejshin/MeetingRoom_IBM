@@ -209,7 +209,6 @@ function adminMonthValidation(){
                   <div>
                      <div class="well well-lg col-md-12 col-sm-12 col-xs-12" role="register">
                         <section class="register-form">
-                        <div class="row">
                            
                         <div class="row">
                            <div class="col-md-3">
@@ -355,15 +354,14 @@ function adminMonthValidation(){
 		                  </div>
 		                  <!-- 수정 및 삭제 -->
 		                  <div id="registerInfo" align="right">
-		                     <button type="button" class="btn btn-primary" onClick="Modify();">수정</button>
-		                     <button type="button" class="btn btn-primary" onClick="Delete();">삭제</button>
+		                     <button type="button" class="btn btn-primary" onClick="Modify(0);">수정</button>
+		                     <button type="button" class="btn btn-primary" onClick="Delete(0);">삭제</button>
 		                  </div>
-                        </div>
                         </section>
                         <div style="background-color: #3399ff"></div>
                         <input type="hidden" id="rsv_seq" name="rsv_seq">
-                        <input type="text" id="rsv_repeat_seq" name="rsv_repeat_seq">
-                        <input type="text" id="rsv_correct_pw" name="rsv_correct_pw">
+                        <input type="hidden" id="rsv_repeat_seq" name="rsv_repeat_seq">
+                        <input type="hidden" id="rsv_correct_pw" name="rsv_correct_pw">
                      </div>
                   </div>
                </div>
@@ -442,7 +440,7 @@ function adminMonthValidation(){
          document.myForm.submit();
       }
 
-      function Modify() {
+      function Modify(option) {
          if(ValidationCheck() == false){   
             return false;
          }
@@ -467,7 +465,10 @@ function adminMonthValidation(){
                  end_time : document.myForm.end_time.value,
                  color : document.myForm.color.value,
                  title : document.myForm.title.value,
-                 del_pw : document.myForm.del_pw.value
+                 del_pw : document.myForm.del_pw.value,
+                 
+                 repeat_seq : document.myForm.rsv_repeat_seq.value,
+                 option : option
               },
 
               success : function(data) {
@@ -486,7 +487,7 @@ function adminMonthValidation(){
          document.myForm.submit();
       }
 
-      function Delete() {
+      function Delete(option) {
     	 if(PasswordCheck() == false){
               return false;
          }
@@ -497,6 +498,8 @@ function adminMonthValidation(){
               dataType : 'json',
               data : {
                  rsv_seq : document.myForm.rsv_seq.value,
+                 repeat_seq : document.myForm.rsv_repeat_seq.value,
+                 option : option
               },
 
               success : function(data) {

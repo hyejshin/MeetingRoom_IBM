@@ -153,6 +153,11 @@ function adminMonthValidation(){
 
 function popup_month(frm)
 {		
+	
+	if(ValidationCheck() == false){	
+		return false;
+	}
+	
 	var winObject = null;
 	var winWidth = 600;
 	var winHeight = 600;
@@ -178,6 +183,10 @@ function popup_month(frm)
 
 function popup_week(frm)
 {
+	if(ValidationCheck() == false){	
+		return false;
+	}
+	
 	var winObject = null;
 	var winWidth = 600;
 	var winHeight = 600;
@@ -200,12 +209,10 @@ function popup_week(frm)
 		
 }
 </script>
-</script>
 </head>
 
 <body>
-<%String selectDate = (String)request.getAttribute("selectDate");%>
-
+<%String selectDate = (String)request.getParameter("selectDate");%>
    <!-- navigation bar -->
 	<%@ include file="header.jsp"%>
 	<h3>&nbsp;&nbsp;${project} 관리자 페이지</h3>
@@ -224,7 +231,6 @@ function popup_week(frm)
          <div class="row" >
          <div class="col-md-6 col-sm-9 col-xs-12">
          <%    String project = (String)session.getAttribute("project");%>
-               <h2 style="margin-left: 10%; font-family: 'Jeju Gothic', serif;">${project} 회의실</h2>
                <input type="hidden" id="site" name="site" value=${project}>
                <script>displayConf('<%=project%>');</script>
          </div>
@@ -274,10 +280,9 @@ function popup_week(frm)
                   <div>
                      <div class="well well-lg col-md-12 col-sm-12 col-xs-12" role="register">
                         <section class="register-form">
+  
                         <div class="row">
-                           
-                        <div class="row">
-                           <div class="col-md-4">
+                           <div class="col-md-3">
                               <div class="form-group ">
                                  <label class="control-label " for="date"> 날짜 </label>
                                  <div class="input-group">
@@ -289,7 +294,7 @@ function popup_week(frm)
                                  </div>
                               </div>
                            </div>
-                           <div class="col-md-4">
+                           <div class="col-md-3">
                               <div class="form-group ">
                                  <label class="control-label " for="start_time"> 시작시간
                                  </label>
@@ -304,7 +309,7 @@ function popup_week(frm)
                                  </div>
                               </div>
                            </div>
-                           <div class="col-md-4">
+                           <div class="col-md-3">
                               <div class="form-group ">
                                  <label class="control-label " for="end_time"> 끝시간 </label>
                                  <div class="input-group">
@@ -313,6 +318,26 @@ function popup_week(frm)
                                     </div>
                                     <select class="form-control" name="end_time" id="end_time">
                                        <option value="">선택하세요</option>
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-md-3">
+                              <div class="form-group ">
+                                 <label class="control-label " for="color"> 색깔
+                                 </label>
+                                 <div class="input-group">
+                                    <div class="input-group-addon">
+                                       <i class="fa fa-clock-o"> </i>
+                                    </div>
+                                    <select class="form-control" name="color"
+                                       id="color">
+                                       <option value="#00599D">옅은파랑</option>
+                                       <option value="#001D59">짙은파랑</option>
+                                       <option value="#3399ff">하늘</option>
+                                       <option value="#33cc33">초록</option>
+                                       <option value="#fe9a2e">주황</option>
+                                       <option value="#ff1a1a">빨강</option>
                                     </select>
                                  </div>
                               </div>
@@ -402,13 +427,15 @@ function popup_week(frm)
 		                  </div>
 		                  <!-- 수정 및 삭제 -->
 		                  <div id="registerInfo" align="right">
-		                     <button type="button" class="btn btn-primary" onClick="Modify();">수정</button>
-		                     <button type="button" class="btn btn-primary" onClick="Delete();">삭제</button>
+		                     <!--<button type="button" class="btn btn-primary" onClick="Modify(0);">수정</button>
+		                     <button type="button" class="btn btn-primary" onClick="Modify(0);">수정</button>  -->
+		                     <div id="adminRsvButton"></div>
 		                  </div>
-                        </div>
                         </section>
                         
                         <input type="hidden" id="rsv_seq" name="rsv_seq">
+                        <input type="text" id="rsv_repeat_seq" name="rsv_repeat_seq">
+                        <input type="text" id="rsv_correct_pw" name="rsv_correct_pw">
                      </div>
                   </div>
                </div>
@@ -447,113 +474,150 @@ function popup_week(frm)
       }
       
       function Reservation() {
-          if(ValidationCheck() == false){   
-             return false;
-          }
-          
-          $.ajax({
-               type : "post",
-               url : "Reservation.do",
-               dataType : 'json',
-               data : {
-                  phone : document.myForm.phone.value,
-                  name : document.myForm.name.value,
-                  email : document.myForm.email.value,
-                  site : document.myForm.site.value,
-                  
-                  confer_nm : document.myForm.confer_nm.value,
-                  date : document.myForm.date.value,
-                  start_time : document.myForm.start_time.value,
-                  end_time : document.myForm.end_time.value,
-                  title : document.myForm.title.value,
-                  del_pw : document.myForm.del_pw.value
-               },
+         if(ValidationCheck() == false){   
+            return false;
+         }
+         $.ajax({
+              type : "post",
+              url : "Reservation.do",
+              dataType : 'json',
+              data : {
+                 phone : document.myForm.phone.value,
+                 name : document.myForm.name.value,
+                 email : document.myForm.email.value,
+                 site : document.myForm.site.value,
+                 
+                 confer_nm : document.myForm.confer_nm.value,
+                 date : document.myForm.date.value,
+                 start_time : document.myForm.start_time.value,
+                 end_time : document.myForm.end_time.value,
+                 color : document.myForm.color.value,
+                 title : document.myForm.title.value,
+                 del_pw : document.myForm.del_pw.value
+              },
 
-               success : function(data) {
-             	 var msg = "" + data.result.message;
-                  if(msg == "sucess") {
-                     alert("예약이 되었습니다.");
-                  } else {
-                     alert("선택하신 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.");
-                  }
-                     
-               },
-               error : function() {
-                  console.log("error");
-               }
-            });
-          document.myForm.action = "AdminRsv.jsp?selectDate="+document.myForm.datepicker.value;
-          document.myForm.submit();
-       }
-
-       function Modify() {
-          if(ValidationCheck() == false){   
-             return false;
-          }
-          
-          $.ajax({
-               type : "post",
-               url : "ModifyRsv.do",
-               dataType : 'json',
-               data : {
-                  rsv_seq : document.myForm.rsv_seq.value,
-                  phone : document.myForm.phone.value,
-                  name : document.myForm.name.value,
-                  email : document.myForm.email.value,
-                  site : document.myForm.site.value,
-                  
-                  confer_nm : document.myForm.confer_nm.value,
-                  date : document.myForm.date.value,
-                  start_time : document.myForm.start_time.value,
-                  end_time : document.myForm.end_time.value,
-                  title : document.myForm.title.value,
-                  del_pw : document.myForm.del_pw.value
-               },
-
-               success : function(data) {
-             	   var msg = "" + data.result.message;
-                    if(msg == "sucess") {
- 	                  alert("수정되었습니다.");
- 	               } else if(msg == "password not match") {
- 	                  alert("비밀번호가 일치하지 않습니다.");
- 	               } else {
- 	                  alert("시간이 겹쳐서 수정이 불가합니다.");
- 	               }
-               },
-               error : function() {
-                  console.log("error");
-               }
-            });
-          document.myForm.action = "AdminRsv.jsp?selectDate="+document.myForm.datepicker.value;
-          document.myForm.submit();
-       }
-
-       function Delete() {
-          $.ajax({
-               type : "post",
-               url : "DeleteRsv.do",
-               dataType : 'json',
-               data : {
-                  rsv_seq : document.myForm.rsv_seq.value,
-                  del_pw : document.myForm.del_pw.value
-               },
-
-               success : function(data) {
-             	 var msg = "" + data.result.message;
-                  if(msg == "sucess") {
-                    alert("삭제되었습니다.");
-                  } else{
-                     alert("비밀번호가 일치하지 않습니다.");
-                  }
-               },
-               error : function() {
-                  console.log("error");
-               }
-            });
-          //setDate(document.myForm.date.value);
-          document.myForm.action = "AdminRsv.jsp?selectDate="+document.myForm.datepicker.value;
-          document.myForm.submit();
+              success : function(data) {
+            	 var msg = "" + data.result.message;
+                 if(msg == "sucess") {
+                    alert("예약이 되었습니다.");
+                 } else {
+                    alert("선택하신 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.");
+                 }
+                    
+              },
+              error : function() {
+                 console.log("error");
+              }
+           });
+         document.myForm.action = "AdminRsv.jsp?selectDate="+document.myForm.datepicker.value;
+         document.myForm.submit();
       }
-   </script>
+
+      function Modify(option) {
+         if(ValidationCheck() == false){   
+            return false;
+         }
+         if(PasswordCheck() == false){
+             return false;
+        }
+         
+         $.ajax({
+              type : "post",
+              url : "ModifyRsv.do",
+              dataType : 'json',
+              data : {
+                 rsv_seq : document.myForm.rsv_seq.value,
+                 phone : document.myForm.phone.value,
+                 name : document.myForm.name.value,
+                 email : document.myForm.email.value,
+                 site : document.myForm.site.value,
+                 
+                 confer_nm : document.myForm.confer_nm.value,
+                 date : document.myForm.date.value,
+                 start_time : document.myForm.start_time.value,
+                 end_time : document.myForm.end_time.value,
+                 color : document.myForm.color.value,
+                 title : document.myForm.title.value,
+                 del_pw : document.myForm.del_pw.value,
+                 
+                 repeat_seq : document.myForm.rsv_repeat_seq.value,
+                 option : option
+              },
+
+              success : function(data) {
+            	   var msg = "" + data.result.message;
+                   if(msg == "sucess") {
+	                  alert("수정되었습니다.");
+	               } else {
+	                  alert("시간이 겹쳐서 수정이 불가합니다.");
+	               }
+              },
+              error : function() {
+                 console.log("error");
+              }
+           });
+         document.myForm.action = "AdminRsv.jsp?selectDate="+document.myForm.datepicker.value;
+         document.myForm.submit();
+      }
+
+      function Delete(option) {
+    	 if(PasswordCheck() == false){
+              return false;
+         }
+    	 
+         $.ajax({
+              type : "post",
+              url : "DeleteRsv.do",
+              dataType : 'json',
+              data : {
+                 rsv_seq : document.myForm.rsv_seq.value,
+                 repeat_seq : document.myForm.rsv_repeat_seq.value,
+                 option : option
+              },
+
+              success : function(data) {
+            	  var msg = "" + data.result.message;
+                  if(msg == "sucess") {
+	                  alert("삭제되었습니다.");
+	               }
+              },
+              error : function() {
+                 console.log("error");
+              }
+           });
+         //setDate(document.myForm.date.value);
+         document.myForm.action = "AdminRsv.jsp?selectDate="+document.myForm.datepicker.value;
+         document.myForm.submit();
+      }
+      
+      function PasswordCheck(){
+	   	  theForm = document.myForm;
+	   	  var userPW = theForm.del_pw.value;
+	   	  var correctPW = theForm.rsv_correct_pw.value;
+	   	  
+	   	  var projectnm = "<%=(String)session.getAttribute("project")%>";
+	   	  var admin = "<%=(String)session.getAttribute("admin")%>";
+
+	   	  if(projectnm != "master" && admin == "yes")
+	   		  return true;
+	   	  
+	   	  if(userPW == ""){
+	   		  alert("비밀번호를 입력하세요.");
+	   		  theForm.del_pw.focus();
+	   		  return false;
+	   	  }
+	   	  
+	   	  if(userPW != correctPW){
+	   		alert("비밀번호가 일치하지 않습니다.");
+	   		  theForm.del_pw.focus();
+	   		  return false;
+	   	  }
+    	  
+		return true;
+      }
+      </script>
+      
+      <!-- footer -->
+   <%@ include file="footer.jsp"%>   
 </body>
 </html>

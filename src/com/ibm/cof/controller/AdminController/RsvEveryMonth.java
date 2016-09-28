@@ -23,7 +23,7 @@ import com.ibm.cof.dto.RsvDTO;
 @WebServlet("/RsvEveryMonth.do")
 public class RsvEveryMonth extends HttpServlet {
    private static final long serialVersionUID = 1L;
-   private int repeat_seq = 1;
+   private int repeat_seq;
    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 
    Date start, end , today= null;
@@ -75,10 +75,16 @@ public class RsvEveryMonth extends HttpServlet {
          String end_time = request.getParameter("end_time");
          String title = request.getParameter("title");
          String del_pw = request.getParameter("del_pw");
+         String color = request.getParameter("color");
                   
          /* 관리자가 제한횟수(달)을 가져온다 */
          AdminDAO adao = new AdminDAO();
          int month = adao.selectMonthbyName(site);
+         
+         RsvDAO rdao = new RsvDAO();
+         RsvDTO rdto = new RsvDTO(start_time, end_time, title, site, confer_nm, name, phone, email, del_pw, color);
+         repeat_seq = rdao.selectRepeatSeq(site);
+         
          
          /* 오늘날짜에 관리자가 제한한 달을 수를 더한다 */
          today = new Date();
@@ -93,8 +99,6 @@ public class RsvEveryMonth extends HttpServlet {
          int compare_admin = start.compareTo(today); // 시작날짜와 오늘날짜+관리자제한달수를 비교한다.
          int compare_result = end.compareTo(today);  // 종료날짜와 오늘날짜_관리자제한달수를 비교한다. 
                                        // 종료날짜가 관리자제한달보다 작으면 음수 , 크면 양수 반환
-         RsvDAO rdao = new RsvDAO();
-         RsvDTO rdto = new RsvDTO(start_time, end_time, title, site, confer_nm, name, phone, email, del_pw);
          
          if(compare_result < 0 )  // 종료날짜 < 관리날짜
          {
@@ -119,12 +123,12 @@ public class RsvEveryMonth extends HttpServlet {
                  compare = start.compareTo(end);
 
                  while (compare < 0) {
-                    rdao.insertRepeat(rdto, start, end, repeat_seq);
+                    rdao.insertRepeat(rdto, start, end, repeat_seq+1);
                     start.setMonth(start.getMonth() + 1);
                     compare = start.compareTo(end);
                  }
 
-                 repeat_seq = repeat_seq + 1;
+                 
               }
          }
          
@@ -151,12 +155,12 @@ public class RsvEveryMonth extends HttpServlet {
                  compare = start.compareTo(today);
 
                  while (compare < 0) {
-                    rdao.insertRepeat(rdto, start, today, repeat_seq);
+                    rdao.insertRepeat(rdto, start, today, repeat_seq+1);
                     start.setMonth(start.getMonth() + 1);
                     compare = start.compareTo(today);
                  }
 
-                 repeat_seq = repeat_seq + 1;
+                 
               }
          }
          
