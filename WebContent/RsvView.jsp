@@ -266,7 +266,6 @@ function adminMonthValidation(){
                                        <option value="#001D59">짙은파랑</option>
                                        <option value="#3399ff">하늘</option>
                                        <option value="#33cc33">초록</option>
-                                       <option value="#5B7444">초록</option>
                                        <option value="#fe9a2e">주황</option>
                                        <option value="#ff1a1a">빨강</option>
                                     </select>

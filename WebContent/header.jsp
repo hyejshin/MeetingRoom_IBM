@@ -2,7 +2,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <style>
-@import url(http://fonts.googleapis.com/earlyaccess/kopubbatang.css);/*font*/
 @import url(http://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
 @import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
@@ -81,7 +80,8 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<%if(session.getAttribute("project").equals("master")){ %>
-				<li><a href="SelectProject.do"><span class="glyphicon glyphicon-user"></span>관리자</a></li>
+				<li><a href="SelectProject.do" class="font-style" style="color:#000;"><span
+						class="glyphicon glyphicon-user"></span>관리자</a></li>
 				<%}else if(session.getAttribute("admin").equals("yes")){ %>
 				<li><a href="AdminRsv.jsp" class="font-style" style="color:#000;"><span
 						class="glyphicon glyphicon-user"></span>관리자</a></li>

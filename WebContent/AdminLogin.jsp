@@ -3,8 +3,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
+<link rel="stylesheet"   href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"  type="text/javascript"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -16,146 +16,164 @@
 
 
 <style>
-@import url(http://fonts.googleapis.com/earlyaccess/kopubbatang.css);/*font*/
+@import url(http://fonts.googleapis.com/earlyaccess/kopubbatang.css);
 @import url(http://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
 @import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+
+.col-centered {
+   float: none;
+   margin-right: auto;
+   margin-left: auto;
+}
+
 .navbar-header {
-	float: left;
-	padding: 1px;
-	text-align: center;
-	width: 100%;
-	margin-bottom:1px; 
+   float: left;
+   padding: 1px;
+   text-align: center;
+   width: 100%;
+   margin-bottom: 1px;
 }
 
 .navbar-brand {
-	float: none;
+   float: none;
 }
 
 #myNavbar {
-	float: right;
-	padding: 1px;
-	text-align: center;
-	width: 100%;
-	margin-top:1px; 
-	padding-top:1%; 
-	padding-left:60%; 
+   float: right;
+   padding: 1px;
+   text-align: center;
+   width: 100%;
+   margin-top: 1px;
+   padding-top: 1%;
+   padding-left: 60%;
 }
 
 .navbar-inverse {
-	background-color: rgba(255, 255, 255, 1);
-	border: 0px solid #000000;
+   background-color: rgba(255, 255, 255, 1);
+   border: 0px solid #000000;
 }
 
 .img-responsive2 {
-	display: inline-block;
-	max-width: 100%;
-	height: 2%;
-	margin-bottom: 3%;
+   display: inline-block;
+   max-width: 100%;
+   height: 2%;
+   margin-bottom: 3%;
 }
 
 .img-responsive3 {
-	display: inline-block;
-	width: 100%;
-	max-width: 100%;
-	height: 1px;
-	margin-top: 1%;
+   display: inline-block;
+   width: 100%;
+   max-width: 100%;
+   height: 1px;
+   margin-top: 1%;
 }
 
-.font-style{
-	font-family: 'Nanum Pen Script';
-	font-size: 25px;
+.font-style {
+   font-family: 'Nanum Pen Script';
+   font-size: 25px;
 }
 </style>
-
 <body>
 
-	<!-- navigation bar -->
-	<nav class="navbar navbar-inverse">
-	<div class="container-fluid">
-		
-		<div class="navbar-header">			
-			<img class="img-responsive2" src="image/colorbar-01.png" title="top">
-			<div class="col-md-12 col-sm-12 col-xs-12">
-			<a class="navbar-brand" href="#"
-			style="margin-top:1px;color:#000; font-family:'Nanum Pen Script', serif;font-size:48px">
-			   IBM 회의실 예약 시스템</a>
-			</div>
-		</div>
-		
-		<div id="myNavbar" >
-			<div class="col-md-12 col-sm-12 col-xs-12">
-			<ul class="nav navbar-nav inline">
-				<li><a href="#" class="font-style" style="color:#000;">예약/현황</a></li>
-				<li><a href="#" class="font-style" style="color:#000;">검색</a></li>
-			</ul>
-		</div></div>
-	</div>
-	</nav>
+   <!-- navigation bar -->
+   <nav class="navbar navbar-inverse">
+   <div class="container-fluid">
 
-	<div>
-		<center style="font-size: 36px; font-family: 'Nanum Myeongjo', serif;">Admin LOGIN
-		</center>
-		<center style="font-size: 28px; font-family: 'Nanum Pen Script', serif;">
-			관리자 페이지는 각 사이트 담당자에게 배정된 아이디, 비밀번호로 이용 가능하며<br> 일반 사용자께서는 홈페이지
-			주소를 다시 한번 확인 부탁드립니다.
-		</center>
-	</div>
+      <div class="navbar-header">
+         <img class="img-responsive2" src="image/colorbar-01.png" title="top">
+         <div class="col-md-12 col-sm-12 col-xs-12">
+            <a class="navbar-brand" href="#"
+               style="margin-top: 1px; color: #000; font-family: 'Nanum Pen Script', serif; font-size: 48px">
+               IBM 회의실 예약 시스템</a>
+         </div>
+      </div>
 
+      <div id="myNavbar">
+         <div class="col-md-12 col-sm-12 col-xs-12">
+            <ul class="nav navbar-nav inline">
+               <li><a href="#" class="font-style" style="color: #000;">예약/현황</a></li>
+               <li><a href="#" class="font-style" style="color: #000;">검색</a></li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   </nav>
 
-	<div>
-		<div class="well well-lg col-md-6 col-sm-8 col-xs-8"
-			style="border-radius: 2px; background: rgba(0, 90, 158, 0.2); padding-top: 3%; padding-left: 5%; padding-right: 5%; margin-top: 3%; margin-left: 24%;">
-
-			<form method="post" action="AdminLogin.do">
-				<div class="container-fluid">
-					<div class="row-fluid">
-						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-							<div>
-								<div class="form-group">
-									<label class="control-label"> 아이디 </label>
-									<div class="input-group">
-										<div class="input-group-addon">
-											<i class="fa fa-smile-o"> </i>
-										</div>
-										<input type="text" class="form-control" id="id" name="id">
-									</div>
-								</div>
-							</div>
-							<div>
-								<div class="form-group">
-									<label class="control-label"> 비밀번호 </label>
-									<div class="input-group">
-										<div class="input-group-addon">
-											<i class="fa fa-lock"> </i>
-										</div>
-										<input type="password" class="form-control" id="pw"
-											name="pw" data-title="Caps lock is on">
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="">
-							<button class="btn" type="submit" name="go"
-							style="font-size:20px; margin-top:20px;margin-buttom:20px;margin-left:40px;
-							width:200px; height:130px; background-color:#00599D; color:#FFFFFF">
-							AdminLogin</button>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-12"></div>
-				</div>
+   <div>
+      <center
+         style="margin-top: 3%; font-size: 36px; font-family: 'Nanum Myeongjo', serif;">
+         <hr>
+         Admin Login
+         <hr>
+      </center>
+      <center
+         style="font-size: 28px; font-family: 'Nanum Pen Script', serif;">
+         관리자 페이지는 각 사이트 담당자에게 배정된 아이디, 비밀번호로 이용 가능하며<br> 일반 사용자께서는 홈페이지
+         주소를 다시 한번 확인 부탁드립니다.
+      </center>
+   </div>
 
 
-				<div class="row row-sapn"></div>
-				<div class="row">
-					<div class="col-md-12"></div>
-				</div>
+   <div>
+      <div class="well well-lg-7 col-lg-7 col-md-7 col-sm-7 col-xs-12 col-centered"
+         style="border-radius: 2px; background: rgba(0, 90, 158, 0.2); margin-top: 2%;">
 
-			</form>
-		</div>
-	</div>
+         <form method="post" action="AdminLogin.do">
+            <div class="container">
+               <div class="row" >
+                  
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                     <div class ="col-lg-3 col-md-3 col-sm-3 col-xs-0"></div>
+                     <div class ="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                        <div class="form-group" style="float:right;">
+                        
+                           <label class="control-label"> 아이디 </label>
+                           <div class="input-group" >
+                              <div class="input-group-addon">
+                                 <i class="fa fa-smile-o"> </i>
+                              </div>
+                              <input type="text" class="form-control" id="id" name="id">
+                           </div>
+                        </div>
+                     </div>
+                     <div>
+                     <div class ="col-lg-3 col-md-3 col-sm-3 col-xs-0"></div>
+                     <div class ="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                        <div class="form-group">
+                           <label class="control-label"> 비밀번호 </label>
+                           <div class="input-group">
+                              <div class="input-group-addon">
+                                 <i class="fa fa-lock"> </i>
+                              </div>
+                              <input type="password" class="form-control" id="pw" name="pw"
+                                 data-title="Caps lock is on">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
+                     <button class="btn " type="submit" name="go"
+                        style="font-size: 20px; margin-top: 30px; margin-buttom: 20px; width: 200px; height: 130px; background-color: #00599D; color: #FFFFFF">
+                        AdminLogin</button>
+                  </div>
+                  
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-md-12"></div>
+            </div>
+
+
+            <div class="row row-sapn"></div>
+            <div class="row">
+               <div class="col-md-12"></div>
+            </div>
+
+         </form>
+      </div>
+   </div>
 
 
 
