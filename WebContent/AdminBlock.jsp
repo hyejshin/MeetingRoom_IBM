@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.ibm.cof.dto.MemberDTO"%>
+<%@ page import="com.ibm.cof.dto.BlockDTO"%>
 <%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -102,8 +103,8 @@
 	<ul class="nav nav-pills">
 		<li><a href="AdminRsv.jsp">예약관리</a></li>
 		<li><a href="AdminRsvHist.jsp">예약내역</a></li>
-		<li class="active"><a href="SearchMember.do?option=all">On-Boarding</a></li>
-		<li><a href="SearchBlock.do?option=all">Off-Boarding</a></li>
+		<li><a href="SearchMember.do?option=all">On-Boarding</a></li>
+		<li class="active"><a href="SearchBlock.do?option=all">Off-Boarding</a></li>
 		<li><a href="SelectConf.do">회의실관리</a></li>
 		<li><a href="AdminSetting.do">설정</a></li>
 	</ul>
@@ -168,15 +169,15 @@
 		</div>
 		
 		<!-- 회원 검색 창 -->
-		<form method="post" name="myForm" action="SearchMember.do">
+		<form method="post" name="myForm" action="SearchBlock.do">
 			<div class="row">
 				<div class="col-md-1 col-sm-1 col-xs-0"></div>
 
 				<div class="col-md-2 col-sm-2 col-xs-3">
 					<select class="form-control" id="option" name="option">
 						<option value="all">전체</option>
-						<option value="mem_nm">이름</option>
-						<option value="mem_pn">번호</option>
+						<option value="block_nm">이름</option>
+						<option value="block_pn">번호</option>
 					</select>
 				</div>
 
@@ -195,7 +196,7 @@
 
 
 		<%
-			ArrayList<MemberDTO> dtos = (ArrayList) request.getAttribute("list");
+			ArrayList<BlockDTO> dtos = (ArrayList) request.getAttribute("list");
 		%>
 		<table class="table table-hover" style="margin-top: 30px;">
 			<tr>
@@ -208,16 +209,14 @@
 			<%
 				if (dtos != null) {
 					for (int i = 0; i < dtos.size(); i++) {
-						MemberDTO dto = dtos.get(i);
+						BlockDTO dto = dtos.get(i);
 			%>
 			<tr>
-				<td><%=dto.getMem_Nm()%></td>
-				<td><%=dto.getMem_Pn()%></td>
-				<td><%=dto.getMem_Em()%></td>
-				<td><%=dto.getMem_Site()%></td>
-				<td><a href="#" data-toggle="collapse" data-target="#update" 
-					onclick="fillMemInfo(<%=dto.getMem_Seq()%>);">수정</a>
-					<a href="DeleteMember.do?seq=<%=dto.getMem_Seq()%>">차단</a></td>
+				<td><%=dto.getBlock_Nm()%></td>
+				<td><%=dto.getBlock_Pn()%></td>
+				<td><%=dto.getBlock_Em()%></td>
+				<td><%=dto.getBlock_Site()%></td>
+				<td><a href="RestoreMember.do?seq=<%=dto.getBlock_Seq()%>">복구</a></td>
 			</tr>
 			<%}}%>
 		</table>

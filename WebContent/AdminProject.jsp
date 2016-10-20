@@ -125,6 +125,7 @@ function check_onclick() {
 	</table>
 	</center>
 	
+	<br><br><br><br><br><br>
 	<!-- footer -->
    <%@ include file="footer.jsp"%>  
 </body>

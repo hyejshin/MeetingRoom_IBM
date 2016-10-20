@@ -278,7 +278,7 @@ public class RsvDAO {
 
 		try {
 			conn = db.connect();
-			String sql = "delete from tb_reservation where rsv_site=? and rsv_date=?";
+			String sql = "delete from tb_reservation where rsv_site=? and rsv_date < ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, site);
 			pstmt.setString(2, date);
@@ -319,7 +319,7 @@ public class RsvDAO {
 				title = rs.getString("rsv_title");
 
 				/* 정보에 맞게 생성자 구현 요망 */
-				// dto = new RsvDTO(date,start,end,title,site,confer_nm);
+				//dto = new RsvDTO(date,start,end,title,site,confer_nm);
 				dtos.add(dto);
 			}
 		} catch (Exception e) {
@@ -460,23 +460,27 @@ public class RsvDAO {
 		return json;
 	}
 
-	/* 현재날짜 이후로 예약 현황을 가져온다 날짜,시간 오름차순 정렬 */
-	public ArrayList<RsvDTO> selectAll() {
+	/* 현재날짜 이후로 프로젝트별 예약 현황을 가져온다 날짜,시간 오름차순 정렬 */
+	public ArrayList<RsvDTO> selectAll(String site) {
 		ArrayList<RsvDTO> dtos = new ArrayList<RsvDTO>();
 		RsvDTO dto = null;
-		String title, site, confer_nm, date, start, end, name, phone;
+		String title, confer_nm, date, start, end, name, phone;
 		String query = "select rsv_title, rsv_site, rsv_confer_nm, rsv_date, rsv_start_time, rsv_end_time, "
 				+ "rsv_mem_nm, rsv_mem_pn from tb_reservation "
-				+ "where rsv_date >= DATE_FORMAT(NOW(),'%Y-%m-%d') order by rsv_date, rsv_start_time";
+				+ "where rsv_site=? and rsv_date >= DATE_FORMAT(NOW(),'%Y-%m-%d') order by rsv_date, rsv_start_time";
 
 		try {
-			conn = db.connect();
+			/*conn = db.connect();
 			st = conn.createStatement();
-			rs = st.executeQuery(query);
+			rs = st.executeQuery(query);*/
+			
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, site);
+			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				title = rs.getString("rsv_title");
-				site = rs.getString("rsv_site");
 				confer_nm = rs.getString("rsv_confer_nm");
 				date = rs.getString("rsv_date");
 				start = rs.getString("rsv_start_time");
@@ -492,7 +496,51 @@ public class RsvDAO {
 			e.printStackTrace();
 		} finally {
 			try {
-				db.close(rs, st, conn);
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return dtos;
+	}
+	
+	/* 현재날짜 이후로 전체 예약 현황을 가져온다 날짜,시간 오름차순 정렬 */
+	public ArrayList<RsvDTO> selectAllMaster() {
+		ArrayList<RsvDTO> dtos = new ArrayList<RsvDTO>();
+		RsvDTO dto = null;
+		String title, confer_nm, date, start, end, name, phone, site;
+		String query = "select rsv_title, rsv_site, rsv_confer_nm, rsv_date, rsv_start_time, rsv_end_time, "
+				+ "rsv_mem_nm, rsv_mem_pn from tb_reservation "
+				+ "where rsv_date >= DATE_FORMAT(NOW(),'%Y-%m-%d') order by rsv_date, rsv_start_time";
+
+		try {
+			/*conn = db.connect();
+			st = conn.createStatement();
+			rs = st.executeQuery(query);*/
+			
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				title = rs.getString("rsv_title");
+				confer_nm = rs.getString("rsv_confer_nm");
+				date = rs.getString("rsv_date");
+				start = rs.getString("rsv_start_time");
+				end = rs.getString("rsv_end_time");
+				name = rs.getString("rsv_mem_nm");
+				phone = rs.getString("rsv_mem_pn");
+				site = rs.getString("rsv_site");
+
+				dto = new RsvDTO(title, site, confer_nm, date, start, end,
+						name, phone);
+				dtos.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
@@ -501,10 +549,52 @@ public class RsvDAO {
 	}
 
 	/* 조건(프로젝트, 회의제목, 예약자)에 따라 현재날짜 이후로 예약 현황을 가져온다 */
-	public ArrayList<RsvDTO> selectByCondition(String option, String context) {
+	public ArrayList<RsvDTO> selectByCondition(String option, String context, String site) {
 		ArrayList<RsvDTO> dtos = new ArrayList<RsvDTO>();
 		RsvDTO dto = null;
-		String title, site, confer_nm, date, start, end, name, phone;
+		String title, confer_nm, date, start, end, name, phone;
+		String query = "select rsv_title, rsv_site, rsv_confer_nm, rsv_date, rsv_start_time, rsv_end_time, "
+				+ "rsv_mem_nm, rsv_mem_pn from tb_reservation "
+				+ "where rsv_site=? and " + option + " = ? and "
+				+ "rsv_date >= DATE_FORMAT(NOW(),'%Y-%m-%d') order by rsv_date, rsv_start_time";
+
+		try {
+			conn = db.connect();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, site);
+			pstmt.setString(2, context);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				title = rs.getString("rsv_title");
+				confer_nm = rs.getString("rsv_confer_nm");
+				date = rs.getString("rsv_date");
+				start = rs.getString("rsv_start_time");
+				end = rs.getString("rsv_end_time");
+				name = rs.getString("rsv_mem_nm");
+				phone = rs.getString("rsv_mem_pn");
+
+				dto = new RsvDTO(title, site, confer_nm, date, start, end,
+						name, phone);
+				dtos.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				db.close(rs, pstmt, conn);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return dtos;
+	}
+	
+	/* 조건(전체, 회의제목, 예약자)에 따라 현재날짜 이후로 예약 현황을 가져온다 */
+	public ArrayList<RsvDTO> selectByConditionMaster(String option, String context) {
+		ArrayList<RsvDTO> dtos = new ArrayList<RsvDTO>();
+		RsvDTO dto = null;
+		String title, confer_nm, date, start, end, name, phone, site;
 		String query = "select rsv_title, rsv_site, rsv_confer_nm, rsv_date, rsv_start_time, rsv_end_time, "
 				+ "rsv_mem_nm, rsv_mem_pn from tb_reservation "
 				+ "where " + option + " = ? and "
@@ -518,13 +608,13 @@ public class RsvDAO {
 
 			while (rs.next()) {
 				title = rs.getString("rsv_title");
-				site = rs.getString("rsv_site");
 				confer_nm = rs.getString("rsv_confer_nm");
 				date = rs.getString("rsv_date");
 				start = rs.getString("rsv_start_time");
 				end = rs.getString("rsv_end_time");
 				name = rs.getString("rsv_mem_nm");
 				phone = rs.getString("rsv_mem_pn");
+				site = rs.getString("rsv_site");
 
 				dto = new RsvDTO(title, site, confer_nm, date, start, end,
 						name, phone);

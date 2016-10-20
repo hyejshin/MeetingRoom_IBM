@@ -46,10 +46,8 @@
    color: red;
 }
 body {
-   /*font-family: 'Noto Sans KR', sans-serif !important;*/ 
     font-family: 'Jeju Gothic', serif !important; 
 }
-
 
 #conference {
    position: relative;
@@ -76,10 +74,12 @@ body {
    width: 70px;
    left: 0px;
 }
+
+
 #schedule {
    position: relative;
    width: 100%;
-   height: 400px;
+   height: 450px;
    margin-left: auto;
    margin-right: auto;
    margin-bottom: 30px;
@@ -95,6 +95,16 @@ body {
    color:#ffffff; 
    background-color: #00599D;
    border: 1px solid #ffffff;
+   overflow: hidden;
+   white-space: nowrap;
+   text-overflow: ellipsis;
+}
+.meeting:hover {
+   position: absolute;
+   text-align: center;
+   color:#000; 
+   background-color: #9D99BB;
+   border: 1px solid #ffffff;
 }
 .empty {
    position: absolute;
@@ -102,9 +112,16 @@ body {
    background-color: #F9F9F9;
    border-radius: 10px;
 }
+
+.empty:hover {
+   position: absolute;
+   text-align: center;
+   background-color: #C9C9C9;
+   border-radius: 10px;
+}
 .line {
    position: absolute;
-   height: 400px;
+   height: 450px;
    width: 1px;
    border: 1px dotted #00599D;
 }
@@ -112,6 +129,12 @@ body {
    position: absolute;
    left: 70px;
    border: 1px dotted #00599D;
+}
+
+.line3 {
+   position: absolute;
+   left: 70px;
+  border: 1px dotted #C9C9C9;
 }
 .align_right {
    
@@ -133,6 +156,7 @@ function adminMonthValidation(){
       getAdminMonth(projectnm);
    }
 }
+
 </script>
 </head>
 
@@ -147,44 +171,48 @@ function adminMonthValidation(){
       <div class="container">
          <!-- 사이트 선택 -->
          <div class="row" >
-         <div class="col-md-6 col-sm-9 col-xs-12">
-         <%if(session.getAttribute("project").equals("master")){ %>
-            <select class="form-control" id="site" name="site" onchange="displayConf(this.value);">
-            <option value="">선택하세요</option>
-            <%ArrayList<String> proj = (ArrayList) request.getAttribute("proj");
-               if (proj != null) {
-                  for (int i = 0; i < proj.size(); i++) {
-                     String name = proj.get(i);%>
-               <option value="<%=name%>"><%=name%></option> <%}%>
-            </select>
+         	<div class="col-md-6 col-sm-9 col-xs-12">
+         	<%if(session.getAttribute("project").equals("master")){ %>
+         	   <select class="form-control" id="site" name="site" onchange="masterDisplay(this.value);">
+         	   <option value="">선택하세요</option>
+         	   <%ArrayList<String> proj = (ArrayList) request.getAttribute("proj");
+           		    if (proj != null) {
+            	    	 for (int i = 0; i < proj.size(); i++) {
+                	     String name = proj.get(i);%>
+               		<option value="<%=name%>"><%=name%></option> <%}%>
+            	</select>
             <%}}else{
                String project = (String)session.getAttribute("project");%>
                <h2 style="margin-left: 10%; font-family: 'Jeju Gothic', serif;">${project} 회의실</h2>
                <input type="hidden" id="site" name="site" value=${project}>
                <script>displayConf('<%=project%>');</script>
             <%}%>
-         </div>
-      </div>
+         	</div>
+      	</div>
 
       <!-- 달력 -->
       <%//@ include file="calendar/calendar.jsp"%>
        
          <div class="form-inline" align="right">
-         날짜<input type="text" name="datepicker" id="datepicker" class="form-control" value='<%=selectDate%>'>
-         <script>
-            $('#datepicker').datepicker({
-               dateFormat : 'yyyy-mm-dd',
-               onSelect: function(selected,evnt) {
-                     test(selected);
-                }
-            });
-            $('#datepicker').datepicker('hide');
+         	날짜<input type="text" name="datepicker" id="datepicker" class="form-control" value='<%=selectDate%>' 
+         	onchange="hide()">
+         	<script>
+         		
+         		$('#datepicker').datepicker({
+           	   		dateFormat : 'yyyy-mm-dd',
+            		onSelect: function(selected,evnt) {
+            		
+                    test(selected);
+                	}
+            	});
+            	$('#datepicker').datepicker('hide');
             
-            function test(value){
-               alert(value);
-            }
-         </script>
+            	function test(value){
+            	   alert(value);
+            	}
+         	</script>
          </div>
+         
          <br>
           
           
@@ -214,7 +242,7 @@ function adminMonthValidation(){
                         <div class="row">
                            <div class="col-md-3">
                               <div class="form-group">
-                                 <label class="control-label " for="date"> 날짜 </label>
+                                 <label class="control-label" for="date"> 날짜 </label>
                                  <div class="input-group">
                                     <div class="input-group-addon">
                                        <i class="fa fa-calendar"></i>
@@ -262,8 +290,8 @@ function adminMonthValidation(){
                                     </div>
                                     <select class="form-control" name="color"
                                        id="color">
-                                       <option value="#00599D">옅은파랑</option>
-                                       <option value="#001D59">짙은파랑</option>
+                                       <option value="#00599D">파랑</option>
+                                       <option value="#001D59">남색</option>
                                        <option value="#3399ff">하늘</option>
                                        <option value="#33cc33">초록</option>
                                        <option value="#fe9a2e">주황</option>
@@ -314,7 +342,7 @@ function adminMonthValidation(){
                            
                            <div class="col-md-4">
                               <div class="form-group ">
-                                 <label class="control-label" for="title"> 전화번호 </label>
+                                 <label class="control-label" for="phone"> 전화번호 </label>
                                  <div class="input-group">
                                     <div class="input-group-addon">
                                        <i class="fa fa-phone"> </i>
@@ -368,6 +396,7 @@ function adminMonthValidation(){
                </div>
             </div>
          </div>
+   		</div>
    </form>
    <div style="margin-top: 30px"></div>
 	<script>
@@ -377,21 +406,7 @@ function adminMonthValidation(){
          setDate('<%=selectDate%>');
       <%}else{
          %>
-         var currentTime = new Date();
-         var date = "";
-         var year = currentTime.getFullYear();
-         date += year;
-         var month = currentTime.getMonth() + 1;
-         if(month < 10)
-            date += "-0" + month + "-";
-         else
-            date += "-" + month + "-";
-         var day = currentTime.getDate();
-         if(day < 10)
-            date += "0"+day;
-         else
-            date += day;
-         
+         var date = getToday();         
          setDate(date);
       <%}%>
       function setDate(date){
@@ -405,7 +420,12 @@ function adminMonthValidation(){
             return false;
          }
          
+         if(PasswordValidation() == false){
+        	 return false;
+         }
+         
          $.ajax({
+        	  async : false,
               type : "post",
               url : "Reservation.do",
               dataType : 'json',
@@ -423,13 +443,13 @@ function adminMonthValidation(){
                  title : document.myForm.title.value,
                  del_pw : document.myForm.del_pw.value
               },
-
+              
               success : function(data) {
             	 var msg = "" + data.result.message;
                  if(msg == "sucess") {
                     alert("예약이 되었습니다.");
                  } else {
-                    alert("선택하신 날짜, 회의실, 시간에 예약이 되어있어 예약이 불가능 합니다.");
+                    alert("선택하신 날짜,회의실,시간에 예약이 되어있거나 Off-Boarding된 회원이므로 예약이 불가능 합니다.");
                  }
                     
               },
@@ -450,6 +470,7 @@ function adminMonthValidation(){
         }
          
          $.ajax({
+        	  async : false,
               type : "post",
               url : "ModifyRsv.do",
               dataType : 'json',
@@ -494,6 +515,7 @@ function adminMonthValidation(){
          }
     	 
          $.ajax({
+        	  async : false,
               type : "post",
               url : "DeleteRsv.do",
               dataType : 'json',
@@ -543,17 +565,27 @@ function adminMonthValidation(){
     	  
 		return true;
       }
-      
-      var title = document.getElementById("title");
-      title.addEventListener("focus", confCheck, true);
 
-      function confCheck() {
+		function PasswordValidation() {
 			theForm = document.myForm;
-        	if(theForm.confer_nm.value == "")
-      			alert("회의실을 선택하세요.");
-      }
+			var userPW = theForm.del_pw.value;
 
-</script>
+			if (userPW == "") {
+				alert("비밀번호를 입력하세요.");
+				theForm.del_pw.focus();
+				return false;
+			}
+		}
+
+		var title = document.getElementById("title");
+		title.addEventListener("focus", confCheck, true);
+
+		function confCheck() {
+			theForm = document.myForm;
+			if (theForm.confer_nm.value == "")
+				alert("회의실을 선택하세요.");
+		}
+	</script>
 
 	<!-- footer -->
    <%@ include file="footer.jsp"%>  

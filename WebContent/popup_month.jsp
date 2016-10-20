@@ -125,8 +125,21 @@ function getSecofWeek(date){
 
 function closeMe(f) {
 
-	//var selectBox = document.getElementById("dayFormat");
-	//var selected = selectBox.options[selectBox.selectedIndex].value;
+	var rsvdate = document.frm.rsvdate.value;
+	   
+	   if (f.dayFormat.value == "select") {
+	         alert("반복형식을 선택하세요.");
+	         f.dayFormat.focus();
+	         return false;
+	   } else if(f.end_dt.value =="") {
+	      alert("종료날짜를 선택하세요.");
+	      f.end_dt.focus();
+	      return false;
+	   } else if(f.end_dt.value < document.frm.start_dt.value) {
+		      alert("시작날짜보다 종료날짜가 이릅니다.");
+		      f.end_dt.focus();
+		      return false;
+		}
 	
 	if ( $("#dayFormat").val() == "date") {
 		f.action = "RsvEveryMonth.do";
@@ -155,8 +168,9 @@ function closeMe(f) {
 <img class="img-responsive2" src="image/colorbar-01.png" title="top">
 <br><br>
 <div class="fontSize">
+<center>
 <table class="col-md-9 col-sm-8 col-xs-12"
-            style="font-family: 'Jeju Gothic', serif !important; font-size: 100%; padding-top: 5%; margin-left: 3%"
+            style="font-family: 'Jeju Gothic', serif !important; font-size: 80%; padding-top: 5%; margin-left: 3%"
             align="center">
             <tr>
                <td>반복주기 :</td>
@@ -164,7 +178,7 @@ function closeMe(f) {
             </tr>
             <tr>
                <td>일/요일 :</td>
-               <td><select id="dayFormat" name="dayFormat">
+               <td><select id="dayFormat" name="dayFormat" style="font-size: 80%;">
                      <option value="select" selected="selected">선택하시오</option>
                      <option value="date">일</option>
                      <option value="day">요일</option>
@@ -175,12 +189,12 @@ function closeMe(f) {
                   <!-- 사용자가 선택한 예약날짜가 시작날짜에 들어가야함 -->시작날짜 :
                </td>
                <td><input type="text" name="start_dt" id="start_dt" readonly
-                  style="width: 50%" onfocus="getWeekday(this.value);"></td>
+                  style="width: 50%; font-size: 80%;" onfocus="getWeekday(this.value);"></td>
             </tr>
             <tr>
                <td>종료날짜 :</td>
                <td><input type="text" name="end_dt" id="end_dt"
-                  style="width: 50%"><br> <script>
+                  style="width: 50%; font-size: 80%;"><br> <script>
                      $('#end_dt').datepicker({
                         dateFormat : 'yy-mm-dd'
 
@@ -191,14 +205,14 @@ function closeMe(f) {
             </tr>
             <tr>
                <td>Summary :</td>
-               <td><input type="text" readonly id="summary" name="summary"></td>
+               <td><input type="text" readonly id="summary" name="summary" style="font-size: 80%;"></td>
             </tr>
          </table>
-
+		</center>
 <br><br>
       
-<center><input type="submit" value="설정" >&nbsp;&nbsp;&nbsp;
-		<input type="reset" value="취소" onClick="window.close();">
+<center><input type="submit" value="설정"  style="font-size: 70%;">&nbsp;&nbsp;&nbsp;
+		<input type="reset" value="취소" style="font-size: 70%;" onClick="window.close();">
 </center>
 </div>
 

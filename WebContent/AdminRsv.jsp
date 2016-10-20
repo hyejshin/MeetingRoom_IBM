@@ -79,7 +79,7 @@ body {
 #schedule {
    position: relative;
    width: 100%;
-   height: 400px;
+   height: 450px;
    margin-left: auto;
    margin-right: auto;
    margin-bottom: 30px;
@@ -95,6 +95,9 @@ body {
    color:#ffffff; 
    background-color: #00599D;
    border: 1px solid #ffffff;
+   overflow: hidden;
+   white-space: nowrap;
+   text-overflow: ellipsis;
 }
 .empty {
    position: absolute;
@@ -104,7 +107,7 @@ body {
 }
 .line {
    position: absolute;
-   height: 400px;
+   height: 450px;
    width: 1px;
    border: 1px dotted #00599D;
 }
@@ -229,7 +232,8 @@ function popup_week(frm)
 	<ul class="nav nav-pills">
 		<li class="active"><a href="AdminRsv.jsp">예약관리</a></li>
 		<li><a href="AdminRsvHist.jsp">예약내역</a></li>
-		<li><a href="SearchMember.do?option=all">회원관리</a></li>
+		<li><a href="SearchMember.do?option=all">On-Boarding</a></li>
+		<li><a href="SearchBlock.do?option=all">Off-Boarding</a></li>
 		<li><a href="SelectConf.do">회의실관리</a></li>
 		<li><a href="AdminSetting.do">설정</a></li>
 	</ul>  
@@ -486,6 +490,11 @@ function popup_week(frm)
          if(ValidationCheck() == false){   
             return false;
          }
+         
+         if(PasswordValidation() == false){
+        	 return false;
+         }
+         
          $.ajax({
               type : "post",
               url : "Reservation.do",
@@ -624,8 +633,29 @@ function popup_week(frm)
     	  
 		return true;
       }
+      
+      function PasswordValidation() {
+			theForm = document.myForm;
+			var userPW = theForm.del_pw.value;
+
+			if (userPW == "") {
+				alert("비밀번호를 입력하세요.");
+				theForm.del_pw.focus();
+				return false;
+			}
+		}
+      
+      var title = document.getElementById("title");
+      title.addEventListener("focus", confCheck, true);
+
+      function confCheck() {
+			theForm = document.myForm;
+        	if(theForm.confer_nm.value == "")
+      			alert("회의실을 선택하세요.");
+      }
       </script>
       
+
    <!-- footer -->
    <%@ include file="footer.jsp"%>   
 </body>

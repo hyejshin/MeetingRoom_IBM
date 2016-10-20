@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ibm.cof.dao.RsvDAO;
 import com.ibm.cof.dto.RsvDTO;
@@ -52,15 +53,24 @@ public class SearchRsv extends HttpServlet {
 		
 		RsvDAO dao = new RsvDAO();
 		ArrayList<RsvDTO> dtos = null;
-			
-		/*if(option.equals("all")) {
-			dtos = dao.selectAll();
-		}else{
-			dtos = dao.selectByCondition(option, context);
-		}*/
 		
-		dtos = dao.selectByCondition(option, context);
-
+		HttpSession session=request.getSession();
+		String site = (String)session.getAttribute("project");
+		
+		if(site.equals("master")){
+			if(option.equals("all")) {
+				dtos = dao.selectAllMaster();
+			}else{
+				dtos = dao.selectByConditionMaster(option, context);
+			}
+		}else{
+			if(option.equals("all")) {
+				dtos = dao.selectAll(site);
+			}else{
+				dtos = dao.selectByCondition(option, context, site);
+			}
+		}
+		
 		request.setAttribute("list", dtos);
 		
         RequestDispatcher rd = request.getRequestDispatcher("Search.jsp");

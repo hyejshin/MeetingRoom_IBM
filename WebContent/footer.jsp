@@ -6,13 +6,13 @@
 	<br><br>
    <div class="row" align="center">
 
-      <div style="font-family:'Nanum Pen Script', serif;font-size:30px">
+      <div style="font-family:'Jeju Gothic', serif;font-size:24px">
       <img width="90px" src="image/ibm_logo_big.jpg">
-      <span>IBM 산학협력프로그램</span>
+      <span>산학협력프로그램</span>
       </div>
 
    </div>
 
    <div class="footbar-header bor">
-      <img class="img-responsive2" src="image/colorbar-01.png" title="top">
+      <img src="image/colorbar-01.png" width="100%" title="top">
    </div>

@@ -1,5 +1,6 @@
 var conference = [];
-
+var hrSpan = 50; //1시간 마다 pixel 크기
+var totalHeight = hrSpan * 9;
 
 function ValidationCheck(){
    theForm = document.myForm;
@@ -7,6 +8,11 @@ function ValidationCheck(){
    if (theForm.date.value == "") {
       alert("날짜를 선택하세요.");
       theForm.date.focus();
+      return false;
+   }
+   else if (theForm.confer_nm.value == "") {
+      alert("회의실을 선택하세요.");
+      theForm.confer_nm.focus();
       return false;
    }
    else if (theForm.start_time.value >= theForm.end_time.value) {
@@ -33,6 +39,38 @@ function ValidationCheck(){
       theForm.email.focus();
       return false;
    }
+   
+   else if (theForm.title.value.length >= 20) {
+      alert("회의제목을 20자 이내로 입력해주세요.");
+      theForm.title.focus();
+      return false;
+   }
+   else if (!parseInt(theForm.phone.value)) {
+      alert("전화번호는 숫자만 입력해주세요");
+      theForm.phone.focus();
+      return false;
+   }
+   else if (!(theForm.phone.value.length == 11 || theForm.phone.value.length == 10)) {
+	  alert("전화번호 자리수는 10~11개여야 합니다.");
+      theForm.phone.focus();
+      return false;
+   }
+   else if (theForm.name.value.length >= 15) {
+      alert("이름을 확인해 주세요");
+      theForm.name.focus();
+      return false;
+   }
+   else if (!isEmail(theForm.email.value)) {
+      alert("이메일을 확인해 주세요");
+      theForm.email.focus();
+      return false;
+   }
+   
+   function isEmail(email) {
+	   var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	   return regex.test(email);
+	}
+   
    return true;
 }
 
@@ -73,13 +111,13 @@ function getAdminMonth(projectname){
 
       success : function(data) {      
          
-         var adminmonth =0;
+         var adminmonth = 0;
          var newdate; 
          var d = new Date();
          var date = leadingZeros(d.getFullYear(), 4) + '-' +
          leadingZeros(d.getMonth() + 1, 2) + '-' +
          leadingZeros(d.getDate(), 2);
-
+         
          adminmonth = data.result[0].admin_month; //db에서 admin_month 가져옴 
          //alert("이번달날짜:"+date);
          
@@ -132,7 +170,25 @@ function getAdminMonth(projectname){
        return zero + n;
    }
    
-   
+   //오늘의 날짜 계산
+   function getToday(){
+	   var currentTime = new Date();
+       var date = "";
+       var year = currentTime.getFullYear();
+       date += year;
+       var month = currentTime.getMonth() + 1;
+       if(month < 10)
+          date += "-0" + month + "-";
+       else
+          date += "-" + month + "-";
+       var day = currentTime.getDate();
+       if(day < 10)
+          date += "0"+day;
+       else
+          date += day;
+       
+       return date;
+   }
 
    // 분을 시간 문자열로 변환해 준다 540 -> 09:00
    function minToTime(time){
@@ -172,6 +228,12 @@ function getAdminMonth(projectname){
          str += min;
       return str;
    }
+   
+   function masterDisplay(project){
+	   displayConf(project);
+	   var date = getToday();
+	   displaySchedule(date);
+   }
       
       // 프로젝트별 회의실 목록을 보여준다.
       function displayConf(value){
@@ -196,7 +258,7 @@ function getAdminMonth(projectname){
                   
                   $('#meetings').append("<div class='line' style='top:0px; left:"+left+"px;'></div>");
 
-                  left += width;               
+                  left += width;
                }            
                displayTime();
             },
@@ -211,20 +273,26 @@ function getAdminMonth(projectname){
           var time = 540;
           var top = 0;
           $('#timeDiv').empty();
-          for (var i = 0; i <= 10; i++) {
-             /*if(time == 720) {
-                time += 60;
-                continue;
-             }*/
+          for (var i = 0; i < 10; i++) {
+
              if(i!=10){
              $('#timeDiv').append("<div class='time' style='top:"+top+"px; '>"+minToTime(time)+"</div>");
-             }
+             } 
              //가로선긋기
              $('#meetings').append("<div class='line2' style='top:"+top+"px; height:1px; width:"+(document.getElementById('schedule').offsetWidth-70)+"px;'</div>"); //시간별 가로라인
-
-             top += 40;
+             
+             top += hrSpan;
              time += 60;
           }
+          
+          top = hrSpan/2; 
+          for (var i = 0; i <= 8; i++) {
+              //가로선긋기(30분선)
+              $('#meetings').append("<div class='line3' style='top:"+top+"px; height:1px; width:"+(document.getElementById('schedule').offsetWidth-70)+"px;'</div>"); //시간별 가로라인
+              
+              top += hrSpan;
+           }
+          
       }
 
       // 날짜를 클릭할 때마다 이벤트가 발생하며 회의 스케줄을 보여준다
@@ -259,7 +327,7 @@ function getAdminMonth(projectname){
 
                for (var i = 0; i < 10; i++) {
                   $('#meetings').append("<div class='line2' style='top: "+top2+"px; height:1px; left:0px; width:"+(document.getElementById('schedule').offsetWidth)+"px; </div>"); //시간별 가로라인
-                  top2 += 40;
+                  top2 += hrSpan;
                }
                
                for (var i = 0; i < data.confers.length; i++) {
@@ -276,18 +344,18 @@ function getAdminMonth(projectname){
                   while (j < data.meetings.length && data.meetings[j].confer_nm == confName) {
                      flag = true;
                      
-                     top = (timeToMin(data.meetings[j].start) - 540) / 30 * 20;
-                     height = (timeToMin(data.meetings[j].end) - timeToMin(data.meetings[j].start)) / 30 * 20;
+                     top = (timeToMin(data.meetings[j].start) - 540) / 30 * (hrSpan/2);
+                     height = (timeToMin(data.meetings[j].end) - timeToMin(data.meetings[j].start)) / 30 * (hrSpan/2);
 
                      // 예약되어있지 않는 공간
-                     start = bottom/20*30+540;
-                     end = top/20*30+540;
+                     start = bottom/(hrSpan/2)*30+540;
+                     end = top/(hrSpan/2)*30+540;
                      alphaT = 0;
                      for(var k = start; k < end; k += 30){
                         $('#meetings').append("<div id='empty' class='empty'"
-                           + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
+                           + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:"+(hrSpan/2)+"px;'"
                            + "onClick='reserve("+confIdx+", "+start+", "+end+", "+k+");'></div>");
-                        alphaT += 20;
+                        alphaT += (hrSpan/2);
                      }
 
                      bottom = top + height;
@@ -297,14 +365,14 @@ function getAdminMonth(projectname){
 
                   if(flag){
                      // 예약되어있지 않는 공간
-                     start = bottom/20*30+540;
-                     end = 360/20*30+540;
+                     start = bottom/(hrSpan/2)*30+540;
+                     end = totalHeight/(hrSpan/2)*30+540;
                      alphaT = 0;
                      for(var k = start; k < end; k += 30){
                         $('#meetings').append("<div id='empty' class='empty'"
-                           + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
+                           + "style='top:"+(bottom+alphaT)+"px; left:"+left+"px; width:"+width+"px; height:"+(hrSpan/2)+"px;'"
                            + "onClick='reserve("+confIdx+", "+start+", "+end+", "+k+");'></div>");
-                        alphaT += 20;
+                        alphaT += (hrSpan/2);
                      }
                      
                      $('#meetings').append("<div class='line' style='top:0px; left:"+left+"px;'></div>"); //회의실별 세로라인 
@@ -317,9 +385,9 @@ function getAdminMonth(projectname){
                      top = 0;
                      for(var k = 540; k<1080; k+=30){
                         $('#meetings').append("<div id='empty' class='empty'"
-                              + "style='top:"+top+"px; left:"+left+"px; width:"+width+"px; height:20px;'"
+                              + "style='top:"+top+"px; left:"+left+"px; width:"+width+"px; height:"+(hrSpan/2)+"px;'"
                               + "onClick='reserve("+i+", "+540+", "+1080+", "+k+");'></div>");
-                        top += 20;
+                        top += (hrSpan/2);
                      }
                      //회의실별 세로라인
                      $('#meetings').append("<div class='line' style='top:0px; left:"+left+"px;'></div>");
@@ -335,11 +403,11 @@ function getAdminMonth(projectname){
                    confIdx = conference.indexOf(confName);
                    left = 70 + width * confIdx;
                    
-                   top = (timeToMin(data.meetings[j].start) - 540) / 30 * 20;
-                   height = (timeToMin(data.meetings[j].end) - timeToMin(data.meetings[j].start)) / 30 * 20;
+                   top = (timeToMin(data.meetings[j].start) - 540) / 30 * (hrSpan/2);
+                   height = (timeToMin(data.meetings[j].end) - timeToMin(data.meetings[j].start)) / 30 * (hrSpan/2);
 
                    var color = data.meetings[j].color;
-                   if(height <= 20)//30분짜리 예약일때만 (글씨가 작아지므로)
+                   if(height <= (hrSpan/2))//30분짜리 예약일때만 (글씨가 작아지므로)
                       $('#meetings').append(
                            
                             "<div id='reserved' class='meeting'"

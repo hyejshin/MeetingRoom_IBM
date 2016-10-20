@@ -12,31 +12,36 @@ public class DBCon {
 	public Connection connect(){
 		Connection conn = null;
 		
-		  /*혜정
+		  /*�삙�젙
 	      String url = "jdbc:mysql://75.126.23.246:3307/d19baf15a17a54d5b9ab2f1aacfdd976e";
 	      String id = "uwq3hYSeeQti0";
 	      String pw = "puc5ZwRkCvmSI";
 	      */
 	      
 	      
-	      /* 은진
+	      /* ��吏�
 	      String url = "jdbc:mysql://75.126.23.246:3307/d3d08d061490e4199ab26a0b6060ec763";
 	      String id = "uk29GZRyVE2fT";
 	      String pw = "pWv7uXkGBeHzX";
 	      */
 		
-		  /* 윤미
+		  /* �쑄誘�
 	      String url = "jdbc:mysql://75.126.23.246:3307/dfa5faab21dd04469bfc00e89a3ad424c";
 	      String id = "uwhL1Fc3Gretj";
 	      String pw = "paCm136PBusb9";
 	      */
 	      
-	      // 로컬
-	      String url = "jdbc:mysql://localhost:3306/IBM";
-	      String id = "bluemix";
-	      String pw = "ibmbluemix123";
-	      //
-	      
+
+	      //local
+	     String url = "jdbc:mysql://localhost:3306/IBM";
+	     String id = "bluemix";
+	     String pw = "ibmbluemix123";
+		
+		/*
+		  String url = "jdbc:mysql://50.23.230.134:3307/dc5f32e3bea0a42f7bf26b133b7f707c5";
+	      String id = "uFwT7d7aSmSA4";
+	      String pw = "pXmCb7j6s0R9L";
+	    */
 		
 		try{
 			Class.forName("com.mysql.jdbc.Driver");

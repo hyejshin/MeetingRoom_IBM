@@ -62,7 +62,7 @@ public class HistoryDAO {
 		HistoryDTO dto = null;
 		
 		String rsv_date, start_time, end_time, name, phone, conference, title, state, hst_date; 
-		String query = "select * from tb_history where hst_rsv_site = ? and hst_rsv_date >= ? and hst_rsv_date <= ?";
+		String query = "select * from tb_history where hst_rsv_site = ? and hst_reg_date >= ? and hst_reg_date <= ? order by hst_seq desc";
 
 		try {
 			conn = db.connect();

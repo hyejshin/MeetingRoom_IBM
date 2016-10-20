@@ -36,8 +36,8 @@
 		if (this.isInput) {
 			this.element.on({
 				focus: $.proxy(this.show, this),
-				//blur: $.proxy(this.hide, this),
-				keyup: $.proxy(this.update, this)
+				keyup: $.proxy(this.update, this)//,
+				//blur: $.proxy(this.hide, this)
 			});
 		} else {
 			if (this.component){
@@ -105,6 +105,7 @@
 					that.hide();
 				}
 			});
+			
 			this.element.trigger({
 				type: 'show',
 				date: this.date
@@ -135,6 +136,7 @@
 				this.element.data('date', formated);
 			} else {
 				this.element.prop('value', formated);
+				this.hide();
 				// 스케줄 현황을 불러온다
 				document.myForm.date.value = formated;
 				displaySchedule(formated);

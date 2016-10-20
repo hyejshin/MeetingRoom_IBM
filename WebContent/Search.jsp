@@ -49,6 +49,7 @@ textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
 			<div class="row col-sm-10 col-md-7 col-centered">
 				<div class="col-md-2 col-sm-3 col-xs-3">
 					<select class="form-control" id="option" name="option">
+						<option value="all">전체</option>
 						<option value="rsv_mem_nm">예약자</option>
 					</select>
 				</div>
@@ -108,8 +109,7 @@ textarea:focus,input:focus,input[type]:focus,.uneditable-input:focus {
             </tbody>
          </table>
       </div>
-      
-    <!-- footer -->
-   	<%@ include file="footer.jsp"%>  
+
+
 </body>
 </html>

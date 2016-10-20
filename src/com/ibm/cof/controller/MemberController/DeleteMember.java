@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ibm.cof.dao.MemberDAO;
+import com.ibm.cof.dto.MemberDTO;
 
 /**
  * Servlet implementation class DeleteMember
@@ -48,9 +49,12 @@ public class DeleteMember extends HttpServlet {
 
 		int seq = Integer.parseInt(request.getParameter("seq"));
 		MemberDAO mdao = new MemberDAO();
+		MemberDTO dto = mdao.fetchAllBySeq(seq);
+		
 		mdao.delete(seq);
-
-		RequestDispatcher rd = request.getRequestDispatcher("AdminMember.jsp");
+		mdao.off_boarding(dto.getMem_Nm(), dto.getMem_Pn(), dto.getMem_Em(), dto.getMem_Site());
+		
+		RequestDispatcher rd = request.getRequestDispatcher("SearchMember.do?option=all");
 		rd.forward(request, response);
 	}
 }

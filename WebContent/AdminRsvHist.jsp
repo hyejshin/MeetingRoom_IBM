@@ -24,8 +24,8 @@
 }
 
 #subtitle{
-	font-size: 24px;
-	font-family: 'Nanum Pen Script', serif;
+	font-size: 18px;
+	font-family: 'Jeju Gothic', serif;
 	margin-left:11%;
 	margin-top:1%;"
 }
@@ -38,6 +38,40 @@
 
 </style>
 
+<script>
+	function dateCheckDelete(){
+		if (document.deleteForm.delete_date.value == "") {
+			alert("날짜를 선택하세요.");
+			document.deleteForm.delete_date.focus();
+			return false;
+		}
+		
+		document.deleteForm.submit();
+	}
+	
+	function dateCheckSearch(){
+		theForm = document.myForm;
+		
+		if (theForm.start_date.value == "") {
+			alert("시작날짜를 선택하세요.");
+			theForm.start_date.focus();
+			return false;
+		} 
+		else if (theForm.end_date.value == "") {
+			alert("끝날짜를 선택하세요.");
+			theForm.end_date.focus();
+			return false;
+		} 
+		else if (theForm.end_date.value < theForm.start_date.value) {
+			alert("시작날짜보다 끝날짜가 이릅니다.");
+			theForm.end_date.focus();
+			return false;
+		}
+		
+		document.myForm.submit();
+	}
+</script>
+
 </head>
 <body>
 	<!-- navigation bar -->
@@ -47,7 +81,8 @@
 	<ul class="nav nav-pills">
 		<li><a href="AdminRsv.jsp">예약관리</a></li>
 		<li class="active"><a href="AdminRsvHist.jsp">예약내역</a></li>
-		<li><a href="SearchMember.do?option=all">회원관리</a></li>
+		<li><a href="SearchMember.do?option=all">On-Boarding</a></li>
+		<li><a href="SearchBlock.do?option=all">Off-Boarding</a></li>
 		<li><a href="SelectConf.do">회의실관리</a></li>
 		<li><a href="AdminSetting.do">설정</a></li>
 	</ul>
@@ -62,21 +97,21 @@
 	<!-- 예약현황 삭제 -->
 		<div align="right" style="margin-bottom:20px;">
 		<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#delete">
-		기록삭제<span class="glyphicon glyphicon-user-add"></span></button></div>
+		예약현황삭제<span class="glyphicon glyphicon-user-add"></span></button></div>
 		
 		<div id="delete" class="collapse" style="margin-bottom:40px;" align="right">
 			<form method="post" name="deleteForm" action="DeleteRsvRecord.do">
 			<input type="hidden" name="page" value="AdminMember.jsp">
 				<div class="form-inline">
 					<input type="text" name="delete_date" id="delete_date" class="form-control">
-					이전 날짜의 예약기록을 삭제합니다.
+					이전 날짜의 예약현황을 삭제합니다.
 					<script>
 						$('#delete_date').datepicker({
 							dateFormat : 'yyyy-mm-dd'
 						});
 						$('#delete_date').datepicker('hide');
 					</script>
-					<button type="submit" class="btn btn-warning" style="margin-left:10px;">삭제</button>
+					<button type="button" onclick="dateCheckDelete();" class="btn btn-warning" style="margin-left:10px;">삭제</button>
 				</div>
 			</form>
 		</div>
@@ -99,7 +134,7 @@
 				$('#end_date').datepicker('hide');
 			</script>
 
-			<button type="submit" class="btn btn-info">검색 <span class='glyphicon glyphicon-search'></span></button>
+			<button type="button" onclick="dateCheckSearch();" class="btn btn-info">검색 <span class='glyphicon glyphicon-search'></span></button>
 		</div>
 	</form>
 	<%
@@ -129,6 +164,7 @@
 		<%}}%>
 	</table>
 	
+	<br><br><br><br>
 	<!-- footer -->
    <%@ include file="footer.jsp"%>  
 		

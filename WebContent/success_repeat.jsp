@@ -10,7 +10,7 @@
 
 <script>
 $(document).ready(function() { 
-	alert("sucess");
+	  alert("success");
       opener.document.location.reload();
       self.close();
    });

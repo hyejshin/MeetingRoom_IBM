@@ -1,6 +1,7 @@
 package com.ibm.cof.controller.MemberController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,29 +9,28 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ibm.cof.dao.MemberDAO;
+import com.ibm.cof.dto.BlockDTO;
 import com.ibm.cof.dto.MemberDTO;
 
 /**
- * Servlet implementation class ModifyMember
+ * Servlet implementation class SearchBlock
  */
-@WebServlet("/UpdateMember.do")
-public class UpdateMember extends HttpServlet {
+@WebServlet("/SearchBlock.do")
+public class SearchBlock extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateMember() {
+    public SearchBlock() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doProcess(request, response);
 	}
@@ -46,19 +46,25 @@ public class UpdateMember extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
+		String option = request.getParameter("option");
+		String context = request.getParameter("context");
 		
-		int seq = Integer.parseInt(request.getParameter("seq"));
-		String name = request.getParameter("name");
-		String phone = request.getParameter("phone");
-		String email = request.getParameter("email");
-		String site = request.getParameter("site");
-						
-		MemberDAO mdao = new MemberDAO();
-		MemberDTO mdto = new MemberDTO(name, phone, email, site);
+		HttpSession session=request.getSession();
+		String site = (String)session.getAttribute("project");
 		
-		mdao.updateMemberState(mdto, seq);
-        
-        RequestDispatcher rd = request.getRequestDispatcher("SearchMember.do?option=all");
+		MemberDAO dao = new MemberDAO();
+		ArrayList<BlockDTO> dtos = null;
+		
+		if(option.equals("all")) {
+			dtos = dao.selectAll_Block(site);
+		}else{
+			dtos = dao.selectByCondition_Block(site, option, context);
+		}
+		
+		request.setAttribute("list", dtos);
+		
+        RequestDispatcher rd = request.getRequestDispatcher("AdminBlock.jsp");
         rd.forward(request, response);
     }
+
 }

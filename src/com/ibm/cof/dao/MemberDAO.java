@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.ibm.cof.dto.BlockDTO;
 import com.ibm.cof.dto.MemberDTO;
 
 import org.json.simple.JSONArray;
@@ -376,6 +377,273 @@ public class MemberDAO {
 	      }
 	      return jarray;
 	   }
+	   
+	   /*
+		 * 수정날짜 : 2016.10.15 수정자 : 정연우 목적 : 관리자가 Off-Boarding한 사람을 Off-Boarding 테이블에
+		 * 모아놓기 위해
+		 */
+		public void off_boarding(String name, String phone, String email,
+				String site) {
+
+			String query = "insert into tb_block(block_nm,block_pn,block_em,block_site)"
+					+ " values(?,?,?,?)";
+			try {
+				conn = db.connect();
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, name);
+				pstmt.setString(2, phone);
+				pstmt.setString(3, email);
+				pstmt.setString(4, site);
+
+				pstmt.executeUpdate();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					db.close(pstmt, conn);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+
+		}
+
+		/*
+		 * 수정날짜 : 2016.10.15 수정자 : 정연우 목적 : seq를 이용하여 Member정보를 가져와서 off_boarding
+		 * 메서드에 넘겨준다.
+		 */
+
+		public MemberDTO fetchAllBySeq(int seq) {
+			MemberDTO dto = null;
+			String name, phone, email, site;
+			int repeat_seq;
+			String query = "select * from tb_member where mem_seq = ?";
+
+			try {
+				conn = db.connect();
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, seq);
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					name = rs.getString("mem_nm");
+					phone = rs.getString("mem_pn");
+					email = rs.getString("mem_em");
+					site = rs.getString("mem_site");
+
+					dto = new MemberDTO(name, phone, email, site);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					db.close(rs, pstmt, conn);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			return dto;
+		}
+
+		/*
+		 * 수정날짜 : 2016.10.15 수정자 : 정연우 목적 : seq를 이용하여 BlockMember정보를 가져와서
+		 * insertBlock 메서드에 넘겨준다.
+		 */
+		
+		public BlockDTO fetchAllBySeq_Block(int seq) {
+			BlockDTO dto = null;
+			String name, phone, email, site;
+			int repeat_seq;
+			String query = "select * from tb_block where block_seq = ?";
+
+			try {
+				conn = db.connect();
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, seq);
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					name = rs.getString("block_nm");
+					phone = rs.getString("block_pn");
+					email = rs.getString("block_em");
+					site = rs.getString("block_site");
+
+					dto = new BlockDTO(name, phone, email, site);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					db.close(rs, pstmt, conn);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			return dto;
+		}
+
+		public ArrayList<BlockDTO> selectAll_Block(String site) {
+			ArrayList<BlockDTO> dtos = new ArrayList<BlockDTO>();
+			String query = "select * from tb_block where block_site=?";
+			BlockDTO dto = null;
+			String name, phone, email;
+			int seq;
+
+			try {
+				conn = db.connect();
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, site);
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					seq = rs.getInt("block_seq");
+					name = rs.getString("block_nm");
+					phone = rs.getString("block_pn");
+					email = rs.getString("block_em");
+
+					dto = new BlockDTO(seq, name, phone, email, site);
+					dtos.add(dto);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					db.close(rs, pstmt, conn);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			return dtos;
+		}
+
+		public ArrayList<BlockDTO> selectByCondition_Block(String site,
+				String option, String context) {
+			ArrayList<BlockDTO> dtos = new ArrayList<BlockDTO>();
+			String query = "select * from tb_block where " + option + " = '"
+					+ context + "' and block_site=?";
+			BlockDTO dto = null;
+			String name, phone, email;
+
+			try {
+				conn = db.connect();
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, site);
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					name = rs.getString("block_nm");
+					phone = rs.getString("block_pn");
+					email = rs.getString("block_em");
+					site = rs.getString("block_site");
+
+					dto = new BlockDTO(name, phone, email, site);
+					dtos.add(dto);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					db.close(rs, pstmt, conn);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+			return dtos;
+		}
+
+		/*
+		 * 수정날짜 : 2016.10.15 수정자 : 정연우 목적 : In Off-Boarding Tab, if admin restore
+		 * member, selected tb_block member is deleted
+		 */
+		
+		public void deleteBlock(int block_seq) {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			DBCon db = new DBCon();
+
+			try {
+				conn = db.connect();
+				String sql = "delete from tb_block where block_seq=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, block_seq);
+				pstmt.executeUpdate();
+
+			} catch (SQLException se) {
+				se.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				db.close(pstmt, conn);
+			}
+		}
+
+		/*
+		 * 수정날짜 : 2016.10.15 수정자 : 정연우 목적 : Insert members who are restored by admin
+		 * in BlockMember tab.
+		 */
+		
+		public void insertBlock(BlockDTO bdto) {
+
+			String query = "insert into tb_member(mem_nm,mem_pn,mem_em,mem_site,mem_reg_date)"
+					+ " values(?,?,?,?,now())";
+			try {
+				conn = db.connect();
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, bdto.getBlock_Nm());
+				pstmt.setString(2, bdto.getBlock_Pn());
+				pstmt.setString(3, bdto.getBlock_Em());
+				pstmt.setString(4, bdto.getBlock_Site());
+
+				pstmt.executeUpdate();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					db.close(pstmt, conn);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+
+		}
+		
+		/*
+		 * 수정날짜 : 2016.10.15 	수정자 : 정연우 
+		 * 목적 : Block 목록에 회원의 번호가 있는지 검사하고 있으면 True 없으면 False 반환
+		 */
+		
+		public Boolean isCheckInBlock(String phone) {
+
+			Boolean bool = false;
+			try {
+				conn = db.connect();
+
+				String query = "select * from tb_block where block_pn=?";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, phone);
+				rs = pstmt.executeQuery();
+
+				if (rs.next())
+					bool = true;
+				else
+					bool = false;
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					db.close(rs, pstmt, conn);
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+
+			return bool;
+		}
 
 
 }

@@ -1,5 +1,6 @@
 package com.ibm.cof.controller.RsvController;
 
+import java.io.Console;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -68,8 +69,10 @@ public class Reservation extends HttpServlet {
 		String color = request.getParameter("color");
 		
 		String message = "ok";
+		log("ajax를 불러옵니다");		
 
 		RsvDAO rdao = new RsvDAO();
+		MemberDAO mdao = new MemberDAO();
 		RsvDTO rdto = new RsvDTO(date, start_time, end_time, title, site,
 		confer_nm, name, phone, email, del_pw, color);
 		
@@ -78,29 +81,34 @@ public class Reservation extends HttpServlet {
 		
 		
 		System.out.println(rdao.CheckRsv(confer_nm,start_time,end_time,site,date));
-		if(rdao.CheckRsv(confer_nm,start_time,end_time,site,date)){
-			//회원정보 추가 및 업데이트
-			MemberDAO mdao = new MemberDAO();
-			MemberDTO mdto = new MemberDTO(name, phone, email, site);
-			if (mdao.isCheckID(phone) == false) {
-				mdao.insert(mdto);
-			} else {
-				mdao.updateMemberPhone(mdto);
+		if(mdao.isCheckInBlock(phone) == true) {
+			message = "You are blocked";
+		} else {
+			if(rdao.CheckRsv(confer_nm,start_time,end_time,site,date)){
+				//회원정보 추가 및 업데이트
+				
+				MemberDTO mdto = new MemberDTO(name, phone, email, site);
+				if (mdao.isCheckID(phone) == false) {
+					mdao.insert(mdto);
+				} else {
+					mdao.updateMemberPhone(mdto);
+				}
+				
+				// 회의실 예약
+				System.out.println("예약햇음");
+				rdao.insert(rdto);
+				
+				// 회의실 예약 내역 추가
+				HistoryDAO hdao = new HistoryDAO();
+				HistoryDTO hdto = new HistoryDTO(date, start_time, end_time, title, site,
+						confer_nm, name, phone, email, del_pw, "reserve");
+				hdao.insert(hdto);
+				message = "sucess";
+			}else{
+				message = "not valid";
 			}
-			
-			// 회의실 예약
-			System.out.println("예약햇음");
-			rdao.insert(rdto);
-			
-			// 회의실 예약 내역 추가
-			HistoryDAO hdao = new HistoryDAO();
-			HistoryDTO hdto = new HistoryDTO(date, start_time, end_time, title, site,
-					confer_nm, name, phone, email, del_pw, "reserve");
-			hdao.insert(hdto);
-			message = "sucess";
-		}else{
-			message = "not valid";
 		}
+		
 
 		JSONObject json = new JSONObject();
 		json.put("message", message);

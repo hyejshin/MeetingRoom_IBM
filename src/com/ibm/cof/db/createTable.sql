@@ -23,7 +23,7 @@ CREATE TABLE tb_reservation (
   rsv_del_pw varchar(45) NOT NULL,
   rsv_reg_date date NOT NULL,
   rsv_color varchar(45) NOT NULL,
-  rsv_repeat_seq int(11) DEFAULT NULL,
+  rsv_repeat_seq int(11) DEFAULT 0,
   PRIMARY KEY (rsv_seq)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -60,4 +60,15 @@ CREATE TABLE tb_admin (
   admin_month int(11) DEFAULT 2,
    PRIMARY KEY (admin_seq),
    UNIQUE KEY (admin_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE tb_block (
+  block_seq int(11) NOT NULL AUTO_INCREMENT,
+  block_nm varchar(45) NOT NULL,
+  block_pn varchar(45) NOT NULL,
+  block_em varchar(45) NOT NULL,
+  block_site varchar(45) NOT NULL,
+  PRIMARY KEY (block_seq),
+  UNIQUE KEY block_pn_UNIQUE (block_pn),
+  UNIQUE KEY block_em_UNIQUE (block_em)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

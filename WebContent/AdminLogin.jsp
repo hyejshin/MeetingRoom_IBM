@@ -4,14 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet"
-   href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="http://code.jquery.com/jquery-1.9.1.js"
-   type="text/javascript"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"
-   type="text/javascript"></script>
-<script
-   src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"  type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <!--이모티콘 Font Awesome (added because you use icons in your prepend/append)-->
 <link rel="stylesheet"
@@ -25,7 +21,6 @@
 @import url(http://fonts.googleapis.com/earlyaccess/kopubbatang.css);
 /*font*/
 @import url(http://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
-
 @import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
 
 
@@ -109,8 +104,8 @@
 }
 
 .font-style {
-   font-family: 'Nanum Pen Script';
-   font-size: 25px;
+   font-family: 'Jeju Gothic', serif;
+   font-size: 18px;
 }
 </style>
 <body>
@@ -123,7 +118,7 @@
          <img class="img-responsive2" src="image/colorbar-01.png" title="top">
          <div class="col-md-12 col-sm-12 col-xs-12">
             <a class="navbar-brand" href="#"
-               style="margin-top: 1px; color: #000; font-family: 'Nanum Pen Script', serif; font-size: 48px">
+               style="margin-top: 1px; color: #000; font-family: 'Jeju Gothic', serif; font-size: 30px">
                IBM 회의실 예약 시스템</a>
          </div>
       </div>
@@ -141,13 +136,13 @@
 
    <div>
       <center
-         style="margin-top: 3%; font-size: 36px; font-family: 'Nanum Myeongjo', serif;">
+         style="margin-top: 3%; font-size: 34px; font-family: 'Jeju Gothic', serif;">
          <hr>
          Admin Login
          <hr>
       </center>
       <center
-         style="font-size: 28px; font-family: 'Nanum Pen Script', serif;">
+         style="font-size: 18px; font-family: 'Jeju Gothic', serif;">
          관리자 페이지는 각 사이트 담당자에게 배정된 아이디, 비밀번호로 이용 가능하며<br> 일반 사용자께서는 홈페이지
          주소를 다시 한번 확인 부탁드립니다.
       </center>

@@ -65,7 +65,7 @@ public class ChangePassword extends HttpServlet {
 		}
 		
 		request.setAttribute("message", message);
-		RequestDispatcher rd = request.getRequestDispatcher("AdminSetting.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("AdminSetting.do");
 		rd.forward(request, response);
 	}
 
